@@ -3,19 +3,41 @@ float randomize(int min, int n){
 return (std::rand()%n)+min;
 }
 
+int clamp(int n, int min, int max){
+if(n<min) return min;
+else if(n>max) return max;
+else return n;
+}
 Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w){
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
 window=w;
-player = Player("Player",1,2,100,10,{0.f,0.f},{50.f,90.f});
+player = Player("Player",1,2,100,10,{75000.f,75000.f},{50.f,90.f});
 particles = ParticleSystem(sf::seconds(1.75));
 particlesHp = ParticleSystem(sf::seconds(1));
 particlesMana = ParticleSystem(sf::seconds(1));
 particlesUI=ParticleSystem(sf::seconds(1.75));
-
-for(int i=0; i<10; i++){
-addMonster(randomize(0,10),sf::Vector2f(randomize(-500,1000),randomize(-500,1000)));
+rnd.seed=462628844;
+std::vector<float> randomValues2d(2500);
+for(int x=0; x<50; x++)
+for(int y=0; y<50; y++){
+    randomValues2d[y*50+x]=rnd.rndInt(0,100);
 }
+noiseValues2d=rnd.perlin2d(randomValues2d,50,50,6,1.8f);
+gameMap=sf::VertexArray(sf::Points, 50*50);
+for(int x=0; x<50; x++)
+for(int y=0; y<50; y++){
+    sf::Color color;
+    auto value=noiseValues2d[y*50+x];
+    if(value<=30) color=sf::Color(64,64,122);
+    else if(value>30&&value<60) color=sf::Color(46, 113, 53);
+    else if(value>60&&value<80) color=sf::Color(10,61,98);
+    else if(value>80&&value<100) color=sf::Color(204,174,98);
+    else if(value>=100) color=sf::Color(100,20,20);
+    gameMap[y*50+x].color=color;
+    gameMap[y*50+x].position={x,y};
+}
+
 statsSetup();
 
 }
@@ -33,14 +55,13 @@ if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
                 if(monsters[i]->getHealth()<=0){
             particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
             particles.addTextEmitter(monsters[i]->getCenter(),SSTR("+"<<monsters[i]->getLevel()*3<<"xp"),1,font,sf::Color::Yellow,40);
-            if(player.addExp(50*monsters[i]->getLevel())){
+            if(player.addExp(3*monsters[i]->getLevel())){
                 particlesUI.addEmitter({500,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addEmitter({300,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addEmitter({700,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,font,sf::Color::Yellow,60);
                 playerLvl.setString(SSTR(player.getLevel()));
             }
-            std::cout<<player.getExp()<<"/"<<player.getExpRequired()<<"\n";
             monsters.erase(monsters.begin()+i);
         }
         }
@@ -51,6 +72,13 @@ if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
    for(int i=0; i<monsters.size(); i++){
     monsters[i]->randomMove(elapsed);
     monsters[i]->move();
+    if(sqrt(pow(monsters[i]->hitbox.left-player.hitbox.left,2)+pow(monsters[i]->hitbox.top-player.hitbox.top,2))>2000){
+        monsters.erase(monsters.begin()+i);
+    }
+}
+
+if(monsters.size()<20){
+generateMonster();
 }
 
 player.update(elapsed);
@@ -74,10 +102,28 @@ if(player.getMana()<player.getMaxMana()) particlesMana.emitters[0].startPos={sta
 
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
+int playerXmap=player.hitbox.left/3000.f;
+int playerYmap=player.hitbox.top/3000.f;
+sf::VertexArray tmp(sf::Quads,36); //biomes near the player
+for(int x=0; x<3; x++)
+for(int y=0; y<3; y++){
+auto& biome=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)];
+    tmp[(y*3+x)*4].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
+    tmp[(y*3+x)*4+1].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
+    tmp[(y*3+x)*4+2].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
+    tmp[(y*3+x)*4+3].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
+
+    tmp[(y*3+x)*4].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f;
+    tmp[(y*3+x)*4+1].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(3000.f,0.f);
+    tmp[(y*3+x)*4+2].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(3000.f,3000.f);
+    tmp[(y*3+x)*4+3].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(0.f,3000.f);
+}
+
+//std::cout<<gameMap[clamp(playerXmap,0,50),clamp(playerYmap,0,50)].position.x<<"player x "<<player.hitbox.left<<"\n";
+target.draw(tmp);
 for(int i=0; i<monsters.size(); i++){
 target.draw(*monsters[i],states);
 }
-
 target.draw(player);
 target.draw(particles);
 for(auto& text : texts){
@@ -91,6 +137,8 @@ target.draw(playerMana);
 if(player.getHealth()<player.getMaxHealth()) target.draw(particlesHp);
 if(player.getMana()<player.getMaxMana()) target.draw(particlesMana);
 target.draw(particlesUI);
+target.draw(gameMap);
+
 }
 void Game::addText(std::string text, sf::Vector2f pos,  sf::Color color){
 sf::Text t;
@@ -134,9 +182,63 @@ break;
 case 9:
     monsters.push_back(std::make_unique<Vampire>(pos));
 break;
+default: std::cout<<"no monster found\n";break;
+}
+}
+void Game::generateMonster(){
+sf::Vector2f pos(randomize(player.getCenter().x-1000,2000),randomize(player.getCenter().y-1000,2000));
+
+switch(getBiome(pos)){
+case 0: //deadlands
+    switch((int)randomize(0,4)){
+    case 0: addMonster(0,pos);  break; //zombie
+    case 1: addMonster(1,pos);  break; //skeleton
+    case 2: addMonster(2,pos);  break; //ghost
+    case 3: addMonster(9,pos);  break; //vampire
+    }
+break;
+case 1: //plains
+      switch((int)randomize(0,2)){
+    case 0: addMonster(6,pos);  break; //troll
+    case 1: addMonster(7,pos);  break; //giant
+      }
+break;
+case 2: //toxic swamp
+    switch((int)randomize(0,3)){
+    case 0: addMonster(0,pos);  break; //zombie
+    case 1: addMonster(4,pos);  break; //giant spider
+    case 2: addMonster(8,pos);  break; //toxic lizard
+    }
+break;
+case 3: //desert
+      switch((int)randomize(0,2)){
+        case 0: addMonster(1,pos); break; //skeleton
+        case 1: addMonster(5,pos); break; //succubus
+      }
+break;
+case 4: //fire realm
+    switch((int)randomize(0,4)){
+         case 0: addMonster(1,pos); break; //skeleton
+        case 1: addMonster(5,pos); break; //succubus
+        case 2: addMonster(3,pos); break; //demon
+        case 3: addMonster(9,pos); break; //vampire
+    }
+break;
 }
 }
 
+int Game::getBiome(sf::Vector2f pos){
+int xMap=clamp(pos.x/3000.f,0,49);
+int yMap=clamp(pos.y/3000.f,0,49);
+
+auto value=noiseValues2d[yMap*50+xMap];
+    if(value<=30) return 0; // deadlands
+    else if(value>30&&value<60) return 1; //plains
+    else if(value>60&&value<80) return 2; //toxic swamp
+    else if(value>80&&value<100) return 3; //desert
+    else if(value>=100) return 4; // fire realm
+    else return -1;
+}
 void Game::statsSetup(){
 stats=sf::VertexArray(sf::Quads,20);
 playerLvl.setFont(font);

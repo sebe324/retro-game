@@ -26,7 +26,7 @@ while(window.isOpen()){
     window.setView(view);
         game.update(deltaTime);
          view.setCenter(game.player.getCenter());
-    window.clear(sf::Color(46, 113, 53));
+    window.clear();
     window.draw(game);
     window.display();
     deltaTime=clock.restart();

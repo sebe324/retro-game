@@ -6,11 +6,13 @@
 #include "monsters/monsters.h"
 
 #include "particleSystem/particleSystem.h"
-
+#include "noise/perlinNoise.h"
 
 #include <memory>
 #include <iostream>
 #include <sstream>
+#include <cmath>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #define SSTR( x ) static_cast< std::ostringstream & >( \
         ( std::ostringstream() << std::dec << x ) ).str()
@@ -41,13 +43,19 @@ sf::Text playerLvl;
 sf::Text playerHp;
 sf::Text playerMana;
 sf::VertexArray stats;
+sf::VertexArray gameMap;
+Rnd rnd;
+std::vector<float> noiseValues2d;
 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 void addText(std::string text, sf::Vector2f pos, sf::Color color);
 
 void addMonster(int id,sf::Vector2f pos);
+
+void generateMonster();
 void statsSetup();
 
+int getBiome(sf::Vector2f pos);
 };
 
 #endif // GAME_H
