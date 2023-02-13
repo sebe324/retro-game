@@ -13,12 +13,20 @@ if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
 window=w;
 player = Player("Player",1,2,100,10,{75000.f,75000.f},{50.f,90.f});
+playerOnMap=sf::VertexArray(sf::Quads,4);
 particles = ParticleSystem(sf::seconds(1.75));
 particlesHp = ParticleSystem(sf::seconds(1));
 particlesMana = ParticleSystem(sf::seconds(1));
 particlesUI=ParticleSystem(sf::seconds(1.75));
 statsSetup();
+playerXmap=player.hitbox.left/3000.f;
+playerYmap=player.hitbox.top/3000.f;
 
+mapBorder=sf::RectangleShape({200.f,200.f});
+mapBorder.setFillColor(sf::Color(0,0,0,0));
+mapBorder.setOutlineThickness(5.f);
+mapBorder.setPosition(5.f,5.f);
+mapBorder.setOutlineColor(sf::Color::Black);
 }
 
 void Game::changeMap(uint32_t seed, int octaves, float bias){
@@ -43,15 +51,49 @@ for(int y=0; y<50; y++){
     gameMap[y*50+x].color=color;
     gameMap[y*50+x].position={x,y};
 }
+actualMap=sf::VertexArray(sf::Quads,10000);
+for(int x=0; x<50; x++)
+for(int y=0; y<50; y++){
+auto& biome=gameMap[clamp(y,0,49)*50+clamp(x,0,49)];
+    actualMap[(y*50+x)*4].color=biome.color;
+    actualMap[(y*50+x)*4+1].color=biome.color;
+    actualMap[(y*50+x)*4+2].color=biome.color;
+    actualMap[(y*50+x)*4+3].color=biome.color;
+
+    actualMap[(y*50+x)*4].position=biome.position*4.f+sf::Vector2f(5.f,5.f);
+    actualMap[(y*50+x)*4+1].position=biome.position*4.f+sf::Vector2f(9.f,5.f);
+    actualMap[(y*50+x)*4+2].position=biome.position*4.f+sf::Vector2f(9.f,9.f);
+    actualMap[(y*50+x)*4+3].position=biome.position*4.f+sf::Vector2f(5.f,9.f);
 }
+updateMap();
+}
+
+void Game::updateMap(){
+    playerXmap=player.hitbox.left/3000.f;
+    playerYmap=player.hitbox.top/3000.f;
+    auto& biome=gameMap[clamp(playerYmap,0,49)*50+clamp(playerXmap,0,49)];
+    playerOnMap[0].color=sf::Color::Magenta;
+    playerOnMap[1].color=sf::Color::Magenta;
+    playerOnMap[2].color=sf::Color::Magenta;
+    playerOnMap[3].color=sf::Color::Magenta;
+
+    playerOnMap[0].position=biome.position*4.f+sf::Vector2f(5.f,5.f);
+    playerOnMap[1].position=biome.position*4.f+sf::Vector2f(9.f,5.f);
+    playerOnMap[2].position=biome.position*4.f+sf::Vector2f(9.f,9.f);
+    playerOnMap[3].position=biome.position*4.f+sf::Vector2f(5.f,9.f);
+}
+
 void Game::update(sf::Time elapsed){
-if(sf::Keyboard::isKeyPressed(player.keyUp)) player.moveUp(elapsed);
-if(sf::Keyboard::isKeyPressed(player.keyDown)) player.moveDown(elapsed);
-if(sf::Keyboard::isKeyPressed(player.keyLeft)) player.moveLeft(elapsed);
-if(sf::Keyboard::isKeyPressed(player.keyRight)) player.moveRight(elapsed);
+if(sf::Keyboard::isKeyPressed(player.keyUp)){ player.moveUp(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player.keyDown)){player.moveDown(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player.keyLeft)){ player.moveLeft(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player.keyRight)){player.moveRight(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::M)) isMapActive=true;
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)) isMapActive=false;
 if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
+    sf::FloatRect attackRange(player.hitbox.left-50.f,player.hitbox.top-50.f,150.f, 150.f);
    for(int i=0; i<monsters.size(); i++){
-    if(player.hitbox.intersects(monsters[i]->hitbox)){
+    if(attackRange.intersects(monsters[i]->hitbox)){
         monsters[i]->wakeUp();
         if(player.attack(*monsters[i],elapsed)){
                 particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(player.damage),1,font,sf::Color::White,36);
@@ -65,6 +107,8 @@ if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
                 particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,font,sf::Color::Yellow,60);
                 playerLvl.setString(SSTR(player.getLevel()));
             }
+            playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
+            playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
             monsters.erase(monsters.begin()+i);
         }
         }
@@ -105,21 +149,19 @@ if(player.getMana()<player.getMaxMana()) particlesMana.emitters[0].startPos={sta
 
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
-int playerXmap=player.hitbox.left/3000.f;
-int playerYmap=player.hitbox.top/3000.f;
 sf::VertexArray tmp(sf::Quads,36); //biomes near the player
 for(int x=0; x<3; x++)
 for(int y=0; y<3; y++){
 auto& biome=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)];
-    tmp[(y*3+x)*4].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
-    tmp[(y*3+x)*4+1].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
-    tmp[(y*3+x)*4+2].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
-    tmp[(y*3+x)*4+3].color=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].color;
+    tmp[(y*3+x)*4].color=biome.color;
+    tmp[(y*3+x)*4+1].color=biome.color;
+    tmp[(y*3+x)*4+2].color=biome.color;
+    tmp[(y*3+x)*4+3].color=biome.color;
 
-    tmp[(y*3+x)*4].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f;
-    tmp[(y*3+x)*4+1].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(3000.f,0.f);
-    tmp[(y*3+x)*4+2].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(3000.f,3000.f);
-    tmp[(y*3+x)*4+3].position=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)].position*3000.f+sf::Vector2f(0.f,3000.f);
+    tmp[(y*3+x)*4].position=biome.position*3000.f;
+    tmp[(y*3+x)*4+1].position=biome.position*3000.f+sf::Vector2f(3000.f,0.f);
+    tmp[(y*3+x)*4+2].position=biome.position*3000.f+sf::Vector2f(3000.f,3000.f);
+    tmp[(y*3+x)*4+3].position=biome.position*3000.f+sf::Vector2f(0.f,3000.f);
 }
 
 //std::cout<<gameMap[clamp(playerXmap,0,50),clamp(playerYmap,0,50)].position.x<<"player x "<<player.hitbox.left<<"\n";
@@ -137,11 +179,15 @@ target.draw(stats);
 target.draw(playerLvl);
 target.draw(playerHp);
 target.draw(playerMana);
+target.draw(playerExpProgress);
 if(player.getHealth()<player.getMaxHealth()) target.draw(particlesHp);
 if(player.getMana()<player.getMaxMana()) target.draw(particlesMana);
 target.draw(particlesUI);
-target.draw(gameMap);
-
+if(isMapActive){
+target.draw(actualMap);
+target.draw(playerOnMap);
+target.draw(mapBorder);
+}
 }
 void Game::addText(std::string text, sf::Vector2f pos,  sf::Color color){
 sf::Text t;
@@ -248,6 +294,11 @@ playerLvl.setFont(font);
 playerLvl.setString(SSTR(player.getLevel()));
 playerLvl.setCharacterSize(50);
 playerLvl.setPosition(1000/2-(playerLvl.getGlobalBounds().width/2),900.f);
+
+playerExpProgress.setFont(font);
+playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
+playerExpProgress.setCharacterSize(48);
+playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
 
 playerHp.setFont(font);
 playerHp.setFillColor(sf::Color::White);

@@ -53,6 +53,11 @@ seedText.setString(SSTR(seed));
 seedText.setPosition(675.f,400.f);
 seedText.setCharacterSize(75);
 
+seedLabel.setFont(font);
+seedLabel.setString("Seed");
+seedLabel.setPosition(675.f, 350.f);
+seedLabel.setCharacterSize(60);
+
 bStartGame=Button("Start Game",50,sf::Color::Black,{675.f,800.f},{300.f,100.f},sf::Color(92,64,51),font);
 
 bStartGame.hoverContentColor=sf::Color::White;

@@ -32,6 +32,8 @@ ParticleSystem particlesUI;
 const sf::RenderWindow *window;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
+
+bool isMapActive=true;
 void update(sf::Time elapsed);
 
 void changeMap(uint32_t seed, int octaves, float bias);
@@ -39,13 +41,21 @@ Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w);
 
 private:
 
+int playerXmap;
+int playerYmap;
+
+const int tileSize=3000;
 sf::Font font;
 sf::Texture texture;
 sf::Text playerLvl;
 sf::Text playerHp;
 sf::Text playerMana;
+sf::Text playerExpProgress;
 sf::VertexArray stats;
 sf::VertexArray gameMap;
+sf::VertexArray actualMap;
+sf::VertexArray playerOnMap;
+sf::RectangleShape mapBorder;
 Rnd rnd;
 std::vector<float> noiseValues2d;
 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -56,7 +66,7 @@ void addMonster(int id,sf::Vector2f pos);
 
 void generateMonster();
 void statsSetup();
-
+void updateMap();
 int getBiome(sf::Vector2f pos);
 };
 
