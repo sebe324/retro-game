@@ -17,13 +17,19 @@ particles = ParticleSystem(sf::seconds(1.75));
 particlesHp = ParticleSystem(sf::seconds(1));
 particlesMana = ParticleSystem(sf::seconds(1));
 particlesUI=ParticleSystem(sf::seconds(1.75));
-rnd.seed=462628844;
-std::vector<float> randomValues2d(2500);
+statsSetup();
+
+}
+
+void Game::changeMap(uint32_t seed, int octaves, float bias){
+    std::vector<float> randomValues2d(2500);
+rnd.seed=seed;
 for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
     randomValues2d[y*50+x]=rnd.rndInt(0,100);
 }
-noiseValues2d=rnd.perlin2d(randomValues2d,50,50,6,1.8f);
+
+noiseValues2d=rnd.perlin2d(randomValues2d,50,50,octaves,bias);
 gameMap=sf::VertexArray(sf::Points, 50*50);
 for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
@@ -31,15 +37,12 @@ for(int y=0; y<50; y++){
     auto value=noiseValues2d[y*50+x];
     if(value<=30) color=sf::Color(64,64,122);
     else if(value>30&&value<60) color=sf::Color(46, 113, 53);
-    else if(value>60&&value<80) color=sf::Color(10,61,98);
+    else if(value>60&&value<80) color=sf::Color(116,146,76);
     else if(value>80&&value<100) color=sf::Color(204,174,98);
     else if(value>=100) color=sf::Color(100,20,20);
     gameMap[y*50+x].color=color;
     gameMap[y*50+x].position={x,y};
 }
-
-statsSetup();
-
 }
 void Game::update(sf::Time elapsed){
 if(sf::Keyboard::isKeyPressed(player.keyUp)) player.moveUp(elapsed);

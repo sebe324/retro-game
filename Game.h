@@ -33,6 +33,8 @@ const sf::RenderWindow *window;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
 void update(sf::Time elapsed);
+
+void changeMap(uint32_t seed, int octaves, float bias);
 Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w);
 
 private:
