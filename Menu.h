@@ -14,6 +14,7 @@ Button bNewGame;
 Button b1v1;
 Button bDescription;
 Button bExitGame;
+Button bSettings;
 sf::Sprite background;
 
 

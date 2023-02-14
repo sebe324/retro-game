@@ -5,7 +5,7 @@
 #include "Menu.h"
 #include "Button.h"
 #include "worldCreator.h"
-
+#include "Settings.h"
 int main(){
 
 sf::RenderWindow window(sf::VideoMode(1000,1000),"Wojownicy");
@@ -20,6 +20,7 @@ view.setCenter(game.player.getCenter());
 sf::Font font;
 if(!font.loadFromFile("font.ttf")){}
 WorldCreator wCreator(font);
+Settings settings(font);
 window.setFramerateLimit(60);
 while(window.isOpen()){
     window.clear();
@@ -37,6 +38,7 @@ while(window.isOpen()){
                 return 0;
             }
             if(menu.bNewGame.click(windowPosition)) mode=2;
+            if(menu.bSettings.click(windowPosition)) mode=4;
         }
         }
         else if(mode==2){
@@ -52,6 +54,12 @@ while(window.isOpen()){
                     }
             }
         }
+        else if(mode==4){
+            settings.update(windowPosition);
+            settings.checkClick(windowPosition);
+            game.player.movementWSAD(settings.WSAD);
+            if(settings.bGoBack.click(windowPosition))mode=1;
+        }
     }
     if(mode==3){
     window.setView(view);
@@ -60,6 +68,7 @@ while(window.isOpen()){
    window.draw(game);
     }else if(mode==1) window.draw(menu);
     else if(mode==2) window.draw(wCreator);
+    else if(mode==4) window.draw(settings);
     window.display();
     deltaTime=clock.restart();
 }

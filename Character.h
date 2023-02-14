@@ -8,7 +8,8 @@
 
 #include <string>
 #include <vector>
-
+#include <cmath>
+#include <iostream>
 //#include <string>
 
 class Character : public sf::Drawable{
@@ -62,6 +63,10 @@ class Character : public sf::Drawable{
         float getMana() const;
         float getMaxMana() const;
         float getManaRegen() const;
+
+        float getDistance(Character& character) const;
+        float getDistanceX(Character& character) const;
+        float getDistanceY(Character& character) const;
     protected:
 
         void createBodyPart(sf::Vector2f p, sf::Vector2f offset, sf::Color color);

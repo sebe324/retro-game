@@ -7,4 +7,6 @@ createBodyPart({10.f,30.f},{20.f,28.f},sf::Color::White);
 createBodyPart({30.f,8.f},{10.f,38.f},sf::Color::White);
 createBodyPart({8.f,15.f},{12.f,54.f},sf::Color::White);
 createBodyPart({8.f,15.f},{30.f,54.f},sf::Color::White);
+attitude=Aggressive;
+fightUntilDeath=true;
 }

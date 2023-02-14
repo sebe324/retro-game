@@ -10,6 +10,8 @@ Troll::Troll(sf::Vector2f p) : Monster("Troll",1,1,p,{60.f,90.f}){
     createBodyPart({10.f,15.f},{35.f,75.f},sf::Color(85,160,255));
     createBodyPart({10.f,22.f},{50.f,30.f},sf::Color(46,134,222));
     createBodyPart({10.f,22.f},{0.f,30.f},sf::Color(46,134,222));
+    attitude=Aggressive;
+    fightUntilDeath=true;
 }
 void Troll::wakeUp(){
 

@@ -12,7 +12,7 @@ Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow*
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
 window=w;
-player = Player("Player",1,2,100,10,{75000.f,75000.f},{50.f,90.f});
+player = Player("Player",1,2,100,5,{75000.f,75000.f},{50.f,90.f});
 playerOnMap=sf::VertexArray(sf::Quads,4);
 particles = ParticleSystem(sf::seconds(1.75));
 particlesHp = ParticleSystem(sf::seconds(1));
@@ -96,6 +96,7 @@ if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
     if(attackRange.intersects(monsters[i]->hitbox)){
         monsters[i]->wakeUp();
         if(player.attack(*monsters[i],elapsed)){
+                if(monsters[i]->attitude==Neutral )monsters[i]->attitude=Aggressive;
                 particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(player.damage),1,font,sf::Color::White,36);
                 if(monsters[i]->getHealth()<=0){
             particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
@@ -111,16 +112,21 @@ if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
             playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
             monsters.erase(monsters.begin()+i);
         }
+
         }
     }
 
 }
 }
    for(int i=0; i<monsters.size(); i++){
-    monsters[i]->randomMove(elapsed);
-    monsters[i]->move();
-    if(sqrt(pow(monsters[i]->hitbox.left-player.hitbox.left,2)+pow(monsters[i]->hitbox.top-player.hitbox.top,2))>2000){
+    //monsters[i]->randomMove(elapsed);
+    float dist=monsters[i]->getDistance(player);
+    if(dist>2000){
         monsters.erase(monsters.begin()+i);
+    } else{
+    if(monsters[i]->makeDecision(elapsed,player)) particles.addTextEmitter(player.getCenter(),SSTR(monsters[i]->damage),1,font,sf::Color::Red,36);
+
+    monsters[i]->update(elapsed);
     }
 }
 
@@ -202,7 +208,6 @@ void Game::addMonster(int id, sf::Vector2f pos){
 switch(id){
 case 0:
 monsters.push_back(std::make_unique<Zombie>(pos));
-
 break;
 case 1:
 monsters.push_back(std::make_unique<Skeleton>(pos));

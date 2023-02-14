@@ -38,3 +38,22 @@ void Player::setExpRequired(){
     else if(level>=20 && level<30) expRequired=200;
     else if(level>=30) expRequired=300;
 }
+
+void Player::movementWSAD(bool b){
+if(b){
+    keyUp=sf::Keyboard::W;
+    keyDown=sf::Keyboard::S;
+    keyLeft=sf::Keyboard::A;
+    keyRight=sf::Keyboard::D;
+    keyRightAttack=sf::Keyboard::E;
+    keyLeftAttack=sf::Keyboard::Q;
+}
+else{
+keyUp=sf::Keyboard::Up;
+    keyDown=sf::Keyboard::Down;
+    keyLeft=sf::Keyboard::Left;
+    keyRight=sf::Keyboard::Right;
+    keyRightAttack=sf::Keyboard::E;
+    keyLeftAttack=sf::Keyboard::Q;
+}
+}

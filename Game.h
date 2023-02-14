@@ -11,7 +11,7 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
-#include <cmath>
+
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #define SSTR( x ) static_cast< std::ostringstream & >( \

@@ -17,6 +17,8 @@ class Player : public Character{
         bool addExp(int n);
         int getExp();
         int getExpRequired();
+
+        void movementWSAD(bool b);
     private:
         int experience;
         int expRequired;

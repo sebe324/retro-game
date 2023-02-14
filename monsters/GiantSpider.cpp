@@ -10,4 +10,5 @@ createBodyPart({10.f,10.f},{73.f,35.f},sf::Color(77,74,84));
 createBodyPart({5.f,5.f},{5.f,12.f},sf::Color::Red);
 createBodyPart({5.f,5.f},{15.f,12.f},sf::Color::Red);
 createBodyPart({5.f,5.f},{5.f,22.f},sf::Color::Red);
+attitude=Aggressive;
 }

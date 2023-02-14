@@ -9,4 +9,5 @@ createBodyPart({5.f,5.f},{18.f,30.f},sf::Color(186,220,88));
 createBodyPart({10.f,10.f},{28.f,40.f},sf::Color(60,60,60));
 createBodyPart({10.f,10.f},{43.f,40.f},sf::Color(60,60,60));
 createBodyPart({10.f,10.f},{58.f,40.f},sf::Color(60,60,60));
+attitude=Cowardly;
 }

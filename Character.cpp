@@ -47,7 +47,6 @@ for(int i=0; i<bodyPartsNumber*4; i++){
 left=false;
 }
 }
-
 void Character::move(){
 velocity.y*=0.9;
 velocity.x*=0.9;
@@ -179,3 +178,15 @@ float distance=x-borderL;
 x=borderR-distance;
 return x;
 }
+
+float Character::getDistance(Character& character) const{
+return sqrt(pow(character.getCenter().x-getCenter().x,2)+pow(character.getCenter().y-getCenter().y,2));
+}
+float Character::getDistanceX(Character& character) const{
+return getCenter().x-character.getCenter().x;
+}
+
+float Character::getDistanceY(Character& character) const{
+return getCenter().y-character.getCenter().y;
+}
+
