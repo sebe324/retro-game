@@ -174,3 +174,14 @@ target.draw(gameMap);
 
 target.draw(bGoBack);
 }
+void WorldCreator::clearVectors(){
+std::cout<<randomValues2d.capacity()*sizeof(float)<<"\n";
+std::cout<<noiseValues2d.capacity()*sizeof(float)<<"\n";
+std::cout<<gameMap.getVertexCount()*sizeof(sf::Vertex)<<"\n";
+    std::vector<float> randomValues2d;
+    std::vector<float> noiseValues2d;
+    sf::VertexArray gameMap;
+std::cout<<randomValues2d.capacity()*sizeof(float)<<"\n";
+std::cout<<noiseValues2d.capacity()*sizeof(float)<<"\n";
+std::cout<<gameMap.getVertexCount()*sizeof(sf::Vertex)<<"\n";
+}

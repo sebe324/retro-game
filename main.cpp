@@ -48,6 +48,7 @@ while(window.isOpen()){
                     if(wCreator.bStartGame.click(windowPosition)){
                     game.changeMap(wCreator.seed,wCreator.octaves, wCreator.bias);
                     mode=3;
+                    wCreator.clearVectors();
                     }
                     if(wCreator.bGoBack.click(windowPosition)){
                         mode=1;
@@ -59,6 +60,11 @@ while(window.isOpen()){
             settings.checkClick(windowPosition);
             game.player.movementWSAD(settings.WSAD);
             if(settings.bGoBack.click(windowPosition))mode=1;
+        }
+        else if (mode==3){
+           if(event.type==sf::Event::KeyPressed){
+                if(event.key.code==sf::Keyboard::Escape) game.paused=!game.paused;
+           }
         }
     }
     if(mode==3){

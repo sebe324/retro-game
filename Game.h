@@ -32,7 +32,7 @@ ParticleSystem particlesUI;
 const sf::RenderWindow *window;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
-
+bool paused=false;
 bool isMapActive=true;
 void update(sf::Time elapsed);
 
@@ -44,7 +44,6 @@ private:
 int playerXmap;
 int playerYmap;
 
-const int tileSize=3000;
 sf::Font font;
 sf::Texture texture;
 sf::Text playerLvl;
@@ -67,6 +66,8 @@ void addMonster(int id,sf::Vector2f pos);
 void generateMonster();
 void statsSetup();
 void updateMap();
+void updateParticles(sf::Time& elapsed);
+void playerAttack(sf::FloatRect& attackRange, sf::Time& elapsed);
 int getBiome(sf::Vector2f pos);
 };
 

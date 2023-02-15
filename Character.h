@@ -10,11 +10,14 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <ctime>
+
 //#include <string>
 
 class Character : public sf::Drawable{
     public:
         float damage=0;
+        float lastAttackDamage=0;
         float attackSpeed=0;
         float speed=0;
         bool left=true;

@@ -35,7 +35,7 @@ public:
 
     void update(sf::Vector2i pos);
     void checkClick(sf::Vector2i pos);
-
+    void clearVectors();
 private:
     sf::Text biasText;
     sf::Text octavesText;
