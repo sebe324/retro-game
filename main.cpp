@@ -6,8 +6,8 @@
 #include "Button.h"
 #include "worldCreator.h"
 #include "Settings.h"
+#include <ctime>
 int main(){
-
 sf::RenderWindow window(sf::VideoMode(1000,1000),"Wojownicy");
 Game game("texture.png", "font.ttf", &window);
 Menu menu("font.ttf","texture.png");
@@ -65,6 +65,12 @@ while(window.isOpen()){
            if(event.type==sf::Event::KeyPressed){
                 if(event.key.code==sf::Keyboard::Escape) game.paused=!game.paused;
            }
+            if(event.type==sf::Event::TextEntered){
+
+            game.combo+=(char)event.text.unicode;
+            game.combo.erase(0,1);
+            std::cout<<game.combo<<"\n";
+        }
         }
     }
     if(mode==3){

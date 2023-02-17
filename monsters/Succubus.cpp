@@ -11,4 +11,5 @@ createBodyPart({8.f,20.f},{14.f,48.f},sf::Color(110,80,70));
 createBodyPart({8.f,20.f},{28.f,48.f},sf::Color(110,80,70));
 attitude=Aggressive;
 fightUntilDeath=false;
+bodyType=INFERNAL;
 }

@@ -12,6 +12,7 @@ createBodyPart({15.f,10.f},{5.f,65.f},sf::Color(50,50,50));
 createBodyPart({15.f,10.f},{30.f,65.f},sf::Color(50,50,50));
 attitude=Aggressive;
 fightUntilDeath=true;
+bodyType=UNDEAD;
 }
 Zombie::Zombie() : Monster(){}
 void Zombie::wakeUp(){

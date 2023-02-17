@@ -14,10 +14,10 @@ if(!texture.loadFromFile(texturePath)){}
 window=w;
 player = Player("Player",1,2,100,5,{75000.f,75000.f},{50.f,90.f});
 playerOnMap=sf::VertexArray(sf::Quads,4);
-particles = ParticleSystem(sf::seconds(1.75));
-particlesHp = ParticleSystem(sf::seconds(1));
-particlesMana = ParticleSystem(sf::seconds(1));
-particlesUI=ParticleSystem(sf::seconds(1.75));
+particles = ParticleSystem(sf::seconds(1.75), &font);
+particlesHp = ParticleSystem(sf::seconds(1), &font);
+particlesMana = ParticleSystem(sf::seconds(1), &font);
+particlesUI=ParticleSystem(sf::seconds(1.75), &font);
 statsSetup();
 playerXmap=(int)player.hitbox.left>>12;
 playerYmap=(int)player.hitbox.top>>12;
@@ -102,14 +102,35 @@ if(sf::Keyboard::isKeyPressed(player.keyLeftAttack)){
     playerAttack(attackRange,elapsed);
     player.moveLeft(elapsed,0.1);
 }
-   for(int i=0; i<monsters.size(); i++){
+if(combo.find(heal.combo) != std::string::npos) {
+    combo="00000000";
+    heal.effect(player,monsters,1,particles);
+ }
+ else if(combo.find(fireBlaze.combo)!=std::string::npos){
+    combo="00000000";
+    fireBlaze.effect(player,monsters,1,particles);
+ }
+   for(int i=monsters.size()-1; i>0; i--){
     float dist=monsters[i]->getDistance(player);
     if(dist>2000){
         monsters.erase(monsters.begin()+i);
     } else{
-    if(monsters[i]->makeDecision(elapsed,player)) particles.addTextEmitter(player.getCenter(),SSTR(FIXED_FLOAT(monsters[i]->lastAttackDamage)),1,font,sf::Color::Red,36);
+    if(monsters[i]->makeDecision(elapsed,player)) particles.addTextEmitter(player.getCenter(),SSTR(FIXED_FLOAT(monsters[i]->lastAttackDamage)),1,sf::Color::Red,36);
+    if(monsters[i]->getHealth()<=0) {
+            particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
+            particles.addTextEmitter(monsters[i]->getCenter(),SSTR("+"<<monsters[i]->getLevel()*3<<"xp"),1,sf::Color::Yellow,40);
+            if(player.addExp(3*monsters[i]->getLevel())){
+                particlesUI.addEmitter({500,200},20,{150,255},{150,255},{150,255});
+                particlesUI.addEmitter({300,200},20,{150,255},{150,255},{150,255});
+                particlesUI.addEmitter({700,200},20,{150,255},{150,255},{150,255});
+                particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
+                playerLvl.setString(SSTR(player.getLevel()));
+            }
+            playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
+            playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
+        monsters.erase(monsters.begin()+i);
 
-    monsters[i]->update(elapsed);
+    }else monsters[i]->update(elapsed);
     }
 }
 
@@ -137,7 +158,6 @@ auto& biome=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)];
     tmp[(y*3+x)*4+3].position=sf::Vector2f((int)biome.position.x<<12,(int)biome.position.y<<12)+sf::Vector2f(0,4096);
 }
 
-//std::cout<<gameMap[clamp(playerXmap,0,50),clamp(playerYmap,0,50)].position.x<<"player x "<<player.hitbox.left<<"\n";
 target.draw(tmp);
 for(int i=0; i<monsters.size(); i++){
 target.draw(*monsters[i],states);
@@ -267,27 +287,11 @@ void Game::playerAttack(sf::FloatRect& attackRange, sf::Time& elapsed){
         monsters[i]->wakeUp();
         if(player.attack(*monsters[i],elapsed)){
                 if(monsters[i]->attitude==Neutral )monsters[i]->attitude=Aggressive;
-                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(FIXED_FLOAT(player.lastAttackDamage)),1,font,sf::Color::White,36);
-                if(monsters[i]->getHealth()<=0){
-            particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
-            particles.addTextEmitter(monsters[i]->getCenter(),SSTR("+"<<monsters[i]->getLevel()*3<<"xp"),1,font,sf::Color::Yellow,40);
-            if(player.addExp(3*monsters[i]->getLevel())){
-                particlesUI.addEmitter({500,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addEmitter({300,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addEmitter({700,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,font,sf::Color::Yellow,60);
-                playerLvl.setString(SSTR(player.getLevel()));
-            }
-            playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
-            playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
-            monsters.erase(monsters.begin()+i);
-        }
-
-        }
-    }
-
-}
-}
+                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(FIXED_FLOAT(player.lastAttackDamage)),1,sf::Color::White,36);
+                }
+                }
+                }
+                }
 void Game::updateParticles(sf::Time& elapsed){
 particles.update(elapsed);
 particlesHp.update(elapsed);

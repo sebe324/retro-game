@@ -11,6 +11,7 @@ createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(45,52,54));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(55,62,64));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(55,62,64));
 setExpRequired();
+bodyType=LIVING;
 }
 Player::Player() : Character(){}
 

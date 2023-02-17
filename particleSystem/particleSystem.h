@@ -28,11 +28,11 @@ std::vector<sf::Vector2f> speed;
 };
 class ParticleSystem : public sf::Drawable{
     public:
-
+sf::Font* font;
 sf::Time maxTime;
 std::vector<Emitter> emitters;
 std::vector<TextEmitter> textEmitters;
-ParticleSystem(sf::Time mt);
+ParticleSystem(sf::Time mt, sf::Font* f);
 ParticleSystem();
 void update(sf::Time elapsed);
 
@@ -44,7 +44,7 @@ void addHealingEmitter(sf::Vector2f vPos,int amount, sf::Color color, bool rep=f
 
 void addMagicEmitter(sf::Vector2f vPos, int amount, sf::Color color, bool rep=false, sf::Time rd=sf::Time::Zero);
 
-void addTextEmitter(sf::Vector2f vPos, std::string s, int amount,const sf::Font &font, sf::Color color, int charsize=12);
+void addTextEmitter(sf::Vector2f vPos, std::string s, int amount, sf::Color color, int charsize=12);
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         float randomize(int min, int n);

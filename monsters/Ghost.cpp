@@ -6,4 +6,5 @@ createBodyPart({5.f,5.f},{10.f,10.f},sf::Color(34,166,179));
 createBodyPart({5.f,5.f},{35.f,10.f},sf::Color(34,166,179));
 attitude=Neutral;
 fightUntilDeath=true;
+bodyType=UNDEAD;
 }

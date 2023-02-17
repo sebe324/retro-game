@@ -11,7 +11,8 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
-
+#include "abilities/Heal.h"
+#include "abilities/FireBlaze.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #define SSTR( x ) static_cast< std::ostringstream & >( \
@@ -32,10 +33,12 @@ ParticleSystem particlesUI;
 const sf::RenderWindow *window;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
+std::string combo="00000000";
 bool paused=false;
 bool isMapActive=true;
 void update(sf::Time elapsed);
-
+Heal heal;
+FireBlaze fireBlaze;
 void changeMap(uint32_t seed, int octaves, float bias);
 Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w);
 

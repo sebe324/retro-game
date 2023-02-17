@@ -13,7 +13,12 @@
 #include <ctime>
 
 //#include <string>
-
+enum BodyType{
+LIVING,
+UNDEAD,
+INFERNAL,
+MACHINE
+};
 class Character : public sf::Drawable{
     public:
         float damage=0;
@@ -21,6 +26,7 @@ class Character : public sf::Drawable{
         float attackSpeed=0;
         float speed=0;
         bool left=true;
+        BodyType bodyType=LIVING;
         std::string name;
         sf::Vector2f velocity;
         sf::Rect<float> hitbox;

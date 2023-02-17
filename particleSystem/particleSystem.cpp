@@ -2,8 +2,9 @@
 
 
 
-ParticleSystem::ParticleSystem(sf::Time mt){
+ParticleSystem::ParticleSystem(sf::Time mt, sf::Font* f){
 maxTime=mt;
+font=f;
 }
 
 ParticleSystem::ParticleSystem(){}
@@ -22,12 +23,12 @@ repeat=rep;
 
 
 
-void ParticleSystem::addTextEmitter(sf::Vector2f vPos, std::string s, int amount, const sf::Font &font, sf::Color color, int charsize){
+void ParticleSystem::addTextEmitter(sf::Vector2f vPos, std::string s, int amount, sf::Color color, int charsize){
 TextEmitter te;
 te.timeLeft=maxTime;
 for(int i=0; i<amount; i++){
         sf::Text t;
-t.setFont(font);
+t.setFont(*font);
 t.setPosition(vPos);
 t.setString(s);
 t.setColor(color);
