@@ -8,10 +8,11 @@ if(n<min) return min;
 else if(n>max) return max;
 else return n;
 }
-Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w){
+Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v){
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
 window=w;
+viewUI=v;
 player = Player("Player",1,2,100,5,{75000.f,75000.f},{50.f,90.f});
 playerOnMap=sf::VertexArray(sf::Quads,4);
 particles = ParticleSystem(sf::seconds(1.75), &font);
@@ -167,7 +168,7 @@ target.draw(particles);
 for(auto& text : texts){
     target.draw(text);
 }
-target.setView(target.getDefaultView());
+target.setView(*viewUI);
 target.draw(stats);
 target.draw(playerLvl);
 target.draw(playerHp);

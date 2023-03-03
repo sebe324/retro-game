@@ -23,18 +23,18 @@ content.setCharacterSize(charSize);
 content.setPosition(body.getPosition().x+(body.getSize().x)/2-(content.getGlobalBounds().width/2),body.getPosition().y);
 }
 
-bool Button::contains(sf::Vector2i pos){
+bool Button::contains(sf::Vector2f pos){
     if(body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x &&
        body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y
        ) return true;
     else return false;
 }
 
-bool Button::click(sf::Vector2i pos){
+bool Button::click(sf::Vector2f pos){
 if(contains(pos)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)) return true;
 else return false;
 }
-void Button::update(sf::Vector2i pos){
+void Button::update(sf::Vector2f pos){
     if(click(pos)){
             body.setFillColor(activeBodyColor);
             content.setFillColor(activeContentColor);

@@ -1,0 +1,13 @@
+Ghost
+
+Ghosts are mortals that are bound to the physical realm.
+Usually by a curse or a strong emotion.
+Ghosts will only attack if provoked.
+
+Monster Type: Undead
+
+Attitude: Neutral
+
+Locations:
+
+-Deadlands

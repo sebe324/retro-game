@@ -16,9 +16,9 @@ sf::Color hoverContentColor;
 
 sf::Color activeBodyColor;
 sf::Color activeContentColor;
-bool contains(sf::Vector2i pos);
-bool click(sf::Vector2i pos);
-void update(sf::Vector2i pos);
+bool contains(sf::Vector2f pos);
+bool click(sf::Vector2f pos);
+void update(sf::Vector2f pos);
 Button();
 Button(std::string text, int charSize, sf::Color contentColor, sf::Vector2f bPos, sf::Vector2f bSize, sf::Color bodyColor, sf::Font &font);
 private:

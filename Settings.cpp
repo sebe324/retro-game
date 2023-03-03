@@ -13,7 +13,7 @@ background=sf::RectangleShape({1000.f,1000.f});
 background.setFillColor(sf::Color(100,100,100));
 }
 
-void Settings::checkClick(sf::Vector2i pos){
+void Settings::checkClick(sf::Vector2f pos){
 if(bWSAD.click(pos)){
     bWSAD.originalContentColor=sf::Color::Green;
     bArrows.originalContentColor=sf::Color::Red;
@@ -26,7 +26,7 @@ if(bArrows.click(pos)){
 }
 }
 
-void Settings::update(sf::Vector2i pos){
+void Settings::update(sf::Vector2f pos){
 bWSAD.update(pos);
 bArrows.update(pos);
 bSound.update(pos);

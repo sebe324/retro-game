@@ -31,6 +31,7 @@ ParticleSystem particlesHp;
 ParticleSystem particlesMana;
 ParticleSystem particlesUI;
 const sf::RenderWindow *window;
+sf::View *viewUI;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
 std::string combo="00000000";
@@ -40,7 +41,7 @@ void update(sf::Time elapsed);
 Heal heal;
 FireBlaze fireBlaze;
 void changeMap(uint32_t seed, int octaves, float bias);
-Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w);
+Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
 
 private:
 

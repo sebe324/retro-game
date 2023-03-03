@@ -72,7 +72,7 @@ background.setFillColor(sf::Color(130,102,68));
 randomizeSeed();
 updateMap();
 }
-void WorldCreator::update(sf::Vector2i pos){
+void WorldCreator::update(sf::Vector2f pos){
 bIncreaseOctaves.update(pos);
 bDecreaseOctaves.update(pos);
 
@@ -84,7 +84,7 @@ bStartGame.update(pos);
 bChangeClass.update(pos);
 bGoBack.update(pos);
 }
-void WorldCreator::checkClick(sf::Vector2i pos){
+void WorldCreator::checkClick(sf::Vector2f pos){
 if(bIncreaseOctaves.click(pos)) changeOctaves(1);
 else if(bDecreaseOctaves.click(pos)) changeOctaves(-1);
 else if(bIncreaseBias.click(pos)) changeBias(0.1f);

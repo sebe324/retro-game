@@ -33,8 +33,8 @@ public:
     WorldCreator();
     WorldCreator(sf::Font& font);
 
-    void update(sf::Vector2i pos);
-    void checkClick(sf::Vector2i pos);
+    void update(sf::Vector2f pos);
+    void checkClick(sf::Vector2f pos);
     void clearVectors();
 private:
     sf::Text biasText;

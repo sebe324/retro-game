@@ -20,7 +20,7 @@ sf::Sprite background;
 
     Menu(std::string fontPath, std::string texturePath);
 
-    void update(sf::Vector2i pos);
+    void update(sf::Vector2f pos);
 private:
 
      sf::Font font;

@@ -16,8 +16,8 @@ bool sound=true;
 sf::RectangleShape background;
 Settings(sf::Font& font);
 
-void update(sf::Vector2i pos);
-void checkClick(sf::Vector2i pos);
+void update(sf::Vector2f pos);
+void checkClick(sf::Vector2f pos);
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

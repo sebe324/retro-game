@@ -1,0 +1,9 @@
+Demon
+
+These creatures enjoy causing chaos and mayhem for their evil lord.
+
+Monster Type: Infernal
+
+Locations:
+
+-Fire Realm

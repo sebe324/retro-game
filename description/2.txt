@@ -1,0 +1,16 @@
+Vampires
+
+They like to drink blood rather than wine.
+Despite this, most of the time vampires attack only when provoked.
+Human like in appearance, but they are on
+average stronger and also don't age
+
+Monster Type: Undead
+
+Attitude: Neutral
+
+
+Locations:
+
+-Deadlands
+-Fire Realm
