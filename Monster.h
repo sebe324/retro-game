@@ -12,6 +12,7 @@ Cowardly=3,
 Fearful=4,
 Curious=5
 };
+
 class Monster : public Character{
     public:
         float detectionRange;
@@ -21,6 +22,7 @@ class Monster : public Character{
         bool fightUntilDeath=false;
         int direction=0;
         Attitude attitude;
+        Attitude defaultAttitude;
         Monster(std::string name, int level, float dr, sf::Vector2f p={0.f,0.f}, sf::Vector2f s={50.f,80.f});
         Monster();
         sf::Time moveDelay=sf::seconds(0);

@@ -5,10 +5,8 @@
 #include "Button.h"
 #include "noise/perlinNoise.h"
 
-#define SSTR( x ) static_cast< std::ostringstream & >( \
-        ( std::ostringstream() << std::dec << x ) ).str()
 #include <iomanip>
-#define FIXED_FLOAT(x) std::fixed <<std::setprecision(1)<<(x)
+#include "Utilities/Utils.h"
 
 class WorldCreator : public sf::Drawable{
 public:
@@ -17,6 +15,7 @@ public:
     float bias=2.f;
     uint32_t seed;
 
+    int playerClass=0;
     Button bIncreaseOctaves;
     Button bDecreaseOctaves;
 

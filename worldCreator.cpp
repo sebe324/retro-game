@@ -1,5 +1,10 @@
 #include "worldCreator.h"
 
+float round(float num, int precision)
+{
+    return floorf(num * pow(10.0f,precision) + .5f)/pow(10.0f,precision);
+}
+
 WorldCreator::WorldCreator(){}
 
 WorldCreator::WorldCreator(sf::Font& font){
@@ -16,7 +21,7 @@ bDecreaseOctaves.hoverBodyColor=sf::Color(231,76,60);
 bDecreaseOctaves.hoverContentColor=sf::Color::White;
 
 octavesText.setFont(font);
-octavesText.setString(SSTR(octaves));
+octavesText.setString(std::to_string(octaves));
 octavesText.setCharacterSize(90);
 octavesText.setPosition(825.f-octavesText.getGlobalBounds().width/2,70.f);
 
@@ -35,7 +40,7 @@ bDecreaseBias.hoverBodyColor=sf::Color(231,76,60);
 bDecreaseBias.hoverContentColor=sf::Color::White;
 
 biasText.setFont(font);
-biasText.setString(SSTR(FIXED_FLOAT(bias)));
+biasText.setString(Utils::toString(bias,1));
 biasText.setCharacterSize(90);
 biasText.setPosition(825.f-biasText.getGlobalBounds().width/2,220.f);
 
@@ -49,7 +54,7 @@ bRandomizeSeed.hoverBodyColor=sf::Color(155,89,182);
 bRandomizeSeed.hoverContentColor=sf::Color::White;
 
 seedText.setFont(font);
-seedText.setString(SSTR(seed));
+seedText.setString(std::to_string(seed));
 seedText.setPosition(675.f,400.f);
 seedText.setCharacterSize(75);
 
@@ -61,8 +66,8 @@ seedLabel.setCharacterSize(60);
 bStartGame=Button("Start Game",50,sf::Color::Black,{675.f,800.f},{300.f,100.f},sf::Color(92,64,51),font);
 
 bStartGame.hoverContentColor=sf::Color::White;
-bChangeClass=Button("Change Class",50,sf::Color(20,20,20),{100.f,800.f},{300.f,100.f},sf::Color(70,70,70),font);
-
+bChangeClass=Button("Dark Knight",50,sf::Color(20,20,20),{100.f,800.f},{400.f,100.f},sf::Color(92,64,51),font);
+bChangeClass.hoverContentColor=sf::Color::White;
 
 bGoBack=Button("Menu",50,sf::Color::Black,{675.f,675.f},{300.f,100.f},sf::Color(92,64,51),font);
 bGoBack.hoverContentColor=sf::Color::White;
@@ -96,7 +101,7 @@ void WorldCreator::changeBias(float amount){
 bias+=amount;
 if(bias<0.2f) bias=0.2f;
 else if(bias>5.f) bias=5.f;
-biasText.setString(SSTR(FIXED_FLOAT(bias)));
+biasText.setString(Utils::toString(bias,1));
 biasText.setPosition(825.f-biasText.getGlobalBounds().width/2,220.f);
 updateMap();
 }
@@ -105,7 +110,7 @@ void WorldCreator::changeOctaves(int amount){
 octaves+=amount;
 if(octaves<1) octaves=1;
 else if(octaves>6) octaves=6;
-octavesText.setString(SSTR(octaves));
+octavesText.setString(std::to_string(octaves));
 octavesText.setPosition(825.f-octavesText.getGlobalBounds().width/2,70.f);
 updateMap();
 }
@@ -117,12 +122,28 @@ for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
     randomValues2d[y*50+x]=rnd.rndInt(0,100);
 }
-seedText.setString(SSTR(seed));
+seedText.setString(std::to_string(seed));
 updateMap();
 }
 
 void WorldCreator::changeClass(){
+playerClass++;
+if(playerClass>3) playerClass=0;
 
+switch(playerClass){
+case 0:
+bChangeClass.content.setString("Dark Knight");
+break;
+case 1:
+bChangeClass.content.setString("Archer");
+break;
+case 2:
+bChangeClass.content.setString("Paladin");
+break;
+case 3:
+bChangeClass.content.setString("EleMage");
+break;
+}
 }
 
 void WorldCreator::updateMap(){

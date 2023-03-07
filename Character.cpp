@@ -58,7 +58,7 @@ hitbox.left+=velocity.x;
 }
 bool Character::attack(Character &character, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
-       float attackDamage=(std::rand() % (int)damage*0.2)+damage-damage*0.1;
+       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
 character.removeHealth(attackDamage);
 attackDelay=sf::seconds(1)/attackSpeed;
 lastAttackDamage=attackDamage;

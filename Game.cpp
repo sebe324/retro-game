@@ -8,20 +8,25 @@ if(n<min) return min;
 else if(n>max) return max;
 else return n;
 }
+float roundf(float num, int precision)
+{
+    return floorf(num * pow(10.0f,precision) + .5f)/pow(10.0f,precision);
+}
 Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v){
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
 window=w;
 viewUI=v;
-player = Player("Player",1,2,100,5,{75000.f,75000.f},{50.f,90.f});
+player = std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
+player->setLevel(10);
 playerOnMap=sf::VertexArray(sf::Quads,4);
 particles = ParticleSystem(sf::seconds(1.75), &font);
 particlesHp = ParticleSystem(sf::seconds(1), &font);
 particlesMana = ParticleSystem(sf::seconds(1), &font);
 particlesUI=ParticleSystem(sf::seconds(1.75), &font);
 statsSetup();
-playerXmap=(int)player.hitbox.left>>12;
-playerYmap=(int)player.hitbox.top>>12;
+playerXmap=(int)player->hitbox.left>>12;
+playerYmap=(int)player->hitbox.top>>12;
 
 mapBorder=sf::RectangleShape({200.f,200.f});
 mapBorder.setFillColor(sf::Color(0,0,0,0));
@@ -70,8 +75,8 @@ updateMap();
 }
 
 void Game::updateMap(){
-    playerXmap=(int)player.hitbox.left>>12;
-    playerYmap=(int)player.hitbox.top>>12;
+    playerXmap=(int)player->hitbox.left>>12;
+    playerYmap=(int)player->hitbox.top>>12;
     auto& biome=gameMap[clamp(playerYmap,0,49)*50+clamp(playerXmap,0,49)];
     playerOnMap[0].color=sf::Color::Magenta;
     playerOnMap[1].color=sf::Color::Magenta;
@@ -87,47 +92,43 @@ void Game::updateMap(){
 void Game::update(sf::Time elapsed){
 if(!paused){
 
-if(sf::Keyboard::isKeyPressed(player.keyUp)){ player.moveUp(elapsed); updateMap();}
-if(sf::Keyboard::isKeyPressed(player.keyDown)){player.moveDown(elapsed); updateMap();}
-if(sf::Keyboard::isKeyPressed(player.keyLeft)){ player.moveLeft(elapsed); updateMap();}
-if(sf::Keyboard::isKeyPressed(player.keyRight)){player.moveRight(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player->keyUp)){ player->moveUp(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player->keyDown)){player->moveDown(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player->keyLeft)){ player->moveLeft(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(player->keyRight)){player->moveRight(elapsed); updateMap();}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){player->ability1(monsters,particles);}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {player->ability2(monsters,particles);}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){player->ability3(monsters,particles);}
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::M)) isMapActive=true;
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)) isMapActive=false;
-if(sf::Keyboard::isKeyPressed(player.keyRightAttack)){
-    sf::FloatRect attackRange(player.hitbox.left,player.hitbox.top+25.f,100.f, 100.f);
+if(sf::Keyboard::isKeyPressed(player->keyRightAttack)){
+    sf::FloatRect attackRange(player->hitbox.left,player->hitbox.top+25.f,100.f, 100.f);
     playerAttack(attackRange,elapsed);
-    player.moveRight(elapsed,0.1);
+    player->moveRight(elapsed,0.1);
 }
-if(sf::Keyboard::isKeyPressed(player.keyLeftAttack)){
-     sf::FloatRect attackRange(player.hitbox.left-50.f,player.hitbox.top+25.f,100.f, 100.f);
+if(sf::Keyboard::isKeyPressed(player->keyLeftAttack)){
+     sf::FloatRect attackRange(player->hitbox.left-50.f,player->hitbox.top+25.f,100.f, 100.f);
     playerAttack(attackRange,elapsed);
-    player.moveLeft(elapsed,0.1);
+    player->moveLeft(elapsed,0.1);
 }
-if(combo.find(heal.combo) != std::string::npos) {
-    combo="00000000";
-    heal.effect(player,monsters,1,particles);
- }
- else if(combo.find(fireBlaze.combo)!=std::string::npos){
-    combo="00000000";
-    fireBlaze.effect(player,monsters,1,particles);
- }
+
    for(int i=monsters.size()-1; i>0; i--){
-    float dist=monsters[i]->getDistance(player);
+    float dist=monsters[i]->getDistance(*player);
     if(dist>2000){
         monsters.erase(monsters.begin()+i);
     } else{
-    if(monsters[i]->makeDecision(elapsed,player)) particles.addTextEmitter(player.getCenter(),SSTR(FIXED_FLOAT(monsters[i]->lastAttackDamage)),1,sf::Color::Red,36);
+    if(monsters[i]->makeDecision(elapsed,*player)) particles.addTextEmitter(player->getCenter(),Utils::toString(monsters[i]->lastAttackDamage,1),1,sf::Color::Red,36);
     if(monsters[i]->getHealth()<=0) {
             particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
-            particles.addTextEmitter(monsters[i]->getCenter(),SSTR("+"<<monsters[i]->getLevel()*3<<"xp"),1,sf::Color::Yellow,40);
-            if(player.addExp(3*monsters[i]->getLevel())){
+            particles.addTextEmitter(monsters[i]->getCenter(),"+"+Utils::toString(monsters[i]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
+            if(player->addExp(3*monsters[i]->getLevel())){
                 particlesUI.addEmitter({500,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addEmitter({300,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addEmitter({700,200},20,{150,255},{150,255},{150,255});
                 particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
-                playerLvl.setString(SSTR(player.getLevel()));
+                playerLvl.setString(Utils::toString(player->getLevel()));
             }
-            playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
+            playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
             playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
         monsters.erase(monsters.begin()+i);
 
@@ -139,7 +140,7 @@ if(monsters.size()<20){
 generateMonster();
 }
 
-player.update(elapsed);
+player->update(elapsed,monsters);
 updateParticles(elapsed);
 }
 }
@@ -163,7 +164,7 @@ target.draw(tmp);
 for(int i=0; i<monsters.size(); i++){
 target.draw(*monsters[i],states);
 }
-target.draw(player);
+target.draw(*player);
 target.draw(particles);
 for(auto& text : texts){
     target.draw(text);
@@ -174,8 +175,8 @@ target.draw(playerLvl);
 target.draw(playerHp);
 target.draw(playerMana);
 target.draw(playerExpProgress);
-if(player.getHealth()<player.getMaxHealth()) target.draw(particlesHp);
-if(player.getMana()<player.getMaxMana()) target.draw(particlesMana);
+if(player->getHealth()<player->getMaxHealth()) target.draw(particlesHp);
+if(player->getMana()<player->getMaxMana()) target.draw(particlesMana);
 target.draw(particlesUI);
 if(isMapActive){
 target.draw(actualMap);
@@ -228,7 +229,7 @@ default: std::cout<<"no monster found\n";break;
 }
 }
 void Game::generateMonster(){
-sf::Vector2f pos(randomize(player.getCenter().x-1000,2000),randomize(player.getCenter().y-1000,2000));
+sf::Vector2f pos(randomize(player->getCenter().x-1000,2000),randomize(player->getCenter().y-1000,2000));
 
 switch(getBiome(pos)){
 case 0: //deadlands
@@ -286,9 +287,9 @@ void Game::playerAttack(sf::FloatRect& attackRange, sf::Time& elapsed){
    for(int i=0; i<monsters.size(); i++){
     if(attackRange.intersects(monsters[i]->hitbox)){
         monsters[i]->wakeUp();
-        if(player.attack(*monsters[i],elapsed)){
+        if(player->attack(*monsters[i],elapsed)){
                 if(monsters[i]->attitude==Neutral )monsters[i]->attitude=Aggressive;
-                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(FIXED_FLOAT(player.lastAttackDamage)),1,sf::Color::White,36);
+                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(player->lastAttackDamage,1),1,sf::Color::White,36);
                 }
                 }
                 }
@@ -298,29 +299,29 @@ particles.update(elapsed);
 particlesHp.update(elapsed);
 particlesMana.update(elapsed);
 particlesUI.update(elapsed);
-playerHp.setString(SSTR(FIXED_FLOAT(player.getHealth())));
+playerHp.setString(Utils::toString(player->getHealth(),1));
 playerHp.setPosition(200-(playerHp.getGlobalBounds().width/2),940.f);
 
-playerMana.setString(SSTR(FIXED_FLOAT(player.getMana())));
+playerMana.setString(Utils::toString(player->getMana(),1));
 playerMana.setPosition(800-(playerMana.getGlobalBounds().width/2),940.f);
-stats[13].position.x=(player.getHealth()/player.getMaxHealth()*400);
-stats[14].position.x=(player.getHealth()/player.getMaxHealth()*400);
-if(player.getHealth()<player.getMaxHealth()) particlesHp.emitters[0].startPos={stats[13].position.x,950.f};
+stats[13].position.x=(player->getHealth()/player->getMaxHealth()*400);
+stats[14].position.x=(player->getHealth()/player->getMaxHealth()*400);
+if(player->getHealth()<player->getMaxHealth()) particlesHp.emitters[0].startPos={stats[13].position.x,950.f};
 
-stats[16].position.x=(1000-player.getMana()/player.getMaxMana()*400);
-stats[19].position.x=(1000-player.getMana()/player.getMaxMana()*400);
-if(player.getMana()<player.getMaxMana()) particlesMana.emitters[0].startPos={stats[16].position.x-20.f,950.f};
+stats[16].position.x=(1000-player->getMana()/player->getMaxMana()*400);
+stats[19].position.x=(1000-player->getMana()/player->getMaxMana()*400);
+if(player->getMana()<player->getMaxMana()) particlesMana.emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
 }
 void Game::statsSetup(){
 stats=sf::VertexArray(sf::Quads,20);
 playerLvl.setFont(font);
-playerLvl.setString(SSTR(player.getLevel()));
+playerLvl.setString(Utils::toString(player->getLevel()));
 playerLvl.setCharacterSize(50);
 playerLvl.setPosition(1000/2-(playerLvl.getGlobalBounds().width/2),900.f);
 
 playerExpProgress.setFont(font);
-playerExpProgress.setString(SSTR(player.getExp())+"/"+SSTR(player.getExpRequired()));
+playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
 playerExpProgress.setCharacterSize(48);
 playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
 
@@ -388,4 +389,26 @@ stats[19].color=sf::Color(60,90,200);
 
 particlesHp.addHealingEmitter({stats[16].position.x,915.f},5,sf::Color::Red,true,sf::seconds(1.5));
 particlesMana.addMagicEmitter({stats[19].position.x,915.f},4,sf::Color::Blue,true,sf::seconds(1.5));
+}
+
+void Game::changePlayerClass(int playerClass){
+switch(playerClass){
+case 0:
+player=std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
+break;
+case 1:
+player=std::make_unique<Archer>("Player",sf::Vector2f(10000.f,10000.f));
+break;
+case 2:
+player=std::make_unique<Paladin>("Player",sf::Vector2f(10000.f,10000.f));
+break;
+case 3:
+player=std::make_unique<ElementMage>("Player",sf::Vector2f(10000.f,10000.f));
+break;
+default:
+    //default class
+player=std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
+break;
+}
+player->setLevel(10);
 }

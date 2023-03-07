@@ -11,6 +11,7 @@ createBodyPart({10.f,30.f},{40.f,25.f},sf::Color(0,148,50));
 createBodyPart({15.f,10.f},{5.f,65.f},sf::Color(50,50,50));
 createBodyPart({15.f,10.f},{30.f,65.f},sf::Color(50,50,50));
 attitude=Aggressive;
+defaultAttitude=Aggressive;
 fightUntilDeath=true;
 bodyType=UNDEAD;
 }

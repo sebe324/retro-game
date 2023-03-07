@@ -12,7 +12,7 @@
 #include <iostream>
 #include <ctime>
 
-//#include <string>
+
 enum BodyType{
 LIVING,
 UNDEAD,

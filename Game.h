@@ -2,7 +2,11 @@
 #define GAME_H
 
 #include "Monster.h"
-#include "Player.h"
+#include "playerClasses/Player.h"
+#include "playerClasses/Paladin.h"
+#include "playerClasses/DarkKnight.h"
+#include "playerClasses/Archer.h"
+#include "playerClasses/ElementMage.h"
 #include "monsters/monsters.h"
 
 #include "particleSystem/particleSystem.h"
@@ -11,21 +15,18 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
-#include "abilities/Heal.h"
-#include "abilities/FireBlaze.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#define SSTR( x ) static_cast< std::ostringstream & >( \
-        ( std::ostringstream() << std::dec << x ) ).str()
 #include <iomanip>
-#define FIXED_FLOAT(x) std::fixed <<std::setprecision(1)<<(x)
+
+#include "Utilities/Utils.h"
 class Game : public sf::Drawable{
 
 public:
 
 std::vector<std::unique_ptr<Monster>> monsters;
 std::vector<sf::Text> texts;
-Player player;
+std::unique_ptr<Player> player;
 ParticleSystem particles;
 ParticleSystem particlesHp;
 ParticleSystem particlesMana;
@@ -38,10 +39,9 @@ std::string combo="00000000";
 bool paused=false;
 bool isMapActive=true;
 void update(sf::Time elapsed);
-Heal heal;
-FireBlaze fireBlaze;
 void changeMap(uint32_t seed, int octaves, float bias);
 Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
+void changePlayerClass(int playerClass);
 
 private:
 

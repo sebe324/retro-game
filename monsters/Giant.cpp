@@ -10,6 +10,7 @@ createBodyPart({12.5f,50.f},{87.5f,50.f},sf::Color(248,194,145));
 createBodyPart({25.f,25.f},{20.f,125.f},sf::Color(248,194,145));
 createBodyPart({25.f,25.f},{55.f,125.f},sf::Color(248,194,145));
 attitude=Neutral;
+defaultAttitude=Neutral;
 fightUntilDeath=true;
 bodyType=LIVING;
 }

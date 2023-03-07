@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Player.h"
+
 #include "Monster.h"
 #include "Game.h"
 #include "Menu.h"
@@ -64,6 +64,7 @@ while(window.isOpen()){
             if(event.type==sf::Event::MouseButtonPressed){
                     wCreator.checkClick(mousePos);
                     if(wCreator.bStartGame.click(mousePos)){
+                    game.changePlayerClass(wCreator.playerClass);
                     game.changeMap(wCreator.seed,wCreator.octaves, wCreator.bias);
                     mode=3;
                     wCreator.clearVectors();
@@ -86,7 +87,7 @@ while(window.isOpen()){
         case 4:
             settings.update(mousePos);
             settings.checkClick(mousePos);
-            game.player.movementWSAD(settings.WSAD);
+            game.player->movementWSAD(settings.WSAD);
             if(settings.bGoBack.click(mousePos))mode=1;
         break;
         case 5:
@@ -110,7 +111,7 @@ while(window.isOpen()){
     case 3:
      window.setView(viewGame);
         game.update(deltaTime);
-         viewGame.setCenter(game.player.getCenter());
+         viewGame.setCenter(game.player->getCenter());
    window.draw(game);
     break;
     case 4:

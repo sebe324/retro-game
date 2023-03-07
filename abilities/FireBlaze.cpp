@@ -10,7 +10,7 @@ if(caster.getMana()>=manaCost){
     for(int i=0; i<monsters.size(); i++){
     if(monsters[i]->hitbox.intersects(attackRange) && monsters[i]->bodyType!=INFERNAL){
     monsters[i]->removeHealth(spellPower*3+20);
-    particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),SSTR(spellPower*3+20),1,sf::Color::White,36);
+    particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),std::to_string(spellPower*3+20),1,sf::Color::White,36);
     }
 }
 return true;

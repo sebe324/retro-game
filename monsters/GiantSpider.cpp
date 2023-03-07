@@ -11,5 +11,6 @@ createBodyPart({5.f,5.f},{5.f,12.f},sf::Color::Red);
 createBodyPart({5.f,5.f},{15.f,12.f},sf::Color::Red);
 createBodyPart({5.f,5.f},{5.f,22.f},sf::Color::Red);
 attitude=Aggressive;
+defaultAttitude=Aggressive;
 bodyType=LIVING;
 }

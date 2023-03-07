@@ -10,6 +10,7 @@ Vampire::Vampire(sf::Vector2f p) : Monster("Vampire",4,8,p){
     createBodyPart({15.f,10.f},{5.f,68.f},sf::Color(60,60,60));
     createBodyPart({15.f,10.f},{27.f,68.f},sf::Color(60,60,60));
     attitude=Neutral;
+    defaultAttitude=Neutral;
     fightUntilDeath=true;
     bodyType=UNDEAD;
 }
