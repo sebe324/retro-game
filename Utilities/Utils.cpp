@@ -12,3 +12,14 @@ std::ostringstream out;
 out<<i;
 return out.str();
 }
+int Utils::clamp(int n, int min, int max){
+if(n<min) return min;
+else if(n>max) return max;
+else return n;
+}
+
+float Utils::mirrorXf(float x, float borderL, float borderR){
+float distance=x-borderL;
+x=borderR-distance;
+return x;
+}

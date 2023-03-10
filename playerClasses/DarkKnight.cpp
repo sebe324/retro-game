@@ -66,6 +66,7 @@ void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, Parti
 
     if(ability3Cooldown<=sf::Time::Zero){
         if(batForm){
+            left=true;
             moveLeft(sf::seconds(1),0.1f);
             bodyParts.clear();
             createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(230,200,200));
@@ -82,6 +83,8 @@ void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, Parti
                 monsters[i]->attitude=monsters[i]->defaultAttitude;
             }
             damage=damageTemporary;
+             particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
+            particles.addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
         }
         else{
             if(getMana()>30.f){
@@ -102,9 +105,10 @@ void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, Parti
                 }
                 damageTemporary=damage;
                 damage=0.f;
-            }
-            particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
+
+                particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
             particles.addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
+            }
         }
     }
 }

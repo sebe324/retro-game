@@ -3,15 +3,8 @@
 
 #include "Character.h"
 #include "particleSystem/particleSystem.h"
+#include "enums/Attitude.h"
 
-
-enum Attitude{
-Aggressive=1,
-Neutral=2,
-Cowardly=3,
-Fearful=4,
-Curious=5
-};
 
 class Monster : public Character{
     public:

@@ -20,6 +20,8 @@
 #include <iomanip>
 
 #include "Utilities/Utils.h"
+
+#include "enums/Biomes.h"
 class Game : public sf::Drawable{
 
 public:
@@ -35,7 +37,6 @@ const sf::RenderWindow *window;
 sf::View *viewUI;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
-std::string combo="00000000";
 bool paused=false;
 bool isMapActive=true;
 void update(sf::Time elapsed);

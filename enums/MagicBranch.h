@@ -1,0 +1,13 @@
+#ifndef MAGICBRANCH_H
+#define MAGICBRANCH_H
+
+enum MagicBranch{
+LIGHT,
+DARKNESS,
+EARTH,
+AIR,
+FIRE,
+WATER
+
+};
+#endif // MAGICTYPES_H

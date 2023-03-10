@@ -3,15 +3,6 @@ float randomize(int min, int n){
 return (std::rand()%n)+min;
 }
 
-int clamp(int n, int min, int max){
-if(n<min) return min;
-else if(n>max) return max;
-else return n;
-}
-float roundf(float num, int precision)
-{
-    return floorf(num * pow(10.0f,precision) + .5f)/pow(10.0f,precision);
-}
 Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v){
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
@@ -60,7 +51,7 @@ for(int y=0; y<50; y++){
 actualMap=sf::VertexArray(sf::Quads,10000);
 for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
-auto& biome=gameMap[clamp(y,0,49)*50+clamp(x,0,49)];
+auto& biome=gameMap[Utils::clamp(y,0,49)*50+Utils::clamp(x,0,49)];
     actualMap[(y*50+x)*4].color=biome.color;
     actualMap[(y*50+x)*4+1].color=biome.color;
     actualMap[(y*50+x)*4+2].color=biome.color;
@@ -77,7 +68,7 @@ updateMap();
 void Game::updateMap(){
     playerXmap=(int)player->hitbox.left>>12;
     playerYmap=(int)player->hitbox.top>>12;
-    auto& biome=gameMap[clamp(playerYmap,0,49)*50+clamp(playerXmap,0,49)];
+    auto& biome=gameMap[Utils::clamp(playerYmap,0,49)*50+Utils::clamp(playerXmap,0,49)];
     playerOnMap[0].color=sf::Color::Magenta;
     playerOnMap[1].color=sf::Color::Magenta;
     playerOnMap[2].color=sf::Color::Magenta;
@@ -148,7 +139,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
 sf::VertexArray tmp(sf::Quads,36); //biomes near the player
 for(int x=0; x<3; x++)
 for(int y=0; y<3; y++){
-auto& biome=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)];
+auto& biome=gameMap[Utils::clamp(playerYmap-1+y,0,49)*50+Utils::clamp(playerXmap-1+x,0,49)];
     tmp[(y*3+x)*4].color=biome.color;
     tmp[(y*3+x)*4+1].color=biome.color;
     tmp[(y*3+x)*4+2].color=biome.color;
@@ -232,7 +223,7 @@ void Game::generateMonster(){
 sf::Vector2f pos(randomize(player->getCenter().x-1000,2000),randomize(player->getCenter().y-1000,2000));
 
 switch(getBiome(pos)){
-case 0: //deadlands
+case DEADLANDS:
     switch((int)randomize(0,4)){
     case 0: addMonster(0,pos);  break; //zombie
     case 1: addMonster(1,pos);  break; //skeleton
@@ -240,26 +231,26 @@ case 0: //deadlands
     case 3: addMonster(9,pos);  break; //vampire
     }
 break;
-case 1: //plains
+case PLAINS:
       switch((int)randomize(0,2)){
     case 0: addMonster(6,pos);  break; //troll
     case 1: addMonster(7,pos);  break; //giant
       }
 break;
-case 2: //toxic swamp
+case TOXIC_SWAMP:
     switch((int)randomize(0,3)){
     case 0: addMonster(0,pos);  break; //zombie
     case 1: addMonster(4,pos);  break; //giant spider
     case 2: addMonster(8,pos);  break; //toxic lizard
     }
 break;
-case 3: //desert
+case DESERT:
       switch((int)randomize(0,2)){
         case 0: addMonster(1,pos); break; //skeleton
         case 1: addMonster(5,pos); break; //succubus
       }
 break;
-case 4: //fire realm
+case FIRE_REALM:
     switch((int)randomize(0,4)){
          case 0: addMonster(1,pos); break; //skeleton
         case 1: addMonster(5,pos); break; //succubus
@@ -271,8 +262,8 @@ break;
 }
 
 int Game::getBiome(sf::Vector2f pos){
-int xMap=clamp((int)pos.x>>12,0,49);
-int yMap=clamp((int)pos.y>>12,0,49);
+int xMap=Utils::clamp((int)pos.x>>12,0,49);
+int yMap=Utils::clamp((int)pos.y>>12,0,49);
 
 auto value=noiseValues2d[yMap*50+xMap];
     if(value<=30) return 0; // deadlands
