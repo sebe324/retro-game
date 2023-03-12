@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Monster.h"
 
 Player::Player(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s) : Character(n,d,as,spd,l,p, s){
     experience=0;
@@ -20,8 +21,10 @@ ability2Cooldown-=elapsed;
 ability3Cooldown-=elapsed;
 move();
 }
-bool Player::addExp(int n){
+void Player::addExp(int n){
 experience+=n;
+}
+bool Player::checkLevelUp(){
 if(experience>=expRequired){
 experience-=expRequired;
 levelUp();
@@ -30,7 +33,6 @@ return true;
 }
 return false;
 }
-
 int Player::getExp(){
 return experience;
 }
@@ -64,6 +66,6 @@ keyUp=sf::Keyboard::Up;
 }
 }
 
-void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){}
-void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){}
-void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){}
+void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){}
+void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){}
+void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){}

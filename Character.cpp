@@ -14,15 +14,14 @@ attackDelay-=elapsed;
 move();
 }
 
-bool Character::attack(Character &character, sf::Time elapsed){
+void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
        float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
-character.removeHealth(attackDamage);
-attackDelay=sf::seconds(1)/attackSpeed;
-lastAttackDamage=attackDamage;
-return true;
+SwordSwing swordSwing(getCenter(),mousePos,damage,true);
+swordSwing.rotate(swordSwing.test*180/3.14);
+projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+attackDelay=sf::seconds(0.3)/attackSpeed;
     }
-    return false;
 }
 
 void Character::regenerate(sf::Time elapsed){

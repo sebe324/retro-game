@@ -32,6 +32,8 @@ sf::Vector2u windowSize=window.getSize();
 window.setView(viewUI);
 while(window.isOpen()){
     window.clear();
+     sf::Vector2i windowPosition=sf::Mouse::getPosition(window);
+     sf::Vector2f mousePos=window.mapPixelToCoords(windowPosition);
     sf::Event event;
     while(window.pollEvent(event)){
         if(event.type==sf::Event::Closed){
@@ -45,8 +47,6 @@ while(window.isOpen()){
             viewGame.setViewport(sf::FloatRect(idk2, 0.f, idk, 1));
             window.setView(viewUI);
         }
-        sf::Vector2i windowPosition=sf::Mouse::getPosition(window);
-        sf::Vector2f mousePos=window.mapPixelToCoords(windowPosition);
         switch(mode){
         case 1:
                  menu.update(mousePos);
@@ -109,7 +109,8 @@ while(window.isOpen()){
     break;
     case 3:
      window.setView(viewGame);
-        game.update(deltaTime);
+     mousePos=window.mapPixelToCoords(windowPosition);
+        game.update(deltaTime, mousePos);
          viewGame.setCenter(game.player->getCenter());
    window.draw(game);
     break;

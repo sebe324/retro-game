@@ -1,8 +1,11 @@
 #ifndef ARROW_H
 #define ARROW_H
 
-class Arrow : public projectile{
+#include "Projectile.h"
+class Arrow : public Projectile{
 
-Arrow(sf::Vector2f p, sf::Vector2f s, sf::Vector2f dest);
+public:
+
+Arrow(sf::Vector2f p, sf::Vector2f dest, float dmg, bool attackMons);
 };
 #endif // ARROW_H

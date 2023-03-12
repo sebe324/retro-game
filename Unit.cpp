@@ -61,6 +61,14 @@ float Unit::getDistanceY(Unit& unit) const{
 return getCenter().y-unit.getCenter().y;
 }
 
+void Unit::rotate(float angle){
+    sf::Transform t;
+    t.rotate(angle,getCenter());
+    std::cout<<angle<<std::endl;
+for(int i=0; i<bodyPartsNumber*4; i++){
+    bodyParts[i].position=t.transformPoint(bodyParts[i].position);
+}
+}
 void Unit::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 target.draw(bodyParts,states);
 }

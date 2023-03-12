@@ -1,4 +1,5 @@
 #include "DarkKnight.h"
+#include "../Monster.h"
 
 DarkKnight::DarkKnight(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){
 createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(230,200,200));
@@ -10,22 +11,22 @@ createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(19,15,64));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(19,15,64));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(19,15,64));
 }
-void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){
+void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
 
     if(ability1Cooldown<=sf::Time::Zero){
         if(getMana()>=20.f){
-            particles.addEmitter(getCenter(),15,{150,200},{0,50},{50,100});
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),15,{150,200},{0,50},{50,100});
             sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
             float healed=0;
             for(int i=0; i<monsters.size(); i++){
                 if(monsters[i]->hitbox.intersects(attackRange)){
                     monsters[i]->removeHealth(damage*0.5f+10);
-                    particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.5f+10,1),1,sf::Color::White,36);
+                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.5f+10,1),1,sf::Color::White,36);
                     addHealth(damage*0.25f+5);
                     healed+=(damage*0.25f+5);
                 }
             }
-        if(healed>0) particles.addTextEmitter(getCenter()+sf::Vector2f(0.f,100.f),"+"+Utils::toString(healed,1)+"hp",1,sf::Color::Green,60);
+        if(healed>0) particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(0.f,100.f),"+"+Utils::toString(healed,1)+"hp",1,sf::Color::Green,60);
         addMana(-20.f);
         ability1Cooldown=sf::seconds(5);
 
@@ -35,12 +36,12 @@ void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, Parti
 
 
 
-void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){
+void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
     if(ability2Cooldown<=sf::Time::Zero){
         if(getMana()>=40.f){
             sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
-            particles.addEmitter(getCenter(), 15,{30,50},{30,50},{30,50});
-            particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"FEAR THE DARK",1,sf::Color::Black,72);
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(), 15,{30,50},{30,50},{30,50});
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"FEAR THE DARK",1,sf::Color::Black,72);
             for(int i=0; i<monsters.size(); i++){
                 if(monsters[i]->hitbox.intersects(attackRange)){
                         if(monsters[i]->getLevel()<level-5){
@@ -50,7 +51,7 @@ void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, Parti
                             else if(monsters[i]->bodyType==LIVING){
                                 monsters[i]->removeHealth(damage*0.3f+5);
                                 monsters[i]->attitude=Cowardly;
-                                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.3f+5,1),1,sf::Color::White,36);
+                                particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.3f+5,1),1,sf::Color::White,36);
                             }
                         }
                 }
@@ -62,7 +63,7 @@ void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, Parti
 }
 
 
-void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, ParticleSystem& particles){
+void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
 
     if(ability3Cooldown<=sf::Time::Zero){
         if(batForm){
@@ -83,8 +84,8 @@ void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, Parti
                 monsters[i]->attitude=monsters[i]->defaultAttitude;
             }
             damage=damageTemporary;
-             particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
-            particles.addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
+             particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
         }
         else{
             if(getMana()>30.f){
@@ -106,8 +107,8 @@ void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, Parti
                 damageTemporary=damage;
                 damage=0.f;
 
-                particles.addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
-            particles.addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
+                particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"POOF",1,sf::Color(90,90,90),72);
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),20,{20,50},{20,50},{20,50});
             }
         }
     }

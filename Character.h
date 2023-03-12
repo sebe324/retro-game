@@ -8,6 +8,11 @@
 #include "Utilities/Utils.h"
 #include "enums/BodyType.h"
 #include "Unit.h"
+#include "Projectile/Projectile.h"
+#include "Projectile/Arrow.h"
+#include "Projectile/SwordSwing.h"
+
+#include "enums/ParticlesGame.h"
 class Character : public Unit{
     public:
         float damage=0;
@@ -21,7 +26,7 @@ class Character : public Unit{
         void update(sf::Time elapsed);
 
 
-        bool attack(Character &character, sf::Time elapsed);
+        virtual void attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
         void regenerate(sf::Time elapsed);
         bool isDead();
         void setLevel(int n);

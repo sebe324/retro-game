@@ -4,7 +4,7 @@
 #include "Character.h"
 #include "particleSystem/particleSystem.h"
 #include "enums/Attitude.h"
-
+#include "Projectile/Projectile.h"
 
 class Monster : public Character{
     public:
@@ -22,7 +22,8 @@ class Monster : public Character{
         void randomMove(sf::Time elapsed);
         void pathFindTo(sf::Time elapsed, Character& character);
         void runFrom(sf::Time elapsed, Character& character);
-        bool makeDecision(sf::Time elapsed, Character& character);
+        void makeDecision(sf::Time elapsed, Character& character, std::vector<std::unique_ptr<Projectile>> &projectiles);
+        void attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
         virtual void wakeUp();
         virtual void goSleep();
 
