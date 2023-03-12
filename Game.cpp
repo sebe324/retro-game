@@ -105,8 +105,17 @@ if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) player->attack(projectiles, glo
     float dist=monsters[i-1]->getDistance(*player);
     if(dist>2000){
         monsters.erase(monsters.begin()+i-1);
-    } else{ monsters[i-1]->update(elapsed);
+    } else{
+        if(monsters[i-1]->getHealth()<=0){
+                    player->addExp(3*monsters[i-1]->getLevel());
+                    particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
+                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
+                    monsters.erase(monsters.begin()+i-1);
+        }
+    else{
+    monsters[i-1]->update(elapsed);
     monsters[i-1]->makeDecision(elapsed,*player,projectiles);
+    }
     }
 }
 playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));

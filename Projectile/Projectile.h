@@ -5,6 +5,7 @@
 #include "../enums/DamageType.h"
 #include "../particleSystem/particleSystem.h"
 
+class Character;
 class Monster;
 class Player;
 class Projectile : public Unit{
@@ -27,5 +28,8 @@ class Projectile : public Unit{
         Projectile(std::string n, float dmg, sf::Time lt, DamageType dmgtype, sf::Vector2f p, sf::Vector2f s, sf::Vector2f dest, float spd, bool attackMons);
         void update(sf::Time elapsed,std::vector<std::unique_ptr<Monster>> &monsters, std::unique_ptr<Player> &player, std::vector<ParticleSystem> &particleSystem);
         bool checkIfMonsterWasHit(std::unique_ptr<Monster> &monster);
+
+    protected:
+        virtual void onImpact(sf::Time elapsed,Character& target, std::vector<ParticleSystem> &particleSystem);
 };
 #endif // PROJECTILE_H
