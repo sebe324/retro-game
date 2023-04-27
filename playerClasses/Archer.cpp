@@ -13,7 +13,7 @@ createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(170,166,157));
 }
 void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
-
+addMana(-20.f);
 }
 
 

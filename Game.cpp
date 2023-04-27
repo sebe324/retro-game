@@ -291,7 +291,7 @@ if(player->getHealth()<player->getMaxHealth()) particleSystem[ParticlesGame::PAR
 
 stats[16].position.x=(1000-player->getMana()/player->getMaxMana()*400);
 stats[19].position.x=(1000-player->getMana()/player->getMaxMana()*400);
-if(player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICLES_WORLD].emitters[0].startPos={stats[16].position.x-20.f,950.f};
+if(player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
 }
 void Game::statsSetup(){
