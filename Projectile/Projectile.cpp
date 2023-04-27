@@ -12,8 +12,6 @@ attackMonsters=attackMons;
 float dist=sqrt((destination.x-hitbox.left)*(destination.x-hitbox.left)+(destination.y-hitbox.top)*(destination.y-hitbox.top));
 velX=(destination.x-hitbox.left)/dist;
 velY=(destination.y-hitbox.top)/dist;
-test=velY;;
-if(destination.x-hitbox.left<0) test=-velY;
 }
 
 void Projectile::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>> &monsters, std::unique_ptr<Player> &player, std::vector<ParticleSystem> &particleSystem){
