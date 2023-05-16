@@ -2,7 +2,6 @@
 
 This is a 2d game made in C++ and SFML with a kind of retro aesthetic.
 
-It's a hobby and a passion project. I would love to make video games or other software in the future.
 ## Description
 
 The player controls a hero, that fights monsters in a procedurally generated world.
