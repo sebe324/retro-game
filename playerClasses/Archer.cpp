@@ -12,6 +12,17 @@ createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(170,166,157));
 }
+
+void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
+    if(attackDelay-elapsed<sf::Time::Zero){
+       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+Arrow arrow(getCenter(),mousePos,damage,true);
+projectiles.push_back(std::make_unique<Arrow>(arrow));
+attackDelay=sf::seconds(0.3)/attackSpeed;
+    }
+}
+
+
 void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
 if(ability1Cooldown<=sf::Time::Zero){
     if(getMana()>=20.f){

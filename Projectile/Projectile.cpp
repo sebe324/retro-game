@@ -65,7 +65,6 @@ return false;
 
 void Projectile::onImpact(sf::Time elapsed,Character& target, std::vector<ParticleSystem> &particleSystem){
 target.removeHealth(damage);
-std::cout<<"test2";
 }
 
 
