@@ -19,7 +19,6 @@ Game game("texture.png", "font.ttf", &window, &viewUI);
 int mode=1;
 sf::Font font;
 if(!font.loadFromFile("font.ttf")){}
-bool WSAD=true;
 Info info(font,"texture.png");
 WorldCreator wCreator(font);
 Settings settings(font);
@@ -86,7 +85,6 @@ while(window.isOpen()){
         case 4:
             settings.update(mousePos);
             settings.checkClick(mousePos);
-            WSAD=settings.WSAD;
             if(settings.bGoBack.click(mousePos))mode=1;
         break;
         case 5:

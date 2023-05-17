@@ -18,7 +18,6 @@ void Giant::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Ve
     if(attackDelay-elapsed<sf::Time::Zero){
        float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
 Rock rock(getCenter(),mousePos,damage,false);
-rock.rotate(rock.test*180/3.14);
 projectiles.push_back(std::make_unique<Rock>(rock));
 attackDelay=sf::seconds(0.3)/attackSpeed;
     }

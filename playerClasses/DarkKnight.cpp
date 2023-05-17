@@ -11,7 +11,7 @@ createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(19,15,64));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(19,15,64));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(19,15,64));
 }
-void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 
     if(ability1Cooldown<=sf::Time::Zero){
         if(getMana()>=20.f){
@@ -36,7 +36,7 @@ void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::
 
 
 
-void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
     if(ability2Cooldown<=sf::Time::Zero){
         if(getMana()>=40.f){
             sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
@@ -63,7 +63,7 @@ void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::
 }
 
 
-void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void DarkKnight::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 
     if(ability3Cooldown<=sf::Time::Zero){
         if(batForm){

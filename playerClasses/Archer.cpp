@@ -23,7 +23,7 @@ attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
 
-void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
     if(getMana()>=20.f){
 
@@ -35,11 +35,11 @@ if(ability1Cooldown<=sf::Time::Zero){
 }
 
 
-void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 
 }
 
 
-void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 
 }

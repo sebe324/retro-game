@@ -28,7 +28,7 @@ void Projectile::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>> 
                 if(disappearOnImpact) lifetime=sf::Time::Zero;
                 if(monsters[i-1]->attitude==Neutral) monsters[i-1]->attitude=Aggressive;
                 if(monsters[i-1]->getHealth()<=0){
-                    monstersHit.erase(std::remove(monstersHit.begin(), monstersHit.end(), &monsters[i-1]), monstersHit.end());
+                    monstersHit.erase(std::remove(monstersHit.begin(), monstersHit.end(), monsters[i-1]->getId()), monstersHit.end());
                 }
                 if(stopDealingDamageOnImpact) dealDamage=false;
                 break;
@@ -55,11 +55,11 @@ void Projectile::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>> 
 
 bool Projectile::checkIfMonsterWasHit(std::unique_ptr<Monster> &monster){
 for(int i=0; i<monstersHit.size(); i++){
-    if(&monster==monstersHit[i]){
+    if(monster->getId()==monstersHit[i]){
             return true;
     }
 }
-monstersHit.push_back(&monster);
+monstersHit.push_back(monster->getId());
 return false;
 }
 

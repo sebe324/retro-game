@@ -53,6 +53,7 @@ class Character : public Unit{
         float getMaxMana() const;
         float getManaRegen() const;
 
+        int getId() const;
     protected:
         int level=0;
     private:
@@ -64,6 +65,9 @@ class Character : public Unit{
         float mana=0;
         float maxMana=0;
         float manaRegen=0;
+
+        int id;
+        static int characterCount;
 
 };
 

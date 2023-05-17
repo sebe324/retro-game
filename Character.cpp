@@ -1,4 +1,7 @@
 #include "Character.h"
+
+int Character::characterCount=0;
+
 Character::Character(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s)
 : Unit(n,p,s,spd)
 {
@@ -6,6 +9,7 @@ damage=d;
 attackSpeed=as;
 setLevel(l);
 attackDelay=sf::Time::Zero;
+id = ++characterCount;
 }
 Character::Character(){}
 void Character::update(sf::Time elapsed){
@@ -114,6 +118,10 @@ return maxMana;
 }
 float Character::getManaRegen() const{
 return manaRegen;
+}
+
+int Character::getId() const {
+return id;
 }
 
 

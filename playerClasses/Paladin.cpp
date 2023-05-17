@@ -11,7 +11,7 @@ createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(55,62,64));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(55,62,64));
 }
 
-void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
     if(getMana()>=15.f){
         sf::FloatRect attackRange;
@@ -37,7 +37,7 @@ if(ability1Cooldown<=sf::Time::Zero){
 }
 
 
-void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 if(ability2Cooldown<=sf::Time::Zero){
     if(getMana()>=20.f){
             addHealth(getMaxHealth()*0.2);
@@ -57,7 +57,7 @@ if(ability2Cooldown<=sf::Time::Zero){
 }
 
 
-void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem){
+void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
 if(ability3Cooldown<=sf::Time::Zero){
     if(getMana()>=10.f){
         sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);

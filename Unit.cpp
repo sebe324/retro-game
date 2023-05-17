@@ -64,7 +64,6 @@ return getCenter().y-unit.getCenter().y;
 void Unit::rotate(float angle){
     sf::Transform t;
     t.rotate(angle,getCenter());
-    std::cout<<"angle: "<<angle<<std::endl;
 for(int i=0; i<bodyPartsNumber*4; i++){
     bodyParts[i].position=t.transformPoint(bodyParts[i].position);
 }
