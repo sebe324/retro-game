@@ -3,15 +3,6 @@ float randomize(int min, int n){
 return (std::rand()%n)+min;
 }
 
-int clamp(int n, int min, int max){
-if(n<min) return min;
-else if(n>max) return max;
-else return n;
-}
-float roundf(float num, int precision)
-{
-    return floorf(num * pow(10.0f,precision) + .5f)/pow(10.0f,precision);
-}
 Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v){
 if(!font.loadFromFile(fontPath)){}
 if(!texture.loadFromFile(texturePath)){}
@@ -20,10 +11,14 @@ viewUI=v;
 player = std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
 player->setLevel(10);
 playerOnMap=sf::VertexArray(sf::Quads,4);
-particles = ParticleSystem(sf::seconds(1.75), &font);
-particlesHp = ParticleSystem(sf::seconds(1), &font);
-particlesMana = ParticleSystem(sf::seconds(1), &font);
-particlesUI=ParticleSystem(sf::seconds(1.75), &font);
+ParticleSystem particlesWorld(sf::seconds(1.75), &font);
+ParticleSystem particlesHp(sf::seconds(1), &font);
+ParticleSystem particlesMana(sf::seconds(1), &font);
+ParticleSystem particlesUI(sf::seconds(1.75), &font);
+particleSystem.push_back(particlesWorld);
+particleSystem.push_back(particlesHp);
+particleSystem.push_back(particlesMana);
+particleSystem.push_back(particlesUI);
 statsSetup();
 playerXmap=(int)player->hitbox.left>>12;
 playerYmap=(int)player->hitbox.top>>12;
@@ -60,7 +55,7 @@ for(int y=0; y<50; y++){
 actualMap=sf::VertexArray(sf::Quads,10000);
 for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
-auto& biome=gameMap[clamp(y,0,49)*50+clamp(x,0,49)];
+auto& biome=gameMap[Utils::clamp(y,0,49)*50+Utils::clamp(x,0,49)];
     actualMap[(y*50+x)*4].color=biome.color;
     actualMap[(y*50+x)*4+1].color=biome.color;
     actualMap[(y*50+x)*4+2].color=biome.color;
@@ -77,7 +72,7 @@ updateMap();
 void Game::updateMap(){
     playerXmap=(int)player->hitbox.left>>12;
     playerYmap=(int)player->hitbox.top>>12;
-    auto& biome=gameMap[clamp(playerYmap,0,49)*50+clamp(playerXmap,0,49)];
+    auto& biome=gameMap[Utils::clamp(playerYmap,0,49)*50+Utils::clamp(playerXmap,0,49)];
     playerOnMap[0].color=sf::Color::Magenta;
     playerOnMap[1].color=sf::Color::Magenta;
     playerOnMap[2].color=sf::Color::Magenta;
@@ -89,57 +84,53 @@ void Game::updateMap(){
     playerOnMap[3].position=biome.position*4.f+sf::Vector2f(5.f,9.f);
 }
 
-void Game::update(sf::Time elapsed){
+void Game::update(sf::Time elapsed, sf::Vector2f globalPos){
 if(!paused){
 
 if(sf::Keyboard::isKeyPressed(player->keyUp)){ player->moveUp(elapsed); updateMap();}
 if(sf::Keyboard::isKeyPressed(player->keyDown)){player->moveDown(elapsed); updateMap();}
 if(sf::Keyboard::isKeyPressed(player->keyLeft)){ player->moveLeft(elapsed); updateMap();}
 if(sf::Keyboard::isKeyPressed(player->keyRight)){player->moveRight(elapsed); updateMap();}
-if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){player->ability1(monsters,particles);}
-if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {player->ability2(monsters,particles);}
-if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){player->ability3(monsters,particles);}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){player->ability1(monsters,particleSystem,globalPos);}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {player->ability2(monsters,particleSystem,globalPos);}
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){player->ability3(monsters,particleSystem,globalPos);}
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::M)) isMapActive=true;
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)) isMapActive=false;
-if(sf::Keyboard::isKeyPressed(player->keyRightAttack)){
-    sf::FloatRect attackRange(player->hitbox.left,player->hitbox.top+25.f,100.f, 100.f);
-    playerAttack(attackRange,elapsed);
-    player->moveRight(elapsed,0.1);
-}
-if(sf::Keyboard::isKeyPressed(player->keyLeftAttack)){
-     sf::FloatRect attackRange(player->hitbox.left-50.f,player->hitbox.top+25.f,100.f, 100.f);
-    playerAttack(attackRange,elapsed);
-    player->moveLeft(elapsed,0.1);
-}
-
-   for(int i=monsters.size()-1; i>0; i--){
-    float dist=monsters[i]->getDistance(*player);
+if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) player->attack(projectiles, globalPos, elapsed);
+    for(int i=projectiles.size(); i>0; i--){
+        if(projectiles[i-1]->lifetime<sf::Time::Zero) projectiles.erase(projectiles.begin()+i-1);
+        else projectiles[i-1]->update(elapsed,monsters,player,particleSystem);
+    }
+   for(int i=monsters.size(); i>0; i--){
+    float dist=monsters[i-1]->getDistance(*player);
     if(dist>2000){
-        monsters.erase(monsters.begin()+i);
+        monsters.erase(monsters.begin()+i-1);
     } else{
-    if(monsters[i]->makeDecision(elapsed,*player)) particles.addTextEmitter(player->getCenter(),Utils::toString(monsters[i]->lastAttackDamage,1),1,sf::Color::Red,36);
-    if(monsters[i]->getHealth()<=0) {
-            particles.addEmitter(monsters[i]->bodyParts,monsters[i]->bodyPartsNumber);
-            particles.addTextEmitter(monsters[i]->getCenter(),"+"+Utils::toString(monsters[i]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
-            if(player->addExp(3*monsters[i]->getLevel())){
-                particlesUI.addEmitter({500,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addEmitter({300,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addEmitter({700,200},20,{150,255},{150,255},{150,255});
-                particlesUI.addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
-                playerLvl.setString(Utils::toString(player->getLevel()));
-            }
-            playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
-            playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
-        monsters.erase(monsters.begin()+i);
-
-    }else monsters[i]->update(elapsed);
+        if(monsters[i-1]->getHealth()<=0){
+                    player->addExp(3*monsters[i-1]->getLevel());
+                    particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
+                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
+                    monsters.erase(monsters.begin()+i-1);
+        }
+    else{
+    monsters[i-1]->update(elapsed);
+    monsters[i-1]->makeDecision(elapsed,*player,projectiles);
+    }
     }
 }
-
+playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
+playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
 if(monsters.size()<20){
 generateMonster();
 }
+if(player->checkLevelUp()){
 
+particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({500,200},20,{150,255},{150,255},{150,255});
+                particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({300,200},20,{150,255},{150,255},{150,255});
+                particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({700,200},20,{150,255},{150,255},{150,255});
+                particleSystem[ParticlesGame::PARTICLES_UI].addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
+                playerLvl.setString(Utils::toString(player->getLevel()));
+}
 player->update(elapsed,monsters);
 updateParticles(elapsed);
 }
@@ -148,7 +139,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
 sf::VertexArray tmp(sf::Quads,36); //biomes near the player
 for(int x=0; x<3; x++)
 for(int y=0; y<3; y++){
-auto& biome=gameMap[clamp(playerYmap-1+y,0,49)*50+clamp(playerXmap-1+x,0,49)];
+auto& biome=gameMap[Utils::clamp(playerYmap-1+y,0,49)*50+Utils::clamp(playerXmap-1+x,0,49)];
     tmp[(y*3+x)*4].color=biome.color;
     tmp[(y*3+x)*4+1].color=biome.color;
     tmp[(y*3+x)*4+2].color=biome.color;
@@ -165,7 +156,11 @@ for(int i=0; i<monsters.size(); i++){
 target.draw(*monsters[i],states);
 }
 target.draw(*player);
-target.draw(particles);
+
+for(int i=0; i<projectiles.size(); i++){
+    target.draw(*projectiles[i]);
+}
+target.draw(particleSystem[ParticlesGame::PARTICLES_WORLD]);
 for(auto& text : texts){
     target.draw(text);
 }
@@ -175,9 +170,9 @@ target.draw(playerLvl);
 target.draw(playerHp);
 target.draw(playerMana);
 target.draw(playerExpProgress);
-if(player->getHealth()<player->getMaxHealth()) target.draw(particlesHp);
-if(player->getMana()<player->getMaxMana()) target.draw(particlesMana);
-target.draw(particlesUI);
+if(player->getHealth()<player->getMaxHealth()) target.draw(particleSystem[ParticlesGame::PARTICLES_HP]);
+if(player->getMana()<player->getMaxMana()) target.draw(particleSystem[ParticlesGame::PARTICLES_MANA]);
+target.draw(particleSystem[ParticlesGame::PARTICLES_UI]);
 if(isMapActive){
 target.draw(actualMap);
 target.draw(playerOnMap);
@@ -232,7 +227,7 @@ void Game::generateMonster(){
 sf::Vector2f pos(randomize(player->getCenter().x-1000,2000),randomize(player->getCenter().y-1000,2000));
 
 switch(getBiome(pos)){
-case 0: //deadlands
+case DEADLANDS:
     switch((int)randomize(0,4)){
     case 0: addMonster(0,pos);  break; //zombie
     case 1: addMonster(1,pos);  break; //skeleton
@@ -240,26 +235,26 @@ case 0: //deadlands
     case 3: addMonster(9,pos);  break; //vampire
     }
 break;
-case 1: //plains
+case PLAINS:
       switch((int)randomize(0,2)){
     case 0: addMonster(6,pos);  break; //troll
     case 1: addMonster(7,pos);  break; //giant
       }
 break;
-case 2: //toxic swamp
+case TOXIC_SWAMP:
     switch((int)randomize(0,3)){
     case 0: addMonster(0,pos);  break; //zombie
     case 1: addMonster(4,pos);  break; //giant spider
     case 2: addMonster(8,pos);  break; //toxic lizard
     }
 break;
-case 3: //desert
+case DESERT:
       switch((int)randomize(0,2)){
         case 0: addMonster(1,pos); break; //skeleton
         case 1: addMonster(5,pos); break; //succubus
       }
 break;
-case 4: //fire realm
+case FIRE_REALM:
     switch((int)randomize(0,4)){
          case 0: addMonster(1,pos); break; //skeleton
         case 1: addMonster(5,pos); break; //succubus
@@ -271,8 +266,8 @@ break;
 }
 
 int Game::getBiome(sf::Vector2f pos){
-int xMap=clamp((int)pos.x>>12,0,49);
-int yMap=clamp((int)pos.y>>12,0,49);
+int xMap=Utils::clamp((int)pos.x>>12,0,49);
+int yMap=Utils::clamp((int)pos.y>>12,0,49);
 
 auto value=noiseValues2d[yMap*50+xMap];
     if(value<=30) return 0; // deadlands
@@ -283,22 +278,8 @@ auto value=noiseValues2d[yMap*50+xMap];
     else return -1;
 }
 
-void Game::playerAttack(sf::FloatRect& attackRange, sf::Time& elapsed){
-   for(int i=0; i<monsters.size(); i++){
-    if(attackRange.intersects(monsters[i]->hitbox)){
-        monsters[i]->wakeUp();
-        if(player->attack(*monsters[i],elapsed)){
-                if(monsters[i]->attitude==Neutral )monsters[i]->attitude=Aggressive;
-                particles.addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(player->lastAttackDamage,1),1,sf::Color::White,36);
-                }
-                }
-                }
-                }
 void Game::updateParticles(sf::Time& elapsed){
-particles.update(elapsed);
-particlesHp.update(elapsed);
-particlesMana.update(elapsed);
-particlesUI.update(elapsed);
+for(auto& ps : particleSystem) ps.update(elapsed);
 playerHp.setString(Utils::toString(player->getHealth(),1));
 playerHp.setPosition(200-(playerHp.getGlobalBounds().width/2),940.f);
 
@@ -306,11 +287,11 @@ playerMana.setString(Utils::toString(player->getMana(),1));
 playerMana.setPosition(800-(playerMana.getGlobalBounds().width/2),940.f);
 stats[13].position.x=(player->getHealth()/player->getMaxHealth()*400);
 stats[14].position.x=(player->getHealth()/player->getMaxHealth()*400);
-if(player->getHealth()<player->getMaxHealth()) particlesHp.emitters[0].startPos={stats[13].position.x,950.f};
+if(player->getHealth()<player->getMaxHealth()) particleSystem[ParticlesGame::PARTICLES_HP].emitters[0].startPos={stats[13].position.x,950.f};
 
 stats[16].position.x=(1000-player->getMana()/player->getMaxMana()*400);
 stats[19].position.x=(1000-player->getMana()/player->getMaxMana()*400);
-if(player->getMana()<player->getMaxMana()) particlesMana.emitters[0].startPos={stats[16].position.x-20.f,950.f};
+if(player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
 }
 void Game::statsSetup(){
@@ -387,8 +368,8 @@ stats[17].color=sf::Color(60,90,150);
 stats[18].color=sf::Color(60,90,150);
 stats[19].color=sf::Color(60,90,200);
 
-particlesHp.addHealingEmitter({stats[16].position.x,915.f},5,sf::Color::Red,true,sf::seconds(1.5));
-particlesMana.addMagicEmitter({stats[19].position.x,915.f},4,sf::Color::Blue,true,sf::seconds(1.5));
+particleSystem[ParticlesGame::PARTICLES_HP].addHealingEmitter({stats[16].position.x,915.f},5,sf::Color::Red,true,sf::seconds(1.5));
+particleSystem[ParticlesGame::PARTICLES_MANA].addMagicEmitter({stats[19].position.x,915.f},4,sf::Color::Blue,true,sf::seconds(1.5));
 }
 
 void Game::changePlayerClass(int playerClass){

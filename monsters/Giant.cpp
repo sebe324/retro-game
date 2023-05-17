@@ -14,3 +14,11 @@ defaultAttitude=Neutral;
 fightUntilDeath=true;
 bodyType=LIVING;
 }
+void Giant::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
+    if(attackDelay-elapsed<sf::Time::Zero){
+       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+Rock rock(getCenter(),mousePos,damage,false);
+projectiles.push_back(std::make_unique<Rock>(rock));
+attackDelay=sf::seconds(0.3)/attackSpeed;
+    }
+}

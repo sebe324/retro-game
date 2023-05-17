@@ -1,7 +1,7 @@
 #include "Monster.h"
 
 
-Monster::Monster(std::string name, int level, float dr, sf::Vector2f p, sf::Vector2f s) : Character(name, 1,1,50,level,p,s){
+Monster::Monster(std::string name, int level, float dr, sf::Vector2f p, sf::Vector2f s) : Character(name, 1,0.2,50,level,p,s){
 detectionRange=dr;
 }
 Monster::Monster() : Character(){}
@@ -20,10 +20,10 @@ else if(direction==3) moveRight(elapsed,0.2);
 }
 
 void Monster::pathFindTo(sf::Time elapsed, Character& character){
-if(getDistanceX(character)<-10.f) moveRight(elapsed, 0.4);
-else if(getDistanceX(character)>10.f) moveLeft(elapsed, 0.4);
-if(getDistanceY(character)<-10.f) moveDown(elapsed, 0.4);
-else if(getDistanceY(character)>10.f) moveUp(elapsed, 0.4);
+if(getDistanceX(character)<-80.f) moveRight(elapsed, 0.4);
+else if(getDistanceX(character)>80.f) moveLeft(elapsed, 0.4);
+if(getDistanceY(character)<-80.f) moveDown(elapsed, 0.4);
+else if(getDistanceY(character)>80.f) moveUp(elapsed, 0.4);
 }
 void Monster::runFrom(sf::Time elapsed, Character& character){
 if(getDistanceX(character)<-0.f) moveLeft(elapsed, 1);
@@ -31,15 +31,23 @@ else if(getDistanceX(character)>0.f) moveRight(elapsed, 1);
 if(getDistanceY(character)<0.f) moveUp(elapsed, 1);
 else if(getDistanceY(character)>0.f) moveDown(elapsed, 1);
 }
-
-bool Monster::makeDecision(sf::Time elapsed, Character& character){
+void Monster::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
+    if(attackDelay-elapsed<sf::Time::Zero){
+       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+SwordSwing swordSwing(getCenter(),mousePos,damage,false);
+swordSwing.rotate(swordSwing.test*180/3.14);
+projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+attackDelay=sf::seconds(0.3)/attackSpeed;
+    }
+}
+void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<std::unique_ptr<Projectile>> &projectiles){
     float dist=getDistance(character);
-    if(dist<350 && dist>50.f && attitude==Aggressive){ // if monster is agressive and character is in line of sight, move towards
+    if(dist<350 && dist>100.f && attitude==Aggressive){ // if monster is agressive and character is in line of sight, move towards
             pathFindTo(elapsed,character);
             preyDetected=true;
     }
-    else if(dist<=50.f && attitude==Aggressive){
-            if(attack(character,elapsed)) return true;
+    else if(dist<=100.f && attitude==Aggressive){
+            attack(projectiles,character.getCenter(),elapsed);
              //attack if player is close
 
         if(!fightUntilDeath && getHealth()<0.3*getMaxHealth()) attitude=Cowardly; //run away if you can't win!
@@ -57,7 +65,6 @@ bool Monster::makeDecision(sf::Time elapsed, Character& character){
     }
     else randomMove(elapsed); //if nothing else, just move randomly
 
-    return false;
 }
 void Monster::wakeUp(){
 asleep=false;

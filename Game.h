@@ -8,7 +8,7 @@
 #include "playerClasses/Archer.h"
 #include "playerClasses/ElementMage.h"
 #include "monsters/monsters.h"
-
+#include "Projectile/Projectile.h"
 #include "particleSystem/particleSystem.h"
 #include "noise/perlinNoise.h"
 
@@ -20,6 +20,8 @@
 #include <iomanip>
 
 #include "Utilities/Utils.h"
+#include "enums/ParticlesGame.h"
+#include "enums/Biomes.h"
 class Game : public sf::Drawable{
 
 public:
@@ -27,18 +29,15 @@ public:
 std::vector<std::unique_ptr<Monster>> monsters;
 std::vector<sf::Text> texts;
 std::unique_ptr<Player> player;
-ParticleSystem particles;
-ParticleSystem particlesHp;
-ParticleSystem particlesMana;
-ParticleSystem particlesUI;
+std::vector<std::unique_ptr<Projectile>> projectiles;
+std::vector<ParticleSystem> particleSystem;
 const sf::RenderWindow *window;
 sf::View *viewUI;
 sf::Vector2i mousepos;
 sf::Vector2f mouseglobal;
-std::string combo="00000000";
 bool paused=false;
 bool isMapActive=true;
-void update(sf::Time elapsed);
+void update(sf::Time elapsed, sf::Vector2f globalPos);
 void changeMap(uint32_t seed, int octaves, float bias);
 Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
 void changePlayerClass(int playerClass);
@@ -71,7 +70,6 @@ void generateMonster();
 void statsSetup();
 void updateMap();
 void updateParticles(sf::Time& elapsed);
-void playerAttack(sf::FloatRect& attackRange, sf::Time& elapsed);
 int getBiome(sf::Vector2f pos);
 };
 

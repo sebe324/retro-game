@@ -31,6 +31,8 @@ sf::Vector2u windowSize=window.getSize();
 window.setView(viewUI);
 while(window.isOpen()){
     window.clear();
+     sf::Vector2i windowPosition=sf::Mouse::getPosition(window);
+     sf::Vector2f mousePos=window.mapPixelToCoords(windowPosition);
     sf::Event event;
     while(window.pollEvent(event)){
         if(event.type==sf::Event::Closed){
@@ -44,8 +46,6 @@ while(window.isOpen()){
             viewGame.setViewport(sf::FloatRect(idk2, 0.f, idk, 1));
             window.setView(viewUI);
         }
-        sf::Vector2i windowPosition=sf::Mouse::getPosition(window);
-        sf::Vector2f mousePos=window.mapPixelToCoords(windowPosition);
         switch(mode){
         case 1:
                  menu.update(mousePos);
@@ -65,6 +65,7 @@ while(window.isOpen()){
                     wCreator.checkClick(mousePos);
                     if(wCreator.bStartGame.click(mousePos)){
                     game.changePlayerClass(wCreator.playerClass);
+                    game.player->movementWSAD(settings.WSAD);
                     game.changeMap(wCreator.seed,wCreator.octaves, wCreator.bias);
                     mode=3;
                     wCreator.clearVectors();
@@ -79,15 +80,11 @@ while(window.isOpen()){
                 if(event.key.code==sf::Keyboard::Escape) game.paused=!game.paused;
            }
             if(event.type==sf::Event::TextEntered){
-
-            game.combo+=(char)event.text.unicode;
-            game.combo.erase(0,1);
         }
         break;
         case 4:
             settings.update(mousePos);
             settings.checkClick(mousePos);
-            game.player->movementWSAD(settings.WSAD);
             if(settings.bGoBack.click(mousePos))mode=1;
         break;
         case 5:
@@ -110,7 +107,8 @@ while(window.isOpen()){
     break;
     case 3:
      window.setView(viewGame);
-        game.update(deltaTime);
+     mousePos=window.mapPixelToCoords(windowPosition);
+        game.update(deltaTime, mousePos);
          viewGame.setCenter(game.player->getCenter());
    window.draw(game);
     break;
