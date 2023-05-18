@@ -6,4 +6,6 @@ createBodyPart({10.f,10.f},{50.f,0.f},sf::Color(150,150,150));
 createBodyPart({50.f,10.f},{0.f,0.f},sf::Color(50,50,50));
 
 rotate(atan2(velY,velX)*180/3.14);
+
+disappearOnImpact=true;
 }

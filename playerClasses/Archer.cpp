@@ -11,6 +11,10 @@ createBodyPart({10.f,40.f},{0.f,30.f},sf::Color(170,166,157));
 createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(170,166,157));
+
+ability1Time=sf::seconds(5);
+ability2Time=sf::seconds(1);
+ability3Time=sf::seconds(1);
 }
 
 void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
@@ -23,10 +27,17 @@ attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
 
-void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
     if(getMana()>=20.f){
 
+        Arrow arrow1(getCenter()+sf::Vector2f(0.f,10.f),mousePos,damage,true);
+        Arrow arrow2(getCenter()-sf::Vector2f(0.f,10.f),mousePos,damage,true);
+        Arrow arrow3(getCenter(),mousePos,damage,true);
+
+        projectiles.push_back(std::make_unique<Arrow>(arrow1));
+        projectiles.push_back(std::make_unique<Arrow>(arrow2));
+        projectiles.push_back(std::make_unique<Arrow>(arrow3));
 
         addMana(-20.f);
         ability1Cooldown=sf::seconds(5);
@@ -35,11 +46,11 @@ if(ability1Cooldown<=sf::Time::Zero){
 }
 
 
-void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 
 }
 
 
-void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 
 }

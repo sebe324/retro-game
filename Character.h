@@ -13,6 +13,7 @@
 #include "Projectile/SwordSwing.h"
 
 #include "enums/ParticlesGame.h"
+#include "enums/DamageType.h"
 class Character : public Unit{
     public:
         float damage=0;
@@ -34,7 +35,7 @@ class Character : public Unit{
 
         void setHealth(float n);
         void addHealth(float n);
-        virtual void removeHealth(float , std::vector<ParticleSystem> &particleSystem);
+        virtual void removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem);
         void setMaxHealth(float n);
         void addMaxHealth(float n);
         void setHealthRegen(float n);

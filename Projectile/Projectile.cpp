@@ -61,7 +61,7 @@ return false;
 }
 
 void Projectile::onImpact(sf::Time elapsed,Character& target, std::vector<ParticleSystem> &particleSystem){
-target.removeHealth(damage, particleSystem);
+target.removeHealth(damage, damageType, particleSystem);
 }
 
 

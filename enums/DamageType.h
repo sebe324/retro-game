@@ -2,8 +2,13 @@
 #define DAMAGETYPE_H
 
 enum DamageType{
+LIGHT,
+DARKNESS,
+EARTH,
+AIR,
+FIRE,
+WATER,
 PHYSIC,
-MAGIC,
 TRUE
 };
 #endif // DAMAGETYPE_H

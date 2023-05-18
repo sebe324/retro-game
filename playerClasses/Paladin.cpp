@@ -9,9 +9,13 @@ createBodyPart({10.f,40.f},{0.f,30.f},sf::Color(45,52,54));
 createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(45,52,54));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(55,62,64));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(55,62,64));
+
+ability1Time=sf::seconds(2.5);
+ability2Time=sf::seconds(5);
+ability3Time=sf::seconds(10);
 }
 
-void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
     if(getMana()>=15.f){
         sf::FloatRect attackRange;
@@ -23,20 +27,20 @@ if(ability1Cooldown<=sf::Time::Zero){
         }
         for(int i=0; i<monsters.size(); i++){
             if(monsters[i]->hitbox.intersects(attackRange)){
-                    monsters[i]->removeHealth(damage*0.5f+5, particleSystem);
+                    monsters[i]->removeHealth(damage*0.5f+5, PHYSIC,particleSystem);
                     if(left) monsters[i]->moveLeft(sf::seconds(1),1);
                     else monsters[i]->moveRight(sf::seconds(1),1);
 
             }
         }
     addMana(-15.f);
-    ability1Cooldown=sf::seconds(2.5);
+    ability1Cooldown=ability1Time;
     }
 }
 }
 
 
-void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability2Cooldown<=sf::Time::Zero){
     if(getMana()>=20.f){
             addHealth(getMaxHealth()*0.2);
@@ -44,18 +48,18 @@ if(ability2Cooldown<=sf::Time::Zero){
             particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),15,{200,250},{200,250},{0,50});
             for(int i=0; i<monsters.size(); i++){
                 if(monsters[i]->hitbox.intersects(attackRange) && (monsters[i]->bodyType==INFERNAL || monsters[i]->bodyType==UNDEAD)){
-                    monsters[i]->removeHealth(damage*0.3f+3, particleSystem);
+                    monsters[i]->removeHealth(damage*0.3f+3, LIGHT,particleSystem);
                 }
             }
         addMana(-20.f);
-        ability2Cooldown=sf::seconds(5);
+        ability2Cooldown=ability2Time;
     }
 
 }
 }
 
 
-void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){
+void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability3Cooldown<=sf::Time::Zero){
     if(getMana()>=10.f){
         sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
@@ -72,12 +76,12 @@ if(ability3Cooldown<=sf::Time::Zero){
                 lightning[2].color=sf::Color::White;
                 lightning[3].color=sf::Color::White;
                 if(monsters[i]->hitbox.intersects(attackRange) && (monsters[i]->bodyType==INFERNAL || monsters[i]->bodyType==UNDEAD)){
-                    monsters[i]->removeHealth(monsters[i]->getMaxHealth()*0.3f, particleSystem);
+                    monsters[i]->removeHealth(monsters[i]->getHealth()*0.2f+5.f, LIGHT ,particleSystem);
                     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(lightning,1);
                 }
             }
     addMana(-10.f);
-    ability3Cooldown=sf::seconds(1);
+    ability3Cooldown=ability3Time;
     }
 }
 }
