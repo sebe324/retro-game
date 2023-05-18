@@ -23,8 +23,7 @@ if(ability1Cooldown<=sf::Time::Zero){
         }
         for(int i=0; i<monsters.size(); i++){
             if(monsters[i]->hitbox.intersects(attackRange)){
-                    monsters[i]->removeHealth(damage*0.5f+5);
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.5f+5,1),1,sf::Color::White,36);
+                    monsters[i]->removeHealth(damage*0.5f+5, particleSystem);
                     if(left) monsters[i]->moveLeft(sf::seconds(1),1);
                     else monsters[i]->moveRight(sf::seconds(1),1);
 
@@ -45,8 +44,7 @@ if(ability2Cooldown<=sf::Time::Zero){
             particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),15,{200,250},{200,250},{0,50});
             for(int i=0; i<monsters.size(); i++){
                 if(monsters[i]->hitbox.intersects(attackRange) && (monsters[i]->bodyType==INFERNAL || monsters[i]->bodyType==UNDEAD)){
-                    monsters[i]->removeHealth(damage*0.3f+3);
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.3f+3,1),1,sf::Color::White,36);
+                    monsters[i]->removeHealth(damage*0.3f+3, particleSystem);
                 }
             }
         addMana(-20.f);
@@ -74,8 +72,7 @@ if(ability3Cooldown<=sf::Time::Zero){
                 lightning[2].color=sf::Color::White;
                 lightning[3].color=sf::Color::White;
                 if(monsters[i]->hitbox.intersects(attackRange) && (monsters[i]->bodyType==INFERNAL || monsters[i]->bodyType==UNDEAD)){
-                    monsters[i]->removeHealth(monsters[i]->getMaxHealth()*0.3f);
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(monsters[i]->getMaxHealth()*0.3f,1),1,sf::Color::White,36);
+                    monsters[i]->removeHealth(monsters[i]->getMaxHealth()*0.3f, particleSystem);
                     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(lightning,1);
                 }
             }

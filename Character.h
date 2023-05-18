@@ -34,7 +34,7 @@ class Character : public Unit{
 
         void setHealth(float n);
         void addHealth(float n);
-        void removeHealth(float n);
+        virtual void removeHealth(float , std::vector<ParticleSystem> &particleSystem);
         void setMaxHealth(float n);
         void addMaxHealth(float n);
         void setHealthRegen(float n);

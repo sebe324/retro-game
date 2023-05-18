@@ -20,8 +20,7 @@ void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::
             float healed=0;
             for(int i=0; i<monsters.size(); i++){
                 if(monsters[i]->hitbox.intersects(attackRange)){
-                    monsters[i]->removeHealth(damage*0.5f+10);
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.5f+10,1),1,sf::Color::White,36);
+                    monsters[i]->removeHealth(damage*0.5f+10, particleSystem);
                     addHealth(damage*0.25f+5);
                     healed+=(damage*0.25f+5);
                 }
@@ -49,9 +48,8 @@ void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::
                                     monsters[i]->attitude=Neutral;
                             }
                             else if(monsters[i]->bodyType==LIVING){
-                                monsters[i]->removeHealth(damage*0.3f+5);
+                                monsters[i]->removeHealth(damage*0.3f+5, particleSystem);
                                 monsters[i]->attitude=Cowardly;
-                                particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(monsters[i]->hitbox.left,monsters[i]->hitbox.top),Utils::toString(damage*0.3f+5,1),1,sf::Color::White,36);
                             }
                         }
                 }

@@ -14,6 +14,6 @@ rotate(atan2(velY,velX)*180/3.14);
 }
 
 void FireBall::onImpact(sf::Time elapsed, Character& target, std::vector<ParticleSystem> &particleSystem){
-    target.removeHealth(damage);
+    target.removeHealth(damage, particleSystem);
     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter({hitbox.left,hitbox.top+25.f},10,{120,200},{10,40},{10,40});
 }
