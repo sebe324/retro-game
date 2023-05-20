@@ -20,7 +20,6 @@ move();
 
 void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
-       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
 SwordSwing swordSwing(getCenter(),mousePos,damage,true);
 projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
 

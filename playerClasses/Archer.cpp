@@ -40,17 +40,29 @@ if(ability1Cooldown<=sf::Time::Zero){
         projectiles.push_back(std::make_unique<Arrow>(arrow3));
 
         addMana(-20.f);
-        ability1Cooldown=sf::seconds(5);
+        ability1Cooldown=ability1Time;
     }
 }
 }
 
 
 void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
+    if(ability2Cooldown<=sf::Time::Zero){
+        if(getMana()>=50.f){
 
+            addMana(-50.f);
+            ability2Cooldown=ability2Time;
+        }
+    }
 }
 
 
 void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
+    if(ability3Cooldown<=sf::Time::Zero){
+        if(getMana()>=50.f){
 
+            addMana(-50.f);
+            ability3Cooldown=ability3Time;
+        }
+    }
 }

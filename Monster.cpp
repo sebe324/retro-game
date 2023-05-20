@@ -33,7 +33,6 @@ else if(getDistanceY(character)>0.f) moveDown(elapsed, 1);
 }
 void Monster::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
-       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
 SwordSwing swordSwing(getCenter(),mousePos,damage,false);
 swordSwing.rotate(swordSwing.test*180/3.14);
 projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
@@ -41,6 +40,7 @@ attackDelay=sf::seconds(0.3)/attackSpeed;
     }
 }
 void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<std::unique_ptr<Projectile>> &projectiles){
+
     float dist=getDistance(character);
     if(dist<350 && dist>100.f && attitude==Aggressive){ // if monster is agressive and character is in line of sight, move towards
             pathFindTo(elapsed,character);
@@ -58,7 +58,7 @@ void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<s
             runFrom(elapsed,character);
             dangerDetected=true;
     }
-    else if(dist>600 && attitude==Cowardly && dangerDetected){ // if monster gets far away, it will stop being running
+    else if(dist>600 && attitude==Cowardly && dangerDetected){ // if monster gets far away, it will stop running
        dangerDetected=false;
     }
     else if(dangerDetected){runFrom(elapsed,character); //run away
