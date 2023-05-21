@@ -37,6 +37,10 @@ class Player : public Character{
          sf::Time ability1Time=sf::seconds(1);
          sf::Time ability2Time=sf::seconds(1);
          sf::Time ability3Time=sf::seconds(1);
+
+         float ability1Cost=0;
+         float ability2Cost=0;
+         float ability3Cost=0;
     private:
         int experience;
         int expRequired;

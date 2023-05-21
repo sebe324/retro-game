@@ -13,11 +13,15 @@ createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(55,62,64));
 ability1Time=sf::seconds(2.5);
 ability2Time=sf::seconds(5);
 ability3Time=sf::seconds(10);
+
+ability1Cost=15.f;
+ability2Cost=20.f;
+ability3Cost=10.f;
 }
 
 void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
-    if(getMana()>=15.f){
+    if(getMana()>=ability1Cost){
         sf::FloatRect attackRange;
         if(left){attackRange=sf::FloatRect(hitbox.left-100.f-hitbox.width,hitbox.top-100.f,100.f+hitbox.width, 200.f);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter({hitbox.left,hitbox.top+25.f},10,{250,255},{250,255},{250,255});
@@ -33,7 +37,7 @@ if(ability1Cooldown<=sf::Time::Zero){
 
             }
         }
-    addMana(-15.f);
+    removeMana(ability1Cost);
     ability1Cooldown=ability1Time;
     }
 }
@@ -42,7 +46,7 @@ if(ability1Cooldown<=sf::Time::Zero){
 
 void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability2Cooldown<=sf::Time::Zero){
-    if(getMana()>=20.f){
+    if(getMana()>=ability2Cost){
             addHealth(getMaxHealth()*0.2);
             sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
             particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),15,{200,250},{200,250},{0,50});
@@ -51,7 +55,7 @@ if(ability2Cooldown<=sf::Time::Zero){
                     monsters[i]->removeHealth(damage*0.3f+3, LIGHT,particleSystem);
                 }
             }
-        addMana(-20.f);
+        removeMana(ability2Cost);
         ability2Cooldown=ability2Time;
     }
 
@@ -61,7 +65,7 @@ if(ability2Cooldown<=sf::Time::Zero){
 
 void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability3Cooldown<=sf::Time::Zero){
-    if(getMana()>=10.f){
+    if(getMana()>=ability3Cost){
         sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
         for(int i=0; i<monsters.size(); i++){
                 sf::VertexArray lightning(sf::Quads,4);
@@ -80,7 +84,7 @@ if(ability3Cooldown<=sf::Time::Zero){
                     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(lightning,1);
                 }
             }
-    addMana(-10.f);
+    removeMana(ability3Cost);
     ability3Cooldown=ability3Time;
     }
 }

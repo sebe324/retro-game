@@ -87,6 +87,9 @@ void Character::addMana(float n){
 setMana(mana+n);
 }
 
+void Character::removeMana(float n){
+setMana(mana-n);
+}
 void Character::setMaxMana(float n){
 if(n<=0) maxMana=1;
 else maxMana=n;

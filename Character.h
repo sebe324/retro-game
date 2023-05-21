@@ -42,6 +42,7 @@ class Character : public Unit{
 
         void setMana(float n);
         void addMana(float n);
+        void removeMana(float n);
         void setMaxMana(float n);
         void addMaxMana(float n);
         void setManaRegen(float n);

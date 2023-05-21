@@ -15,6 +15,10 @@ createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(170,166,157));
 ability1Time=sf::seconds(5);
 ability2Time=sf::seconds(1);
 ability3Time=sf::seconds(1);
+
+ability1Cost=20.f;
+ability2Cost=50.f;
+ability3Cost=50.f;
 }
 
 void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
@@ -29,7 +33,7 @@ attackDelay=sf::seconds(0.3)/attackSpeed;
 
 void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
 if(ability1Cooldown<=sf::Time::Zero){
-    if(getMana()>=20.f){
+    if(getMana()>=ability1Cost){
 
         Arrow arrow1(getCenter()+sf::Vector2f(0.f,10.f),mousePos,damage,true);
         Arrow arrow2(getCenter()-sf::Vector2f(0.f,10.f),mousePos,damage,true);
@@ -39,7 +43,7 @@ if(ability1Cooldown<=sf::Time::Zero){
         projectiles.push_back(std::make_unique<Arrow>(arrow2));
         projectiles.push_back(std::make_unique<Arrow>(arrow3));
 
-        addMana(-20.f);
+        removeMana(ability1Cost);
         ability1Cooldown=ability1Time;
     }
 }
@@ -48,9 +52,9 @@ if(ability1Cooldown<=sf::Time::Zero){
 
 void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
     if(ability2Cooldown<=sf::Time::Zero){
-        if(getMana()>=50.f){
+        if(getMana()>=ability2Cost){
 
-            addMana(-50.f);
+            removeMana(ability2Cost);
             ability2Cooldown=ability2Time;
         }
     }
@@ -59,9 +63,9 @@ void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vect
 
 void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
     if(ability3Cooldown<=sf::Time::Zero){
-        if(getMana()>=50.f){
+        if(getMana()>=ability3Cost){
 
-            addMana(-50.f);
+            removeMana(ability3Cost);
             ability3Cooldown=ability3Time;
         }
     }

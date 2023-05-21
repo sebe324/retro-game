@@ -11,6 +11,14 @@ createBodyPart({10.f,40.f},{0.f,30.f},sf::Color(7,153,146));
 createBodyPart({10.f,40.f},{40.f,30.f},sf::Color(150,150,100));
 createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(240,185,59));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(12,36,97));
+
+ability1Time=sf::seconds(5.f);
+ability2Time=sf::seconds(5.f);
+ability3Time=sf::seconds(5.f);
+
+ability1Cost=20.f;
+ability2Cost=20.f;
+ability3Cost=40.f;
 }
 
 void ElementMage::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
