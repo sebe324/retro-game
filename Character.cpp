@@ -61,7 +61,7 @@ void Character::addHealth(float n){
 setHealth(health+n);
 }
 void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem){
-setHealth(health-n);
+setHealth(health-n*damageMultiplier[damageType]);
 particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
 }
 void Character::setMaxHealth(float n){

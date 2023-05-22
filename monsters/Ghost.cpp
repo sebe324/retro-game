@@ -12,13 +12,13 @@ bodyType=UNDEAD;
 
 void Ghost::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem){
 if(damageType==LIGHT || damageType==TRUE){
-setHealth(getHealth()-n);
+setHealth(getHealth()-n*damageMultiplier[damageType]);
 particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
 }
 else{
     float t=Utils::randomize(1,100);
     if(t<50){
-        setHealth(getHealth()-n);
+        setHealth(getHealth()-n*damageMultiplier[damageType]);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
     }
     else{

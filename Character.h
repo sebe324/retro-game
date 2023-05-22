@@ -57,6 +57,11 @@ class Character : public Unit{
         float getManaRegen() const;
 
         int getId() const;
+
+        //Damage multiplier based on damage types.
+        //Some characters will have a higher resistance for fire damage, some will be immune to it
+        //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE,WATER, PHYSIC, TRUE
+        const float damageMultiplier[8]={1,1,1,1,1,1,1,1};
     protected:
         int level=0;
     private:
