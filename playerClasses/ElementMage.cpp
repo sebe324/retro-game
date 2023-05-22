@@ -31,15 +31,41 @@ attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
 void ElementMage::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
+    if(ability1Cooldown<=sf::Time::Zero){
+         if(getMana()>=ability1Cost){
+         FireBall fireBall1(getCenter(),getCenter()+sf::Vector2f(0.f,100.f),damage,true);
+         FireBall fireBall2(getCenter(),getCenter()+sf::Vector2f(100.f,0.f),damage,true);
+         FireBall fireBall3(getCenter(),getCenter()+sf::Vector2f(0.f,-100.f),damage,true);
+         FireBall fireBall4(getCenter(),getCenter()+sf::Vector2f(-100.f,0.f),damage,true);
 
+        projectiles.push_back(std::make_unique<FireBall>(fireBall1));
+        projectiles.push_back(std::make_unique<FireBall>(fireBall2));
+        projectiles.push_back(std::make_unique<FireBall>(fireBall3));
+        projectiles.push_back(std::make_unique<FireBall>(fireBall4));
+         removeMana(ability1Cost);
+         ability1Cooldown=ability1Time;
+         }
+    }
 }
 
 
 void ElementMage::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
+    if(ability2Cooldown<=sf::Time::Zero){
+        if(getMana()>=ability2Cost){
 
+            removeMana(ability2Cost);
+            ability2Cooldown=ability2Time;
+        }
+    }
 }
 
 
 void ElementMage::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
+ if(ability2Cooldown<=sf::Time::Zero){
+        if(getMana()>=ability3Cost){
 
+            removeMana(ability3Cost);
+            ability3Cooldown=ability3Time;
+        }
+    }
 }
