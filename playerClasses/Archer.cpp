@@ -1,5 +1,6 @@
 #include "Archer.h"
 #include "../Monster.h"
+#include "../Projectile/Trap.h"
 
 Archer::Archer(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){
 createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(250,177,160));
@@ -53,7 +54,9 @@ if(ability1Cooldown<=sf::Time::Zero){
 void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
     if(ability2Cooldown<=sf::Time::Zero){
         if(getMana()>=ability2Cost){
+            Trap trap(mousePos,getCenter(),damage,true);
 
+            projectiles.push_back(std::make_unique<Trap>(trap));
             removeMana(ability2Cost);
             ability2Cooldown=ability2Time;
         }
