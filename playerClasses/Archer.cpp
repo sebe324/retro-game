@@ -14,12 +14,12 @@ createBodyPart({15.f,10.f},{6.f,80.f},sf::Color(170,166,157));
 createBodyPart({15.f,10.f},{29.f,80.f},sf::Color(170,166,157));
 
 ability1Time=sf::seconds(5);
-ability2Time=sf::seconds(1);
-ability3Time=sf::seconds(1);
+ability2Time=sf::seconds(10);
+ability3Time=sf::seconds(2);
 
 ability1Cost=20.f;
 ability2Cost=50.f;
-ability3Cost=50.f;
+ability3Cost=15.f;
 }
 
 void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
@@ -67,7 +67,11 @@ void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vect
 void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
     if(ability3Cooldown<=sf::Time::Zero){
         if(getMana()>=ability3Cost){
+            float tmpX=(mousePos.x-getCenter().x)/5;
+            float tmpY=(mousePos.y-getCenter().y)/5;
+            velocity+={tmpX,tmpY};
 
+            particleSystem[PARTICLES_WORLD].addEmitter(getCenter(),5,{250,255},{250,255},{250,255});
             removeMana(ability3Cost);
             ability3Cooldown=ability3Time;
         }
