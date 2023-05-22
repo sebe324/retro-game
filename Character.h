@@ -34,13 +34,13 @@ class Character : public Unit{
         void setLevel(int n);
         void levelUp();
 
+
         void setHealth(float n);
         void addHealth(float n);
         virtual void removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem);
         void setMaxHealth(float n);
         void addMaxHealth(float n);
         void setHealthRegen(float n);
-
         void setMana(float n);
         void addMana(float n);
         void removeMana(float n);
@@ -49,6 +49,7 @@ class Character : public Unit{
         void setManaRegen(float n);
 
         int getLevel() const;
+
         float getHealth() const;
         float getMaxHealth() const;
         float getHealthRegen() const;

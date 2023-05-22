@@ -34,7 +34,6 @@ else if(getDistanceY(character)>0.f) moveDown(elapsed, 1);
 void Monster::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
 SwordSwing swordSwing(getCenter(),mousePos,damage,false);
-swordSwing.rotate(swordSwing.test*180/3.14);
 projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
 attackDelay=sf::seconds(0.3)/attackSpeed;
     }

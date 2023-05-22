@@ -6,7 +6,7 @@ Player::Player(std::string n, float d, float as, float spd, int l, sf::Vector2f 
 setExpRequired();
 bodyType=LIVING;
 }
-Player::Player(std::string n, sf::Vector2f p, sf::Vector2f s) : Character(n,5,1,100,1,p,s){
+Player::Player(std::string n, sf::Vector2f p, sf::Vector2f s) : Character(n,5,1,30,1,p,s){
   experience=0;
 setExpRequired();
 bodyType=LIVING;

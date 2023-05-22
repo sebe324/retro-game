@@ -1,4 +1,5 @@
 #include "Ghost.h"
+#include "../Projectile/SpectralOrb.h"
 
 Ghost::Ghost(sf::Vector2f p) : Monster("Ghost",1,5,p){
 createBodyPart({50.f,80.f},{0.f,0.f},sf::Color(126,214,223));
@@ -25,4 +26,12 @@ else{
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),"MISS",1,sf::Color(250,100,100),36);
     }
 }
+}
+
+void Ghost::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
+    if(attackDelay-elapsed<sf::Time::Zero){
+SpectralOrb spectralOrb(getCenter(),mousePos,damage,false);
+projectiles.push_back(std::make_unique<SpectralOrb>(spectralOrb));
+attackDelay=sf::seconds(0.3)/attackSpeed;
+    }
 }
