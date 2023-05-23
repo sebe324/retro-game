@@ -48,6 +48,13 @@ class Character : public Unit{
         void addMaxMana(float n);
         void setManaRegen(float n);
 
+        void setShield(float n);
+        void addShield(float n);
+        void removeShield(float n);
+
+        void setMaxShield(float n);
+        void addMaxShield(float n);
+
         int getLevel() const;
 
         float getHealth() const;
@@ -57,11 +64,15 @@ class Character : public Unit{
         float getMaxMana() const;
         float getManaRegen() const;
 
+        float getShield() const;
+        float getMaxShield() const;
+
         int getId() const;
 
         //Damage multiplier based on damage types.
         //Some characters will have a higher resistance for fire damage, some will be immune to it
-        //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE,WATER, PHYSIC, TRUE
+        //For example infernal enemies will receive less damage from fire
+        //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE, WATER, PHYSIC, TRUE
         const float damageMultiplier[8]={1,1,1,1,1,1,1,1};
     protected:
         int level=0;
@@ -75,6 +86,8 @@ class Character : public Unit{
         float maxMana=0;
         float manaRegen=0;
 
+        float shield=0;
+        float maxShield=0;
         int id;
         static int characterCount;
 
