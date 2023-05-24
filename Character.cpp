@@ -20,7 +20,6 @@ move();
 
 void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
     if(attackDelay-elapsed<sf::Time::Zero){
-       float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
 SwordSwing swordSwing(getCenter(),mousePos,damage,true);
 projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
 
@@ -61,8 +60,13 @@ else health=n;
 void Character::addHealth(float n){
 setHealth(health+n);
 }
-void Character::removeHealth(float n){
-setHealth(health-n);
+void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem){
+
+if(shield>0)
+    removeShield(n);
+else
+setHealth(health-n*damageMultiplier[damageType]);
+particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
 }
 void Character::setMaxHealth(float n){
 if(n<=0) maxHealth=1;
@@ -87,6 +91,9 @@ void Character::addMana(float n){
 setMana(mana+n);
 }
 
+void Character::removeMana(float n){
+setMana(mana-n);
+}
 void Character::setMaxMana(float n){
 if(n<=0) maxMana=1;
 else maxMana=n;
@@ -98,6 +105,24 @@ void Character::setManaRegen(float n){
 manaRegen=n;
 }
 
+void Character::setShield(float n){
+if(n<0) shield=0;
+else if(n>=maxShield) shield=maxShield;
+else shield=n;
+}
+
+void Character::addShield(float n){
+    setShield(getShield()+n);
+}
+
+void Character::removeShield(float n){
+    setShield(getShield()-n);
+}
+
+void Character::setMaxShield(float n){
+    if(n<0) maxShield=0;
+    else maxShield=n;
+}
 int Character::getLevel() const{
 return level;
 }
@@ -120,6 +145,13 @@ float Character::getManaRegen() const{
 return manaRegen;
 }
 
+float Character::getShield() const{
+return shield;
+}
+
+float Character::getMaxShield() const{
+return maxShield;
+}
 int Character::getId() const {
 return id;
 }

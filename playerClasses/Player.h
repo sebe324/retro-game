@@ -26,13 +26,21 @@ class Player : public Character{
         bool checkLevelUp();
         void movementWSAD(bool b);
         virtual void update(sf::Time elapsed,std::vector<std::unique_ptr<Monster>>& monsters);
-        virtual void ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos);
-        virtual void ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos);
-        virtual void ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos);
+        virtual void ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
+        virtual void ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
+        virtual void ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
 
          sf::Time ability1Cooldown=sf::Time::Zero;
          sf::Time ability2Cooldown=sf::Time::Zero;
          sf::Time ability3Cooldown=sf::Time::Zero;
+
+         sf::Time ability1Time=sf::seconds(1);
+         sf::Time ability2Time=sf::seconds(1);
+         sf::Time ability3Time=sf::seconds(1);
+
+         float ability1Cost=0;
+         float ability2Cost=0;
+         float ability3Cost=0;
     private:
         int experience;
         int expRequired;

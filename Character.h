@@ -13,6 +13,8 @@
 #include "Projectile/SwordSwing.h"
 
 #include "enums/ParticlesGame.h"
+#include "enums/DamageType.h"
+
 class Character : public Unit{
     public:
         float damage=0;
@@ -32,20 +34,29 @@ class Character : public Unit{
         void setLevel(int n);
         void levelUp();
 
+
         void setHealth(float n);
         void addHealth(float n);
-        void removeHealth(float n);
+        virtual void removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem);
         void setMaxHealth(float n);
         void addMaxHealth(float n);
         void setHealthRegen(float n);
-
         void setMana(float n);
         void addMana(float n);
+        void removeMana(float n);
         void setMaxMana(float n);
         void addMaxMana(float n);
         void setManaRegen(float n);
 
+        void setShield(float n);
+        void addShield(float n);
+        void removeShield(float n);
+
+        void setMaxShield(float n);
+        void addMaxShield(float n);
+
         int getLevel() const;
+
         float getHealth() const;
         float getMaxHealth() const;
         float getHealthRegen() const;
@@ -53,7 +64,16 @@ class Character : public Unit{
         float getMaxMana() const;
         float getManaRegen() const;
 
+        float getShield() const;
+        float getMaxShield() const;
+
         int getId() const;
+
+        //Damage multiplier based on damage types.
+        //Some characters will have a higher resistance for fire damage, some will be immune to it
+        //For example infernal enemies will receive less damage from fire
+        //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE, WATER, PHYSIC, TRUE
+        const float damageMultiplier[8]={1,1,1,1,1,1,1,1};
     protected:
         int level=0;
     private:
@@ -66,6 +86,8 @@ class Character : public Unit{
         float maxMana=0;
         float manaRegen=0;
 
+        float shield=0;
+        float maxShield=0;
         int id;
         static int characterCount;
 

@@ -6,7 +6,7 @@ Player::Player(std::string n, float d, float as, float spd, int l, sf::Vector2f 
 setExpRequired();
 bodyType=LIVING;
 }
-Player::Player(std::string n, sf::Vector2f p, sf::Vector2f s) : Character(n,5,1,100,1,p,s){
+Player::Player(std::string n, sf::Vector2f p, sf::Vector2f s) : Character(n,5,1,30,1,p,s){
   experience=0;
 setExpRequired();
 bodyType=LIVING;
@@ -66,6 +66,6 @@ keyUp=sf::Keyboard::Up;
 }
 }
 
-void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){}
-void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){}
-void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, sf::Vector2f mousePos){}
+void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){}
+void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){}
+void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){}
