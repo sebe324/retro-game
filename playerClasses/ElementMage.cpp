@@ -18,7 +18,7 @@ ability3Time=sf::seconds(5.f);
 
 ability1Cost=20.f;
 ability2Cost=20.f;
-ability3Cost=40.f;
+ability3Cost=25.f;
 }
 
 void ElementMage::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed){
@@ -61,9 +61,10 @@ void ElementMage::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std:
 
 
 void ElementMage::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
- if(ability2Cooldown<=sf::Time::Zero){
+ if(ability3Cooldown<=sf::Time::Zero){
         if(getMana()>=ability3Cost){
-
+            addShield(10);
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter(),"ROCK SOLID",1,sf::Color(20,20,20),40);
             removeMana(ability3Cost);
             ability3Cooldown=ability3Time;
         }
