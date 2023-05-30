@@ -50,7 +50,7 @@ for(int y=0; y<50; y++){
     else if(value>80&&value<100) color=sf::Color(204,174,98);
     else if(value>=100) color=sf::Color(100,20,20);
     gameMap[y*50+x].color=color;
-    gameMap[y*50+x].position={x,y};
+    gameMap[y*50+x].position = {(float)x,(float)y}; // Float cast added to compile in Visual Studio
 }
 actualMap=sf::VertexArray(sf::Quads,10000);
 for(int x=0; x<50; x++)

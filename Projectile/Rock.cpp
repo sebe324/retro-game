@@ -7,6 +7,11 @@ rotate(atan2(velY,velX)*180/3.14);
 }
 void Rock::onImpact(sf::Time elapsed, Character& target, std::vector<ParticleSystem> &particleSystem){
     target.removeHealth(damage, EARTH, particleSystem);
-    target.velocity+=velocity*15.f;
+
+    if(velocity.x != 0 && velocity.y != 0)
+        target.velocity += velocity*15.f;
+    else
+        target.velocity += sf::Vector2f(30.f, 30.f);
+
     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter({hitbox.left,hitbox.top+25.f},10,{35,40},{35,40},{35,40});
 }
