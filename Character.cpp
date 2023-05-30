@@ -10,6 +10,7 @@ attackSpeed=as;
 setLevel(l);
 attackDelay=sf::Time::Zero;
 id = ++characterCount;
+setMaxShield(20);
 }
 Character::Character(){}
 void Character::update(sf::Time elapsed){
@@ -62,11 +63,14 @@ setHealth(health+n);
 }
 void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem){
 
-if(shield>0)
+if(shield>0){
     removeShield(n);
-else
+ particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(20,20,20),30);
+}
+else{
 setHealth(health-n*damageMultiplier[damageType]);
 particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
+}
 }
 void Character::setMaxHealth(float n){
 if(n<=0) maxHealth=1;

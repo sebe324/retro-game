@@ -67,10 +67,8 @@ void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vect
 void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos){
     if(ability3Cooldown<=sf::Time::Zero){
         if(getMana()>=ability3Cost){
-            float tmpX=(mousePos.x-getCenter().x)/5;
-            float tmpY=(mousePos.y-getCenter().y)/5;
-            velocity+={tmpX,tmpY};
-
+            float radians=atan2(mousePos.y-getCenter().y,mousePos.x-getCenter().x);
+            velocity+={cos(radians)*30,sin(radians)*30};
             particleSystem[PARTICLES_WORLD].addEmitter(getCenter(),5,{250,255},{250,255},{250,255});
             removeMana(ability3Cost);
             ability3Cooldown=ability3Time;
