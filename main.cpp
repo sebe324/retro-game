@@ -9,7 +9,7 @@
 #include "Info.h"
 #include <ctime>
 int main(){
-sf::RenderWindow window(sf::VideoMode(1600,1000),"Wojownicy");
+sf::RenderWindow window(sf::VideoMode(1600,1000),"Retro-Game");
 Menu menu("font.ttf","texture.png");
 sf::Clock clock;
 sf::Time deltaTime;
