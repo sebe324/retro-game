@@ -63,13 +63,14 @@ setHealth(health+n);
 }
 void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem){
 
+float dmgAmount=n*damageMultiplier[damageType];
 if(shield>0){
-    removeShield(n);
- particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(20,20,20),30);
+    removeShield(dmgAmount);
+ particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(20,20,20),30);
 }
 else{
-setHealth(health-n*damageMultiplier[damageType]);
-particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(n,1),1,sf::Color(DamageTypeColors[damageType]),36);
+setHealth(health-dmgAmount);
+particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(DamageTypeColors[damageType]),36);
 }
 }
 void Character::setMaxHealth(float n){

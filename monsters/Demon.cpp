@@ -13,4 +13,5 @@ attitude=Aggressive;
 defaultAttitude=Aggressive;
 fightUntilDeath=true;
 bodyType=INFERNAL;
+damageMultiplier[FIRE]=0.5f;
 }
