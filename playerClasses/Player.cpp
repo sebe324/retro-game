@@ -14,7 +14,10 @@ bodyType=LIVING;
 Player::Player() : Character(){}
 
 void Player::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>>& monsters){
-regenerate(elapsed);
+
+if(getHealth() > 0.0f) // This stops the player from regenerating after death
+    regenerate(elapsed);
+
 attackDelay-=elapsed;
 ability1Cooldown-=elapsed;
 ability2Cooldown-=elapsed;

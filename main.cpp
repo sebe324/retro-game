@@ -84,8 +84,8 @@ while(window.isOpen()){
         case 3:
             if (event.type == sf::Event::KeyPressed) {
 
-                // Menu to be presented upon pressing escape
-                if (event.key.code == sf::Keyboard::Escape) {
+                // Sets the flag to present the ESC key menu if the player is not dead.
+                if (event.key.code == sf::Keyboard::Escape && !game.player->isDead()) {
                     
                     if (!game.paused)
                         escapeKeyPressed = true;
@@ -93,7 +93,6 @@ while(window.isOpen()){
                         escapeKeyPressed = false;
 
                     game.paused = !game.paused;
-
                 }
             }
              if(event.type==sf::Event::TextEntered){
@@ -117,8 +116,6 @@ while(window.isOpen()){
             }
         break;
         }
-
-
     }
     switch (mode) {
     case 1:
@@ -136,7 +133,7 @@ while(window.isOpen()){
         window.draw(game);
         
         //  Menu to be presented upon the player's death
-        if (game.player->getHealth() < 0.1f) {    // For some reason health never reaches 0.
+        if (game.player->isDead()) {
 
             game.paused = true;
             mousePos = window.mapPixelToCoords(windowPosition);
@@ -155,8 +152,8 @@ while(window.isOpen()){
                     game.paused = false;
 
                     // Recreating the game object was the only way I found to reset the game.
-                    Game game("texture.png", "font.ttf", &window, &viewUI); 
-                }
+                    Game game("texture.png", "font.ttf", &window, &viewUI);
+                 }
             }
         }
         break;
