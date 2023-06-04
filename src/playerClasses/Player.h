@@ -14,8 +14,6 @@ class Player : public Character{
         sf::Keyboard::Key keyDown=sf::Keyboard::S;
         sf::Keyboard::Key keyLeft=sf::Keyboard::A;
         sf::Keyboard::Key keyRight=sf::Keyboard::D;
-        sf::Keyboard::Key keyRightAttack=sf::Keyboard::E;
-        sf::Keyboard::Key keyLeftAttack=sf::Keyboard::Q;
         Player(std::string n, float d, float as, float spd, int l, sf::Vector2f p={0.f,0.f}, sf::Vector2f s={10.f,10.f});
         Player(std::string n, sf::Vector2f p={0.f,0.f}, sf::Vector2f s={10.f,10.f});
         Player();
