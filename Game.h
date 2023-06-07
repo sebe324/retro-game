@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "Settings.h"
 #include "Monster.h"
 #include "playerClasses/Player.h"
 #include "playerClasses/Paladin.h"
@@ -41,6 +42,9 @@ void update(sf::Time elapsed, sf::Vector2f globalPos);
 void changeMap(uint32_t seed, int octaves, float bias);
 Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
 void changePlayerClass(int playerClass);
+
+// Updates the current game to new settings
+void updateSettings(Settings& new_settings);
 
 private:
 

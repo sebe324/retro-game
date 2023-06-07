@@ -71,7 +71,7 @@ while(window.isOpen()){
                     wCreator.checkClick(mousePos);
                     if(wCreator.bStartGame.click(mousePos)){
                     game.changePlayerClass(wCreator.playerClass);
-                    game.player->movementWSAD(settings.WSAD);
+                    game.updateSettings(settings);
                     game.changeMap(wCreator.seed,wCreator.octaves, wCreator.bias);
                     mode=3;
                     wCreator.clearVectors();
@@ -104,9 +104,12 @@ while(window.isOpen()){
 
             if(settings.bGoBack.click(mousePos) && !escapeKeyPressed)
                 mode = 1; // If the escape key had not been pressed, we were in the main menu
-            if(settings.bGoBack.click(mousePos) && escapeKeyPressed)
-                mode = 3; // If it had, we were in the escape key menu
 
+            if (settings.bGoBack.click(mousePos) && escapeKeyPressed) {
+
+                mode = 3; // If the escape key had been pressed, we were in the escape key menu
+                game.updateSettings(settings); // Updates the current game with the changes made in the settings
+            }
         break;
         case 5:
             info.update(mousePos);
