@@ -86,7 +86,7 @@ while(window.isOpen()){
 
                 // Sets the flag to present the ESC key menu if the player is not dead.
                 if (event.key.code == sf::Keyboard::Escape && !game.player->isDead()) {
-                    
+
                     if (!game.paused)
                         escapeKeyPressed = true;
                     else
@@ -130,11 +130,11 @@ while(window.isOpen()){
     case 3:
         window.setView(viewGame);
         mousePos = window.mapPixelToCoords(windowPosition);
-           
+
         game.update(deltaTime, mousePos);
         viewGame.setCenter(game.player->getCenter());
         window.draw(game);
-        
+
         //  Menu to be presented upon the player's death
         if (game.player->isDead()) {
 
@@ -196,6 +196,14 @@ while(window.isOpen()){
                 escapeKeyPressed = false;
 
                 // Recreating the game object was the only way I found to reset the game.
+
+                game.monsters.clear();
+                game.projectiles.clear();
+                for(auto &x : game.particleSystem)
+                {
+                    x.emitters.clear();
+                    x.textEmitters.clear();
+                }
                 Game game("texture.png", "font.ttf", &window, &viewUI);
             }
         }

@@ -54,7 +54,6 @@ manaRegen+=0.2;
 }
 void Character::setHealth(float n){
 if(n>maxHealth) health=maxHealth;
-else if(n<=0) health=0;
 else health=n;
 }
 
