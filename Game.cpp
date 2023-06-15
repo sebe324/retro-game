@@ -393,3 +393,11 @@ break;
 }
 player->setLevel(10);
 }
+
+// Updates the current game to new settings
+void Game::updateSettings(Settings& new_settings) {
+
+    // For now, the only setting that may require updating
+    player->movementWSAD(new_settings.WSAD);
+}
+
