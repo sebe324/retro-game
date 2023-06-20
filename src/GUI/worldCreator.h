@@ -3,10 +3,10 @@
 
 
 #include "Button.h"
-#include "noise/perlinNoise.h"
+#include "../noise/perlinNoise.h"
 
 #include <iomanip>
-#include "Utilities/Utils.h"
+#include "../Utilities/Utils.h"
 
 class WorldCreator : public sf::Drawable{
 public:

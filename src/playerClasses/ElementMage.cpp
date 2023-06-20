@@ -1,5 +1,5 @@
 #include "ElementMage.h"
-#include "../Monster.h"
+#include "../monsters/Monster.h"
 #include "../Projectile/FireBall.h"
 
 ElementMage::ElementMage(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){

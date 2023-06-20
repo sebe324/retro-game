@@ -1,5 +1,5 @@
 #include "FireBall.h"
-#include "../Character.h"
+#include "../core/Character.h"
 
 FireBall::FireBall(sf::Vector2f p, sf::Vector2f dest, float dmg, bool attackMons)
  : Projectile("FireBall", dmg, sf::seconds(5),FIRE,p,{20.f,20.f},dest,500.f,attackMons){

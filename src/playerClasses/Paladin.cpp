@@ -1,5 +1,5 @@
 #include "Paladin.h"
-#include "../Monster.h"
+#include "../monsters/Monster.h"
 Paladin::Paladin(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){
 createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(250,177,160));
 createBodyPart({30.f,50.f},{10.f,30.f},sf::Color(99,110,114));

@@ -1,7 +1,7 @@
 #ifndef TOXICLIZARD_H
 #define TOXICLIZARD_H
 
-#include "../Monster.h"
+#include "Monster.h"
 
 class ToxicLizard : public Monster{
     public:

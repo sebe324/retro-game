@@ -1,17 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Settings.h"
-#include "Monster.h"
-#include "playerClasses/Player.h"
-#include "playerClasses/Paladin.h"
-#include "playerClasses/DarkKnight.h"
-#include "playerClasses/Archer.h"
-#include "playerClasses/ElementMage.h"
-#include "monsters/monsters.h"
-#include "Projectile/Projectile.h"
-#include "particleSystem/particleSystem.h"
-#include "noise/perlinNoise.h"
+#include "../GUI/Settings.h"
+#include "../monsters/Monster.h"
+#include "../playerClasses/Player.h"
+#include "../playerClasses/Paladin.h"
+#include "../playerClasses/DarkKnight.h"
+#include "../playerClasses/Archer.h"
+#include "../playerClasses/ElementMage.h"
+#include "../monsters/monsters.h"
+#include "../Projectile/Projectile.h"
+#include "../particleSystem/particleSystem.h"
+#include "../noise/perlinNoise.h"
 
 #include <memory>
 #include <iostream>
@@ -20,9 +20,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <iomanip>
 
-#include "Utilities/Utils.h"
-#include "enums/ParticlesGame.h"
-#include "enums/Biomes.h"
+#include "../Utilities/Utils.h"
+#include "../enums/ParticlesGame.h"
+#include "../enums/Biomes.h"
 class Game : public sf::Drawable{
 
 public:

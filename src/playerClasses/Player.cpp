@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "../Monster.h"
+#include "../monsters/Monster.h"
 
 Player::Player(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s) : Character(n,d,as,spd,l,p, s){
     experience=0;

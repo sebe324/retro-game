@@ -1,10 +1,10 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include "Character.h"
-#include "particleSystem/particleSystem.h"
-#include "enums/Attitude.h"
-#include "Projectile/Projectile.h"
+#include "../core/Character.h"
+#include "../particleSystem/particleSystem.h"
+#include "../enums/Attitude.h"
+#include "../Projectile/Projectile.h"
 
 class Monster : public Character{
     public:

@@ -1,7 +1,7 @@
 #ifndef SKELETON_H
 #define SKELETON_H
 
-#include "../Monster.h"
+#include "Monster.h"
 
 class Skeleton : public Monster{
     public:

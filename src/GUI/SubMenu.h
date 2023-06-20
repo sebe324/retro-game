@@ -1,10 +1,10 @@
 #ifndef SUB_MENU_H
 #define SUB_MENU_H
 
-#include "Game.h"
+#include "../core/Game.h"
 #include "Button.h"
 #include <SFML/Graphics.hpp>
-#include "noise/perlinNoise.h"
+#include "../noise/perlinNoise.h"
 
 // This class was created to produce the game over and the ESC key screens. Since in both cases we have the creation of a menu, I use
 // a single class for both of them. The class is an altered copy of the Menu class, but in an attempt do decrease the amount of

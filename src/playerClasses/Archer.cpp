@@ -1,5 +1,5 @@
 #include "Archer.h"
-#include "../Monster.h"
+#include "../monsters/Monster.h"
 #include "../Projectile/Trap.h"
 
 Archer::Archer(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){

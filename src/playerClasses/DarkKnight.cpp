@@ -1,5 +1,5 @@
 #include "DarkKnight.h"
-#include "../Monster.h"
+#include "../monsters/Monster.h"
 
 DarkKnight::DarkKnight(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}){
 createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(230,200,200));

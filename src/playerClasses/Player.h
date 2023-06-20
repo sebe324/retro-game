@@ -4,7 +4,7 @@
 #include "../particleSystem/particleSystem.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "../Utilities/Utils.h"
-#include "../Character.h"
+#include "../core/Character.h"
 
 class Monster;
 

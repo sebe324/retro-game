@@ -1,7 +1,7 @@
 #ifndef SUCCUBUS_H
 #define SUCCUBUS_H
 
-#include "../Monster.h"
+#include "Monster.h"
 
 class Succubus : public Monster{
     public:

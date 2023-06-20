@@ -5,15 +5,15 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
-#include "Utilities/Utils.h"
-#include "enums/BodyType.h"
+#include "../Utilities/Utils.h"
+#include "../enums/BodyType.h"
 #include "Unit.h"
-#include "Projectile/Projectile.h"
-#include "Projectile/Arrow.h"
-#include "Projectile/SwordSwing.h"
+#include "../Projectile/Projectile.h"
+#include "../Projectile/Arrow.h"
+#include "../Projectile/SwordSwing.h"
 
-#include "enums/ParticlesGame.h"
-#include "enums/DamageType.h"
+#include "../enums/ParticlesGame.h"
+#include "../enums/DamageType.h"
 
 class Character : public Unit{
     public:

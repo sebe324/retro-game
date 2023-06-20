@@ -1,7 +1,7 @@
 #ifndef GIANT_H
 #define GIANT_H
 
-#include "../Monster.h"
+#include "Monster.h"
 #include "../Projectile/Rock.h"
 class Giant : public Monster{
     public:

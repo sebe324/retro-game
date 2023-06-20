@@ -1,8 +1,8 @@
 #include "Trap.h"
 #include "../enums/ParticlesGame.h"
 
-#include "../Unit.h"
-#include "../Character.h"
+#include "../core/Unit.h"
+#include "../core/Character.h"
 Trap::Trap(sf::Vector2f p, sf::Vector2f dest, float dmg, bool attackMons) : Projectile("Trap", dmg, sf::seconds(10),PHYSIC,p,{40.f,60.f},dest,0.f,attackMons)
 {
 createBodyPart({50.f,10.f},{0.f,0.f},sf::Color(100,100,100));

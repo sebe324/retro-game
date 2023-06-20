@@ -1,7 +1,7 @@
 #include "Projectile.h"
 #include "../playerClasses/Player.h"
-#include "../Monster.h"
-#include "../Character.h"
+#include "../monsters/Monster.h"
+#include "../core/Character.h"
 
 Projectile::Projectile(std::string n, float dmg, sf::Time lt, DamageType dmgtype, sf::Vector2f p, sf::Vector2f s, sf::Vector2f dest, float spd, bool attackMons) : Unit(n,p,s,spd){
 damage=dmg;

@@ -1,10 +1,10 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Game.h"
+#include "../core/Game.h"
 #include "Button.h"
 #include <SFML/Graphics.hpp>
-#include "noise/perlinNoise.h"
+#include "../noise/perlinNoise.h"
 
 class Menu : public sf::Drawable{
 public:

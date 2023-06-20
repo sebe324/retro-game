@@ -1,7 +1,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include "../Unit.h"
+#include "../core/Unit.h"
 #include "../enums/DamageType.h"
 #include "../particleSystem/particleSystem.h"
 
