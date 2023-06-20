@@ -296,11 +296,11 @@ if(player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICL
 
 
 
-float elo320=(float)player->getExp()/player->getExpRequired()*1000;
-if(abs(elo320-stats[25].position.x)>5)
-if(stats[26].position.x<elo320){
-stats[26].position.x+=elo320/2.f*elapsed.asSeconds();
-stats[25].position.x+=elo320/2.f*elapsed.asSeconds();
+float targetExp=(float)player->getExp()/player->getExpRequired()*1000;
+if(abs(targetExp-stats[25].position.x)>5)
+if(stats[26].position.x<targetExp){
+stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
+stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
 }
 else{
    stats[26].position.x=0;
