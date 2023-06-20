@@ -119,7 +119,7 @@ if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) player->attack(projectiles, glo
     }
 }
 playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
-playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
+playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),840.f);
 if(monsters.size()<20){
 generateMonster();
 }
@@ -179,6 +179,7 @@ target.draw(playerOnMap);
 target.draw(mapBorder);
 }
 }
+
 void Game::addText(std::string text, sf::Vector2f pos,  sf::Color color){
 sf::Text t;
 t.setFont(font);
@@ -293,9 +294,21 @@ stats[16].position.x=(1000-player->getMana()/player->getMaxMana()*400);
 stats[19].position.x=(1000-player->getMana()/player->getMaxMana()*400);
 if(player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
+
+
+float targetExp=(float)player->getExp()/player->getExpRequired()*1000;
+if(abs(targetExp-stats[25].position.x)>5)
+if(stats[26].position.x<targetExp){
+stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
+stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
+}
+else{
+   stats[26].position.x=0;
+stats[25].position.x=0;
+}
 }
 void Game::statsSetup(){
-stats=sf::VertexArray(sf::Quads,20);
+stats=sf::VertexArray(sf::Quads,28);
 playerLvl.setFont(font);
 playerLvl.setString(Utils::toString(player->getLevel()));
 playerLvl.setCharacterSize(50);
@@ -304,7 +317,7 @@ playerLvl.setPosition(1000/2-(playerLvl.getGlobalBounds().width/2),900.f);
 playerExpProgress.setFont(font);
 playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
 playerExpProgress.setCharacterSize(48);
-playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),950.f);
+playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),840.f);
 
 playerHp.setFont(font);
 playerHp.setFillColor(sf::Color::White);
@@ -367,6 +380,30 @@ stats[16].color=sf::Color(60,90,200);
 stats[17].color=sf::Color(60,90,150);
 stats[18].color=sf::Color(60,90,150);
 stats[19].color=sf::Color(60,90,200);
+
+//xp bar
+
+stats[20].position={0.f,850.f};
+stats[21].position={1000.f,850.f};
+stats[22].position={1000.f,900.f};
+stats[23].position={0.f,900.f};
+
+stats[20].color=sf::Color(40,40,40);
+stats[21].color=sf::Color(40,40,40);
+stats[22].color=sf::Color(40,40,40);
+stats[23].color=sf::Color(40,40,40);
+
+//xp bar fill
+
+stats[24].position={0.f,850.f};
+stats[25].position={1000.f,850.f};
+stats[26].position={1000.f,900.f};
+stats[27].position={0.f,900.f};
+
+stats[24].color = sf::Color(50,200,50);
+stats[25].color = sf::Color(50,200,50);
+stats[26].color = sf::Color(50,200,50);
+stats[27].color = sf::Color(50,200,50);
 
 particleSystem[ParticlesGame::PARTICLES_HP].addHealingEmitter({stats[16].position.x,915.f},5,sf::Color::Red,true,sf::seconds(1.5));
 particleSystem[ParticlesGame::PARTICLES_MANA].addMagicEmitter({stats[19].position.x,915.f},4,sf::Color::Blue,true,sf::seconds(1.5));

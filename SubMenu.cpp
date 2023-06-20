@@ -7,7 +7,7 @@ SubMenu::SubMenu(std::string fontPath, std::string texturePath, std::string menu
 
 	if (!font.loadFromFile(fontPath)) {}
 	if (!texture.loadFromFile(texturePath)) {}
-	
+
 	if (menuType == "game_over") {
 
 		logo.setString("GAME OVER");
@@ -15,6 +15,8 @@ SubMenu::SubMenu(std::string fontPath, std::string texturePath, std::string menu
 		logo.setFont(font);
 		logo.setPosition(500 - (logo.getGlobalBounds().width / 2), 50.f);
 		logo.setFillColor(sf::Color::White);
+		overlay.setSize({1000.f,1000.f});
+		overlay.setFillColor(sf::Color(100,20,20,100));
 	}
 
 	if (menuType == "escape_key") {
@@ -26,6 +28,8 @@ SubMenu::SubMenu(std::string fontPath, std::string texturePath, std::string menu
 		bSettings = Button("Settings", 62, sf::Color::Black, { 250.f, 250.f }, { 500.f,150.f }, sf::Color(92, 64, 51), font);
 		bSettings.hoverContentColor = sf::Color::White;
 		bSettings.activeContentColor = sf::Color::White;
+		overlay.setSize({1000.f,1000.f});
+		overlay.setFillColor(sf::Color(100,100,100,100));
 	}
 
 	bMainMenu = Button("Main Menu", 62, sf::Color::Black, { 250, 450.f }, { 500.f,150.f }, sf::Color(92, 64, 51), font);
@@ -50,8 +54,9 @@ void SubMenu::update(sf::Vector2f pos) {
 
 void SubMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
+    target.draw(overlay);
 	if (menuType == "escape_key") {
-	
+
 		target.draw(bSettings);
 		target.draw(bResume);
 	}
