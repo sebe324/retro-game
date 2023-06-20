@@ -1,13 +1,13 @@
 #include <SFML/Graphics.hpp>
 
-#include "Monster.h"
-#include "Game.h"
-#include "Menu.h"
-#include "Button.h"
-#include "worldCreator.h"
-#include "Settings.h"
-#include "Info.h"
-#include "SubMenu.h"
+#include "monsters/Monster.h"
+#include "core/Game.h"
+#include "GUI/Menu.h"
+#include "GUI/Button.h"
+#include "GUI/worldCreator.h"
+#include "GUI/Settings.h"
+#include "GUI/Info.h"
+#include "GUI/SubMenu.h"
 #include <ctime>
 int main(){
 sf::RenderWindow window(sf::VideoMode(1600,1000),"Retro-Game");
