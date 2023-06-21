@@ -48,19 +48,20 @@ biasLabel.setFont(font);
 biasLabel.setString("Bias");
 biasLabel.setCharacterSize(60);
 biasLabel.setPosition(675.f, 170.f);
-bRandomizeSeed=Button("randomize",50,sf::Color::Black,{675.f,500.f},{300.f,100.f},sf::Color(142,68,173),font);
+bRandomizeSeed=Button("",50,sf::Color::Black,{675.f,500.f},{125.f,100.f},sf::Color(142,68,173),font);
 
 bRandomizeSeed.hoverBodyColor=sf::Color(155,89,182);
 bRandomizeSeed.hoverContentColor=sf::Color::White;
 
-seedText.setFont(font);
-seedText.setString(std::to_string(seed));
-seedText.setPosition(675.f,400.f);
-seedText.setCharacterSize(75);
+bConfirmSeed=Button("OK",50,sf::Color::Black,{850.f,500.f},{125.f,100.f},sf::Color(142,68,173),font);
+bConfirmSeed.hoverBodyColor=sf::Color(155,89,182);
+bConfirmSeed.hoverContentColor=sf::Color::White;
 
+seedInput=Textbox("0000",font,{675.f,400.f},75,sf::Color::White,sf::Color(90,62,28));
+seedInput.setMaxSize(6);
 seedLabel.setFont(font);
 seedLabel.setString("Seed");
-seedLabel.setPosition(675.f, 350.f);
+seedLabel.setPosition(675.f, 335.f);
 seedLabel.setCharacterSize(60);
 
 bStartGame=Button("Start Game",50,sf::Color::Black,{675.f,800.f},{300.f,100.f},sf::Color(92,64,51),font);
@@ -76,6 +77,14 @@ background=sf::RectangleShape({1000.f,1000.f});
 background.setFillColor(sf::Color(130,102,68));
 randomizeSeed();
 updateMap();
+
+if(!diceTexture.loadFromFile("dice.png")){
+    //idk
+}
+diceSprite.setTexture(diceTexture);
+
+diceSprite.setPosition({705.f,510.f});
+diceSprite.setColor(sf::Color::Black);
 }
 void WorldCreator::update(sf::Vector2f pos){
 bIncreaseOctaves.update(pos);
@@ -88,6 +97,11 @@ bRandomizeSeed.update(pos);
 bStartGame.update(pos);
 bChangeClass.update(pos);
 bGoBack.update(pos);
+bConfirmSeed.update(pos);
+if(bRandomizeSeed.contains(pos)){
+    diceSprite.setColor(sf::Color::White);
+}
+else diceSprite.setColor(sf::Color::Black);
 }
 void WorldCreator::checkClick(sf::Vector2f pos){
 if(bIncreaseOctaves.click(pos)) changeOctaves(1);
@@ -96,6 +110,8 @@ else if(bIncreaseBias.click(pos)) changeBias(0.1f);
 else if(bDecreaseBias.click(pos)) changeBias(-0.1f);
 else if(bRandomizeSeed.click(pos)) randomizeSeed();
 else if(bChangeClass.click(pos)) changeClass();
+else if(bConfirmSeed.click(pos)) changeSeed(std::stoi(seedInput.getTextValue()));
+else seedInput.isClicked(pos);
 }
 void WorldCreator::changeBias(float amount){
 bias+=amount;
@@ -122,7 +138,7 @@ for(int x=0; x<50; x++)
 for(int y=0; y<50; y++){
     randomValues2d[y*50+x]=rnd.rndInt(0,100);
 }
-seedText.setString(std::to_string(seed));
+seedInput.text.setString(std::to_string(seed));
 updateMap();
 }
 
@@ -184,7 +200,8 @@ target.draw(biasText);
 target.draw(biasLabel);
 
 target.draw(bRandomizeSeed);
-target.draw(seedText);
+target.draw(bConfirmSeed);
+target.draw(seedInput);
 target.draw(seedLabel);
 
 target.draw(bChangeClass);
@@ -194,9 +211,22 @@ target.draw(bStartGame);
 target.draw(gameMap);
 
 target.draw(bGoBack);
+target.draw(diceSprite);
 }
 void WorldCreator::clearVectors(){
     std::vector<float> randomValues2d;
     std::vector<float> noiseValues2d;
     sf::VertexArray gameMap;
+}
+
+void WorldCreator::changeSeed(size_t s)
+{
+seed=s;
+rnd.seed=s;
+for(int x=0; x<50; x++)
+for(int y=0; y<50; y++){
+    randomValues2d[y*50+x]=rnd.rndInt(0,100);
+}
+seedInput.text.setString(std::to_string(seed));
+updateMap();
 }

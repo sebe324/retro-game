@@ -80,6 +80,11 @@ while(window.isOpen()){
                         mode=1;
                     }
             }
+            if(event.type==sf::Event::TextEntered){
+                    if ((event.text.unicode >=48 && event.text.unicode<=57) || event.text.unicode==8){
+                wCreator.seedInput.addCharacter(static_cast<char>(event.text.unicode));
+            }
+                }
         break;
         case 3:
             if (event.type == sf::Event::KeyPressed) {
@@ -95,8 +100,6 @@ while(window.isOpen()){
                     game.paused = !game.paused;
                 }
             }
-             if(event.type==sf::Event::TextEntered){
-                }
             break;
         case 4:
             settings.update(mousePos);
