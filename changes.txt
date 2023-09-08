@@ -1,0 +1,17 @@
+Changed right angle brackets to be compatible with C++11 and later compilers
+-   src/Projectile/projectiles.h:   line 29
+-   src/core/Character.h:           line 31
+-   src/monsters/Monster.h:         lines 25, 26
+-   src/playerClasses/Player.h:     lines 26 - 29
+
+Added CMakeLists.txt to make it easy to compile
+
+Added indentations to every file for improved readability
+
+Added curly brackets to O(x*y) for loops to outer loop.
+
+Added some spaces to if statements & for loops for improved readability
+-   if( -> if (
+-   ){ -> ) {
+-   for( -> for (
+-   else{ -> else {

@@ -5,6 +5,6 @@
 
 class Demon : public Monster{
     public:
-Demon(sf::Vector2f p);
+        Demon(sf::Vector2f p);
 };
 #endif // DEMON_H

@@ -5,6 +5,6 @@
 
 class Succubus : public Monster{
     public:
-Succubus(sf::Vector2f p);
+        Succubus(sf::Vector2f p);
 };
 #endif // SUCCUBUS_H

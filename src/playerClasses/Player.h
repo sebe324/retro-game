@@ -23,10 +23,10 @@ class Player : public Character{
         int getExpRequired();
         bool checkLevelUp();
         void movementWSAD(bool b);
-        virtual void update(sf::Time elapsed,std::vector<std::unique_ptr<Monster>>& monsters);
-        virtual void ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
-        virtual void ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
-        virtual void ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos);
+        virtual void update(sf::Time elapsed,std::vector<std::unique_ptr<Monster> >& monsters);
+        virtual void ability1(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
+        virtual void ability2(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
+        virtual void ability3(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
 
          sf::Time ability1Cooldown=sf::Time::Zero;
          sf::Time ability2Cooldown=sf::Time::Zero;

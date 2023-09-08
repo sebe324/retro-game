@@ -5,6 +5,6 @@
 
 class Skeleton : public Monster{
     public:
-Skeleton(sf::Vector2f p);
+        Skeleton(sf::Vector2f p);
 };
 #endif // SKELETON_H

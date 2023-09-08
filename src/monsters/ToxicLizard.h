@@ -5,6 +5,6 @@
 
 class ToxicLizard : public Monster{
     public:
-ToxicLizard(sf::Vector2f p);
+        ToxicLizard(sf::Vector2f p);
 };
 #endif // TOXICLIZARD_H
