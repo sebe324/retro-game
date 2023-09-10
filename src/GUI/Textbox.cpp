@@ -1,7 +1,12 @@
 #include "Textbox.h"
 
 
-Textbox::Textbox(std::string value, sf::Font& font, sf::Vector2f pos, unsigned int charSize, sf::Color color, sf::Color bgColor) {
+Textbox::Textbox(std::string value, 
+                sf::Font& font, 
+                sf::Vector2f pos, 
+                unsigned int charSize, 
+                sf::Color color, 
+                sf::Color bgColor) {
     text.setString(value);
     text.setFont(font);
     text.setPosition(pos);

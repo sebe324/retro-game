@@ -91,16 +91,27 @@ void Game::updateMap() {
 void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     if (!paused) {
 
-        if (sf::Keyboard::isKeyPressed(player->keyUp)) { player->moveUp(elapsed); updateMap();}
-        if (sf::Keyboard::isKeyPressed(player->keyDown)) {player->moveDown(elapsed); updateMap();}
-        if (sf::Keyboard::isKeyPressed(player->keyLeft)) { player->moveLeft(elapsed); updateMap();}
-        if (sf::Keyboard::isKeyPressed(player->keyRight)) {player->moveRight(elapsed); updateMap();}
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {player->ability1(monsters,particleSystem, projectiles, globalPos);}
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {player->ability2(monsters,particleSystem, projectiles, globalPos);}
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {player->ability3(monsters,particleSystem, projectiles, globalPos);}
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) isMapActive=true;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) isMapActive=false;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) player->attack(projectiles, globalPos, elapsed);
+        if (sf::Keyboard::isKeyPressed(player->keyUp))
+            player->moveUp(elapsed); updateMap();
+        if (sf::Keyboard::isKeyPressed(player->keyDown))
+            player->moveDown(elapsed); updateMap();
+        if (sf::Keyboard::isKeyPressed(player->keyLeft))
+            player->moveLeft(elapsed); updateMap();
+        if (sf::Keyboard::isKeyPressed(player->keyRight))
+            player->moveRight(elapsed); updateMap();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+            player->ability1(monsters,particleSystem, projectiles, globalPos);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+            player->ability2(monsters,particleSystem, projectiles, globalPos);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+            player->ability3(monsters,particleSystem, projectiles, globalPos);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
+            isMapActive=true;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
+            isMapActive=false;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
+            player->attack(projectiles, globalPos, elapsed);
+        
         for(int i=projectiles.size(); i>0; i--) {
             if (projectiles[i-1]->lifetime<sf::Time::Zero) projectiles.erase(projectiles.begin()+i-1);
             else projectiles[i-1]->update(elapsed,monsters,player,particleSystem);
@@ -285,7 +296,8 @@ int Game::getBiome(sf::Vector2f pos) {
 }
 
 void Game::updateParticles(sf::Time& elapsed) {
-    for(auto& ps : particleSystem) ps.update(elapsed);
+    for(auto& ps : particleSystem) 
+        ps.update(elapsed);
     playerHp.setString(Utils::toString(player->getHealth(),1));
     playerHp.setPosition(200-(playerHp.getGlobalBounds().width/2),940.f);
 
@@ -293,21 +305,25 @@ void Game::updateParticles(sf::Time& elapsed) {
     playerMana.setPosition(800-(playerMana.getGlobalBounds().width/2),940.f);
     stats[13].position.x=(player->getHealth()/player->getMaxHealth()*400);
     stats[14].position.x=(player->getHealth()/player->getMaxHealth()*400);
-    if (player->getHealth()<player->getMaxHealth()) particleSystem[ParticlesGame::PARTICLES_HP].emitters[0].startPos={stats[13].position.x,950.f};
+    if (player->getHealth()<player->getMaxHealth()) 
+        particleSystem[ParticlesGame::PARTICLES_HP].emitters[0].startPos={stats[13].position.x,950.f};
 
     stats[16].position.x=(1000-player->getMana()/player->getMaxMana()*400);
     stats[19].position.x=(1000-player->getMana()/player->getMaxMana()*400);
-    if (player->getMana()<player->getMaxMana()) particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
+    if (player->getMana()<player->getMaxMana()) 
+        particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
     float targetExp=(float)player->getExp()/player->getExpRequired()*1000;
     if (abs(targetExp-stats[25].position.x)>5)
-    if (stats[26].position.x<targetExp) {
-        stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
-        stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
-    }
-    else {
-        stats[26].position.x=0;
-        stats[25].position.x=0;
+    {
+        if (stats[26].position.x<targetExp) {
+            stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
+            stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
+        }
+        else {
+            stats[26].position.x=0;
+            stats[25].position.x=0;
+        }
     }
 }
 void Game::statsSetup() {

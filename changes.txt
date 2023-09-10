@@ -1,10 +1,12 @@
+Game is now able to be compiled through cmake in the terminal!!!
+-   CMakeLists in root directory and every subdirectory in src
+-   Separate build folder that you can compile the game from
+
 Changed right angle brackets to be compatible with C++11 and later compilers
 -   src/Projectile/projectiles.h:   line 29
 -   src/core/Character.h:           line 31
 -   src/monsters/Monster.h:         lines 25, 26
 -   src/playerClasses/Player.h:     lines 26 - 29
-
-Added CMakeLists.txt to make it easy to compile
 
 Added indentations to every file for improved readability
 

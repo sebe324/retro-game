@@ -20,7 +20,13 @@ class Button : public sf::Drawable {
         bool click(sf::Vector2f pos);
         void update(sf::Vector2f pos);
         Button();
-        Button(std::string text, int charSize, sf::Color contentColor, sf::Vector2f bPos, sf::Vector2f bSize, sf::Color bodyColor, sf::Font &font);
+        Button (std::string text, 
+                int charSize, 
+                sf::Color contentColor, 
+                sf::Vector2f bPos, 
+                sf::Vector2f bSize, 
+                sf::Color bodyColor, 
+                sf::Font &font);
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

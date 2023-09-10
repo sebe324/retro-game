@@ -1,6 +1,6 @@
 #include "Vampire.h"
 
-Vampire::Vampire(sf::Vector2f p) : Monster("Vampire",4,8,p){
+Vampire::Vampire(sf::Vector2f p) : Monster("Vampire",4,8,p) {
    createBodyPart({28.f,28.f},{10.f,0.f},sf::Color(163,113,132));
     createBodyPart({5.f,5.f},{15.f,7.f},sf::Color(100,20,20));
     createBodyPart({5.f,5.f},{25.f,7.f},sf::Color(100,20,20));

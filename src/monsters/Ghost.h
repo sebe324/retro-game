@@ -2,6 +2,7 @@
 #define GHOST_H
 
 #include "Monster.h"
+#include <memory>
 
 class Ghost : public Monster{
     public:

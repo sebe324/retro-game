@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "../Projectile/Arrow.h"
+#include <memory>
 
 class Monster;
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <memory>
 #include "../Utilities/Utils.h"
 #include "../enums/BodyType.h"
 #include "Unit.h"

@@ -2,7 +2,14 @@
 
 Button::Button() {}
 
-Button::Button(std::string text, int charSize, sf::Color contentColor, sf::Vector2f bPos, sf::Vector2f bSize, sf::Color bodyColor, sf::Font &font) {
+Button::Button (std::string text, 
+                int charSize, 
+                sf::Color contentColor, 
+                sf::Vector2f bPos, 
+                sf::Vector2f bSize, 
+                sf::Color bodyColor, 
+                sf::Font &font) {
+    
     sf::RectangleShape b(bSize);
     b.setFillColor(bodyColor);
     b.setPosition(bPos);

@@ -1,6 +1,6 @@
 #include "Info.h"
 
-Info::Info(sf::Font& font, std::string backgroundPath) {
+Info::Info (sf::Font& font, std::string backgroundPath) {
     goBack=Button("Menu",60,sf::Color::Black, {650,650},{250.f,100.f},sf::Color(92,64,51),font);
     goBack.hoverContentColor=sf::Color::White;
     next=Button(">",70,sf::Color::Black, {800,800},{100.f,100.f},sf::Color(100,100,100),font);
@@ -16,16 +16,16 @@ Info::Info(sf::Font& font, std::string backgroundPath) {
     updateTexture();
 }
 
-void Info::update(sf::Vector2f pos) {
+void Info::update (sf::Vector2f pos) {
     goBack.update(pos);
     next.update(pos);
     previous.update(pos);
 }
-void Info::checkClick(sf::Vector2f pos) {
+void Info::checkClick (sf::Vector2f pos) {
     if (next.click(pos)) {counter++; updateTexture();}
     else if (previous.click(pos)) { counter--; updateTexture();}
 }
-void Info::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void Info::draw (sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(background);
     target.draw(goBack);
     target.draw(next);
@@ -39,11 +39,11 @@ void Info::updateTexture() {
     if (counter>10) counter =10;
     else if (counter<1) counter=1;
     else {
-        if (!imageTexture.loadFromFile("description/"+std::to_string(counter)+".png")) {}
+        if (!imageTexture.loadFromFile("../../description/"+std::to_string(counter)+".png")) {}
         image.setTexture(imageTexture);
         std::string tmp;
         std::string elo;
-        std::ifstream desc("description/"+std::to_string(counter)+".txt");
+        std::ifstream desc("../../description/"+std::to_string(counter)+".txt");
         while (getline(desc,tmp)) {
             elo+=tmp;
             elo+="\n";

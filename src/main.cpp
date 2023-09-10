@@ -12,18 +12,18 @@
 int main() {
 
     sf::RenderWindow window(sf::VideoMode(1600,1000),"Retro-Game");
-    Menu menu("font.ttf","texture.png");
-    SubMenu gameOverMenu("font.ttf", "texture.png", "game_over");  // Menu to be presented upon the player's death
-    SubMenu escKeyMenu("font.ttf", "texture.png", "escape_key");   // Menu to be presented upon pressing escape
+    Menu menu("../font.ttf","../texture.png");
+    SubMenu gameOverMenu("../font.ttf", "../texture.png", "game_over");  // Menu to be presented upon the player's death
+    SubMenu escKeyMenu("../font.ttf", "../texture.png", "escape_key");   // Menu to be presented upon pressing escape
     sf::Clock clock;
     sf::Time deltaTime;
     sf::View viewGame;
     sf::View viewUI;
-    Game game("texture.png", "font.ttf", &window, &viewUI);
+    Game game("../texture.png", "../font.ttf", &window, &viewUI);
     int mode=1;
     sf::Font font;
-    if (!font.loadFromFile("font.ttf")) {}
-    Info info(font,"texture.png");
+    if (!font.loadFromFile("../font.ttf")) {}
+    Info info(font,"../texture.png");
     WorldCreator wCreator(font);
     Settings settings(font);
     window.setFramerateLimit(60);
@@ -159,7 +159,7 @@ int main() {
                             game.paused = false;
 
                             // Recreating the game object was the only way I found to reset the game.
-                            Game game("texture.png", "font.ttf", &window, &viewUI);
+                            Game game("../texture.png", "../font.ttf", &window, &viewUI);
                         }
                     }
                 }
@@ -208,7 +208,7 @@ int main() {
                         x.emitters.clear();
                         x.textEmitters.clear();
                     }
-                    Game game("texture.png", "font.ttf", &window, &viewUI);
+                    Game game("../texture.png", "../font.ttf", &window, &viewUI);
                 }
             }
         }

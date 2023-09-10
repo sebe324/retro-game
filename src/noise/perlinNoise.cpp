@@ -28,7 +28,7 @@ std::vector<float> Rnd::perlin1d(std::vector<float> values, int nOctaves, float 
 }
 
 
-std::vector<float> Rnd::perlin2d(std::vector<float> values, int width, int height, int nOctaves, float bias) {
+std::vector<float> Rnd::perlin2d (std::vector<float> values, int width, int height, int nOctaves, float bias) {
     std::vector<float> output(width*height,0);
     for (int x=0; x<width; x++) {
         for (int y=0; y<height; y++) {

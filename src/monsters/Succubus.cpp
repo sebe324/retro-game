@@ -1,6 +1,6 @@
 #include "Succubus.h"
 
-Succubus::Succubus(sf::Vector2f p) : Monster("Succubus",1,1,p){
+Succubus::Succubus(sf::Vector2f p) : Monster("Succubus",1,1,p) {
     createBodyPart({20.f,10.f},{0.f,0.f},sf::Color(60,15,15));
     createBodyPart({20.f,10.f},{31.f,0.f},sf::Color(60,15,15));
     createBodyPart({28.f,28.f},{11.f,10.f},sf::Color(110,80,70));
