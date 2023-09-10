@@ -4,7 +4,7 @@
 #include "Monster.h"
 
 class Vampire : public Monster{
-public:
-    Vampire(sf::Vector2f p);
+    public:
+        Vampire(sf::Vector2f p);
 };
 #endif // VAMPIRE_H

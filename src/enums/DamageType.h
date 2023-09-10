@@ -2,14 +2,14 @@
 #define DAMAGETYPE_H
 
 enum DamageType{
-LIGHT,
-DARKNESS,
-EARTH,
-AIR,
-FIRE,
-WATER,
-PHYSIC,
-TRUE
+    LIGHT,
+    DARKNESS,
+    EARTH,
+    AIR,
+    FIRE,
+    WATER,
+    PHYSIC,
+    TRUE
 };
 
 const unsigned int DamageTypeColors[]=

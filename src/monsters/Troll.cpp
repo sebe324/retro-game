@@ -1,6 +1,6 @@
 #include "Troll.h"
 
-Troll::Troll(sf::Vector2f p) : Monster("Troll",1,1,p,{60.f,90.f}){
+Troll::Troll(sf::Vector2f p) : Monster("Troll",1,1,p,{60.f,90.f}) {
     createBodyPart({30.f,30.f},{15.f,0.f},sf::Color(85,160,255));
     createBodyPart({6.f,6.f},{20,5.f},sf::Color::Black);
     createBodyPart({6.f,6.f},{31.f,5.f},sf::Color::Black);

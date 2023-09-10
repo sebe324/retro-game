@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <memory>
 #include "../Utilities/Utils.h"
 #include "../enums/BodyType.h"
 #include "Unit.h"
@@ -15,7 +16,7 @@
 #include "../enums/ParticlesGame.h"
 #include "../enums/DamageType.h"
 
-class Character : public Unit{
+class Character : public Unit {
     public:
         float damage=0;
         float lastAttackDamage=0;
@@ -27,13 +28,11 @@ class Character : public Unit{
 
         void update(sf::Time elapsed);
 
-
-        virtual void attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
+        virtual void attack(std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
         void regenerate(sf::Time elapsed);
         bool isDead();
         void setLevel(int n);
         void levelUp();
-
 
         void setHealth(float n);
         void addHealth(float n);
@@ -74,6 +73,7 @@ class Character : public Unit{
         //For example infernal enemies will receive less damage from fire
         //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE, WATER, PHYSIC, TRUE
         float damageMultiplier[8]={1,1,1,1,1,1,1,1};
+
     protected:
         int level=0;
     private:
