@@ -31,16 +31,20 @@ Button::Button (std::string text,
 }
 
 bool Button::contains(sf::Vector2f pos) {
-    if (body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x &&
-       body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y
-       ) 
-       return true;
-    else return false;
+    // if (body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x &&
+    //    body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y) 
+    //    return true;
+    // return false;
+
+    return body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x && body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y;
 }
 
 bool Button::click(sf::Vector2f pos) {
-    if (contains(pos)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)) return true;
-    else return false;
+    // if (contains(pos)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
+    //     return true;
+    // return false;
+
+    return contains(pos) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 void Button::update(sf::Vector2f pos) {
     if (click(pos)) {

@@ -6,7 +6,6 @@
 class Settings : public sf::Drawable {
 
     public:
-
         Button bWSAD;
         Button bArrows;
 

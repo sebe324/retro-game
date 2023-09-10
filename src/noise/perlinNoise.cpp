@@ -59,9 +59,6 @@ std::vector<float> Rnd::perlin2d (std::vector<float> values, int width, int heig
     return output;
 }
 
-
-
-
 uint32_t Rnd::Lehmer32() {
     seed+=0xe120fc15;
     uint64_t tmp;
@@ -77,8 +74,6 @@ int Rnd::rndInt(int min, int max) {
 double Rnd::rndDouble(double min, double max) {
     return ((double)Lehmer32() / (double)(0x7FFFFFFF))*(max-min)+min;
 }
-
-
 int Rnd::rndIntNormal(int min, int max) {
     return (std::rand()%(max-min))+min;
 }

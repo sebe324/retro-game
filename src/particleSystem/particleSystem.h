@@ -22,11 +22,13 @@ struct Emitter {
 
     Emitter(int a, int b, sf::Vector2f pos, sf::Vector2f x, sf::Vector2f y, sf::Time rd, sf::Time tl, sf::VertexArray v, bool rep);
 };
+
 struct TextEmitter {
     sf::Time timeLeft;
     std::vector<sf::Text> texts;
     std::vector<sf::Vector2f> speed;
 };
+
 class ParticleSystem : public sf::Drawable {
     public:
         sf::Font* font;

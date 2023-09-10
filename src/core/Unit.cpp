@@ -83,7 +83,3 @@ void Unit::createBodyPart(sf::Vector2f s, sf::Vector2f offset, sf::Color color) 
     bodyParts[(bodyPartsNumber*4)-4].position={hitbox.left+offset.x,hitbox.top+offset.y+s.y};
     bodyParts[(bodyPartsNumber*4)-4].color=color;
 }
-
-
-
-

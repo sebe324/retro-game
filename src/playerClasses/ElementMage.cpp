@@ -22,51 +22,62 @@ ElementMage::ElementMage(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f
 }
 
 void ElementMage::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed) {
-    if (attackDelay-elapsed<sf::Time::Zero) {
-        float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
-        FireBall fireBall(getCenter(),mousePos,damage,true);
-        projectiles.push_back(std::make_unique<FireBall>(fireBall));
-        attackDelay=sf::seconds(0.3)/attackSpeed;
+    if (attackDelay-elapsed >= sf::Time::Zero) {
+        return;
     }
+    float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+    FireBall fireBall(getCenter(),mousePos,damage,true);
+    projectiles.push_back(std::make_unique<FireBall>(fireBall));
+    attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
-void ElementMage::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    if (ability1Cooldown<=sf::Time::Zero) {
-         if (getMana()>=ability1Cost) {
-            FireBall fireBall1(getCenter(),getCenter()+sf::Vector2f(0.f,100.f),damage,true);
-            FireBall fireBall2(getCenter(),getCenter()+sf::Vector2f(100.f,0.f),damage,true);
-            FireBall fireBall3(getCenter(),getCenter()+sf::Vector2f(0.f,-100.f),damage,true);
-            FireBall fireBall4(getCenter(),getCenter()+sf::Vector2f(-100.f,0.f),damage,true);
-
-            projectiles.push_back(std::make_unique<FireBall>(fireBall1));
-            projectiles.push_back(std::make_unique<FireBall>(fireBall2));
-            projectiles.push_back(std::make_unique<FireBall>(fireBall3));
-            projectiles.push_back(std::make_unique<FireBall>(fireBall4));
-            removeMana(ability1Cost);
-            ability1Cooldown=ability1Time;
-        }
+void ElementMage::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
+                            std::vector<ParticleSystem> &particleSystem, 
+                            std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                            sf::Vector2f mousePos) 
+{
+    
+    if (ability1Cooldown > sf::Time::Zero || getMana() < ability1Cost) {
+        return;
     }
-}
+    
+    FireBall fireBall1(getCenter(),getCenter()+sf::Vector2f(0.f,100.f),damage,true);
+    FireBall fireBall2(getCenter(),getCenter()+sf::Vector2f(100.f,0.f),damage,true);
+    FireBall fireBall3(getCenter(),getCenter()+sf::Vector2f(0.f,-100.f),damage,true);
+    FireBall fireBall4(getCenter(),getCenter()+sf::Vector2f(-100.f,0.f),damage,true);
 
-
-void ElementMage::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    if (ability2Cooldown<=sf::Time::Zero) {
-        if (getMana()>=ability2Cost) {
-
-            removeMana(ability2Cost);
-            ability2Cooldown=ability2Time;
-        }
-    }
+    projectiles.push_back(std::make_unique<FireBall>(fireBall1));
+    projectiles.push_back(std::make_unique<FireBall>(fireBall2));
+    projectiles.push_back(std::make_unique<FireBall>(fireBall3));
+    projectiles.push_back(std::make_unique<FireBall>(fireBall4));
+    removeMana(ability1Cost);
+    ability1Cooldown=ability1Time;
 }
 
 
-void ElementMage::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    if (ability3Cooldown<=sf::Time::Zero) {
-        if (getMana()>=ability3Cost) {
-            addShield(10);
-            particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter(),"ROCK SOLID",1,sf::Color(20,20,20),40);
-            removeMana(ability3Cost);
-            ability3Cooldown=ability3Time;
-        }
+void ElementMage::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+                            std::vector<ParticleSystem> &particleSystem, 
+                            std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                            sf::Vector2f mousePos) 
+{
+    if (ability2Cooldown > sf::Time::Zero || getMana() < ability2Cost) {
+        return;
     }
+    removeMana(ability2Cost);
+    ability2Cooldown=ability2Time;
+}
+
+
+void ElementMage::ability3(std::vector<std::unique_ptr<Monster>>& monsters, 
+                            std::vector<ParticleSystem> &particleSystem, 
+                            std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                            sf::Vector2f mousePos) 
+{
+    if (ability3Cooldown > sf::Time::Zero || getMana() < ability3Cost) {
+        return;
+    }
+    addShield(10);
+    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter(),"ROCK SOLID",1,sf::Color(20,20,20),40);
+    removeMana(ability3Cost);
+    ability3Cooldown=ability3Time;
 }

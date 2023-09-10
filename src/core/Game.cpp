@@ -89,65 +89,68 @@ void Game::updateMap() {
 }
 
 void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
-    if (!paused) {
+    if (paused) {
+        return;
+    }
 
-        if (sf::Keyboard::isKeyPressed(player->keyUp))
-            player->moveUp(elapsed); updateMap();
-        if (sf::Keyboard::isKeyPressed(player->keyDown))
-            player->moveDown(elapsed); updateMap();
-        if (sf::Keyboard::isKeyPressed(player->keyLeft))
-            player->moveLeft(elapsed); updateMap();
-        if (sf::Keyboard::isKeyPressed(player->keyRight))
-            player->moveRight(elapsed); updateMap();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-            player->ability1(monsters,particleSystem, projectiles, globalPos);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-            player->ability2(monsters,particleSystem, projectiles, globalPos);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-            player->ability3(monsters,particleSystem, projectiles, globalPos);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
-            isMapActive=true;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
-            isMapActive=false;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
-            player->attack(projectiles, globalPos, elapsed);
-        
-        for(int i=projectiles.size(); i>0; i--) {
-            if (projectiles[i-1]->lifetime<sf::Time::Zero) projectiles.erase(projectiles.begin()+i-1);
-            else projectiles[i-1]->update(elapsed,monsters,player,particleSystem);
-        }
-        for(int i=monsters.size(); i>0; i--) {
-            float dist=monsters[i-1]->getDistance(*player);
-            if (dist>2000) {
+    if (sf::Keyboard::isKeyPressed(player->keyUp))
+        player->moveUp(elapsed); updateMap();
+    if (sf::Keyboard::isKeyPressed(player->keyDown))
+        player->moveDown(elapsed); updateMap();
+    if (sf::Keyboard::isKeyPressed(player->keyLeft))
+        player->moveLeft(elapsed); updateMap();
+    if (sf::Keyboard::isKeyPressed(player->keyRight))
+        player->moveRight(elapsed); updateMap();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        player->ability1(monsters,particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        player->ability2(monsters,particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        player->ability3(monsters,particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
+        isMapActive=true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
+        isMapActive=false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
+        player->attack(projectiles, globalPos, elapsed);
+    
+    for(int i=projectiles.size(); i>0; i--) {
+        if (projectiles[i-1]->lifetime<sf::Time::Zero) 
+            projectiles.erase(projectiles.begin()+i-1);
+        else 
+            projectiles[i-1]->update(elapsed,monsters,player,particleSystem);
+    }
+    for(int i=monsters.size(); i>0; i--) {
+        float dist=monsters[i-1]->getDistance(*player);
+        if (dist>2000) {
+            monsters.erase(monsters.begin()+i-1);
+        } else {
+            if (monsters[i-1]->getHealth()<=0) {
+                player->addExp(3*monsters[i-1]->getLevel());
+                particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
+                particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
                 monsters.erase(monsters.begin()+i-1);
-            } else {
-                if (monsters[i-1]->getHealth()<=0) {
-                    player->addExp(3*monsters[i-1]->getLevel());
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
-                    particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
-                    monsters.erase(monsters.begin()+i-1);
-                }
-                else {
-                    monsters[i-1]->update(elapsed);
-                    monsters[i-1]->makeDecision(elapsed,*player,projectiles);
-                }
+            }
+            else {
+                monsters[i-1]->update(elapsed);
+                monsters[i-1]->makeDecision(elapsed,*player,projectiles);
             }
         }
-        playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
-        playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),840.f);
-        if (monsters.size()<20) {
-            generateMonster();
-        }
-        if (player->checkLevelUp()) {
-            particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({500,200},20,{150,255},{150,255},{150,255});
-            particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({300,200},20,{150,255},{150,255},{150,255});
-            particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({700,200},20,{150,255},{150,255},{150,255});
-            particleSystem[ParticlesGame::PARTICLES_UI].addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
-            playerLvl.setString(Utils::toString(player->getLevel()));
-        }
-        player->update(elapsed,monsters);
-        updateParticles(elapsed);
     }
+    playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
+    playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),840.f);
+    if (monsters.size()<20) {
+        generateMonster();
+    }
+    if (player->checkLevelUp()) {
+        particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({500,200},20,{150,255},{150,255},{150,255});
+        particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({300,200},20,{150,255},{150,255},{150,255});
+        particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({700,200},20,{150,255},{150,255},{150,255});
+        particleSystem[ParticlesGame::PARTICLES_UI].addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
+        playerLvl.setString(Utils::toString(player->getLevel()));
+    }
+    player->update(elapsed,monsters);
+    updateParticles(elapsed);
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
     sf::VertexArray tmp(sf::Quads,36); //biomes near the player
@@ -184,8 +187,10 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
     target.draw(playerHp);
     target.draw(playerMana);
     target.draw(playerExpProgress);
-    if (player->getHealth()<player->getMaxHealth()) target.draw(particleSystem[ParticlesGame::PARTICLES_HP]);
-    if (player->getMana()<player->getMaxMana()) target.draw(particleSystem[ParticlesGame::PARTICLES_MANA]);
+    if (player->getHealth()<player->getMaxHealth()) 
+        target.draw(particleSystem[ParticlesGame::PARTICLES_HP]);
+    if (player->getMana()<player->getMaxMana()) 
+        target.draw(particleSystem[ParticlesGame::PARTICLES_MANA]);
     target.draw(particleSystem[ParticlesGame::PARTICLES_UI]);
     if (isMapActive) {
         target.draw(actualMap);
@@ -314,16 +319,14 @@ void Game::updateParticles(sf::Time& elapsed) {
         particleSystem[ParticlesGame::PARTICLES_MANA].emitters[0].startPos={stats[16].position.x-20.f,950.f};
 
     float targetExp=(float)player->getExp()/player->getExpRequired()*1000;
-    if (abs(targetExp-stats[25].position.x)>5)
-    {
-        if (stats[26].position.x<targetExp) {
-            stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
-            stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
-        }
-        else {
-            stats[26].position.x=0;
-            stats[25].position.x=0;
-        }
+    if (abs(targetExp-stats[25].position.x) <= 5)
+        return;
+    if (stats[26].position.x<targetExp) {
+        stats[26].position.x+=targetExp/2.f*elapsed.asSeconds();
+        stats[25].position.x+=targetExp/2.f*elapsed.asSeconds();
+    } else {
+        stats[26].position.x=0;
+        stats[25].position.x=0;
     }
 }
 void Game::statsSetup() {

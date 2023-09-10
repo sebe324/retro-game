@@ -21,37 +21,35 @@ Textbox::Textbox(std::string value,
 }
 
 Textbox::Textbox() {}
+
 void Textbox::isClicked(sf::Vector2f mousePos) {
-    if (text.getString().isEmpty()) {
-        if (background.getGlobalBounds().contains(mousePos)) active=true;
-        else active=false;
-    }
-    else if (background.getGlobalBounds().contains(mousePos)) active=true;
-    else active=false;
+    active = background.getGlobalBounds().contains(mousePos);
 }
 
 void Textbox::addCharacter(char c) {
-    if (active) {
-        if (c==8 && !text.getString().isEmpty()) {
-            std::string aux=text.getString().toAnsiString();
-            aux.pop_back();
-            text.setString(aux);
-        }
-        else if (c==8 && text.getString().isEmpty()) {
-            //do nothing
-        }
-        else if (text.getString().getSize()<maxSize) {
-            if (c==13) {
-                    text.setString(text.getString()+'\n');
-                    std::cout<<"enter!";
-            }
-            else text.setString(text.getString()+c);
-        }
-        changeBackground();
+    if (!active) {
+        return;
     }
+    if (c==8 && !text.getString().isEmpty()) {
+        std::string aux=text.getString().toAnsiString();
+        aux.pop_back();
+        text.setString(aux);
+    }
+    else if (c==8 && text.getString().isEmpty()) {
+        //do nothing
+    }
+    else if (text.getString().getSize()<maxSize) {
+        if (c==13) {
+            text.setString(text.getString()+'\n');
+            std::cout<<"enter!";
+        }
+        else text.setString(text.getString()+c);
+    }
+    changeBackground();
 }
 void Textbox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    if (active) target.draw(background);
+    if (active) 
+        target.draw(background);
     target.draw(text,states);
 }
 

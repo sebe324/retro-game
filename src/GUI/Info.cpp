@@ -22,9 +22,16 @@ void Info::update (sf::Vector2f pos) {
     previous.update(pos);
 }
 void Info::checkClick (sf::Vector2f pos) {
-    if (next.click(pos)) {counter++; updateTexture();}
-    else if (previous.click(pos)) { counter--; updateTexture();}
+    if (next.click(pos)) {
+        counter++; 
+        updateTexture();
+    }
+    else if (previous.click(pos)) { 
+        counter--; 
+        updateTexture();
+    }
 }
+
 void Info::draw (sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(background);
     target.draw(goBack);
@@ -36,14 +43,14 @@ void Info::draw (sf::RenderTarget& target, sf::RenderStates states) const{
 }
 void Info::updateTexture() {
 
-    if (counter>10) counter =10;
+    if (counter>10) counter = 10;
     else if (counter<1) counter=1;
     else {
-        if (!imageTexture.loadFromFile("../../description/"+std::to_string(counter)+".png")) {}
+        if (!imageTexture.loadFromFile("../description/"+std::to_string(counter)+".png")) {}
         image.setTexture(imageTexture);
         std::string tmp;
         std::string elo;
-        std::ifstream desc("../../description/"+std::to_string(counter)+".txt");
+        std::ifstream desc("../description/"+std::to_string(counter)+".txt");
         while (getline(desc,tmp)) {
             elo+=tmp;
             elo+="\n";

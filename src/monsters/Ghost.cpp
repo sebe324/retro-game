@@ -14,15 +14,14 @@ Ghost::Ghost(sf::Vector2f p) : Monster("Ghost",1,5,p) {
 void Ghost::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem) {
     if (damageType==LIGHT || damageType==TRUE) {
         Character::removeHealth(n,damageType,particleSystem);
+        return;
+    }
+    float t=Utils::randomize(1,100);
+    if (t<50) {
+        Character::removeHealth(n,damageType,particleSystem);
     }
     else {
-        float t=Utils::randomize(1,100);
-        if (t<50) {
-            Character::removeHealth(n,damageType,particleSystem);
-        }
-        else {
-            particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),"MISS",1,sf::Color(250,100,100),36);
-        }
+        particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),"MISS",1,sf::Color(250,100,100),36);
     }
 }
 

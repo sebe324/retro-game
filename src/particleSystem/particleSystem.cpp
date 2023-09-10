@@ -1,7 +1,5 @@
 #include "particleSystem.h"
 
-
-
 ParticleSystem::ParticleSystem(sf::Time mt, sf::Font* f) {
     maxTime=mt;
     font=f;
@@ -9,7 +7,15 @@ ParticleSystem::ParticleSystem(sf::Time mt, sf::Font* f) {
 
 ParticleSystem::ParticleSystem() {}
 
-Emitter::Emitter(int a, int b, sf::Vector2f pos, sf::Vector2f x, sf::Vector2f y, sf::Time rd, sf::Time tl, sf::VertexArray v, bool rep) {
+Emitter::Emitter(int a, 
+                int b, 
+                sf::Vector2f pos, 
+                sf::Vector2f x, 
+                sf::Vector2f y, 
+                sf::Time rd, 
+                sf::Time tl, 
+                sf::VertexArray v, 
+                bool rep) {
     amount=a;
     n=b;
     startPos=pos;
@@ -165,15 +171,14 @@ void ParticleSystem::update(sf::Time elapsed) {
         textEmitters[i].timeLeft-=elapsed;
         if (textEmitters[i].timeLeft<=sf::Time::Zero) {
             textEmitters.erase(textEmitters.begin()+i);
+            continue;
         }
-        else {
-            float fraction=(textEmitters[i].timeLeft/maxTime);
-            for (int j=0; j<textEmitters[i].texts.size(); j++) {
-                sf::Color temp=textEmitters[i].texts[j].getColor();
-                temp.a=fraction*255;
-                textEmitters[i].texts[j].setColor(temp);
-                textEmitters[i].texts[j].setPosition(textEmitters[i].texts[j].getPosition()+textEmitters[i].speed[j]*elapsed.asSeconds());
-            }
+        float fraction=(textEmitters[i].timeLeft/maxTime);
+        for (int j=0; j<textEmitters[i].texts.size(); j++) {
+            sf::Color temp=textEmitters[i].texts[j].getColor();
+            temp.a=fraction*255;
+            textEmitters[i].texts[j].setColor(temp);
+            textEmitters[i].texts[j].setPosition(textEmitters[i].texts[j].getPosition()+textEmitters[i].speed[j]*elapsed.asSeconds());
         }
     }
 }
@@ -183,7 +188,9 @@ void ParticleSystem::draw(sf::RenderTarget& target, sf::RenderStates states) con
         target.draw(emitters[i].vertices,states);
     }
     for (int i=0; i<textEmitters.size(); i++) {
-        for (int j=0; j<textEmitters[i].texts.size(); j++)target.draw(textEmitters[i].texts[j],states);
+        for (int j=0; j<textEmitters[i].texts.size(); j++) {
+            target.draw(textEmitters[i].texts[j],states);
+        }
     }
 }
 

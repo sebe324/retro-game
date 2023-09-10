@@ -8,17 +8,17 @@ Monster::Monster(std::string name, int level, float dr, sf::Vector2f p, sf::Vect
 Monster::Monster() : Character() {}
 
 void Monster::randomMove(sf::Time elapsed) {
-    if (!asleep) {
-        moveDelay-=elapsed;
-        if (moveDelay<=sf::Time::Zero) {
-            direction=(std::rand()%5)-0;
-            moveDelay=sf::seconds(3);
-        }
-        if (direction==0) moveUp(elapsed,0.2);
-        else if (direction==1) moveDown(elapsed,0.2);
-        else if (direction==2) moveLeft(elapsed,0.2);
-        else if (direction==3) moveRight(elapsed,0.2);
+    if (asleep) return;
+
+    moveDelay-=elapsed;
+    if (moveDelay<=sf::Time::Zero) {
+        direction=(std::rand()%5)-0;
+        moveDelay=sf::seconds(3);
     }
+    if (direction==0) moveUp(elapsed,0.2);
+    else if (direction==1) moveDown(elapsed,0.2);
+    else if (direction==2) moveLeft(elapsed,0.2);
+    else if (direction==3) moveRight(elapsed,0.2);
 }
 
 void Monster::pathFindTo(sf::Time elapsed, Character& character) {
@@ -34,11 +34,11 @@ void Monster::runFrom(sf::Time elapsed, Character& character) {
     else if (getDistanceY(character)>0.f) moveDown(elapsed, 1);
 }
 void Monster::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed) {
-    if (attackDelay-elapsed<sf::Time::Zero) {
-        SwordSwing swordSwing(getCenter(),mousePos,damage,false);
-        projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
-        attackDelay=sf::seconds(0.3)/attackSpeed;
-    }
+    if (attackDelay-elapsed >= sf::Time::Zero) return;
+    
+    SwordSwing swordSwing(getCenter(),mousePos,damage,false);
+    projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+    attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<std::unique_ptr<Projectile>> &projectiles) {
 
@@ -62,7 +62,8 @@ void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<s
     else if (dist>600 && attitude==Cowardly && dangerDetected) { // if monster gets far away, it will stop running
        dangerDetected=false;
     }
-    else if (dangerDetected) {runFrom(elapsed,character); //run away
+    else if (dangerDetected) {
+        runFrom(elapsed,character); //run away
     }
     else randomMove(elapsed); //if nothing else, just move randomly
 

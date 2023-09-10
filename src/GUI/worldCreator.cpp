@@ -78,7 +78,7 @@ WorldCreator::WorldCreator(sf::Font& font) {
     randomizeSeed();
     updateMap();
 
-    if (!diceTexture.loadFromFile("dice.png")) {
+    if (!diceTexture.loadFromFile("../dice.png")) {
         //idk
     }
     diceSprite.setTexture(diceTexture);
@@ -135,9 +135,10 @@ void WorldCreator::changeOctaves(int amount) {
 void WorldCreator::randomizeSeed() {
     seed=(int)std::rand()%(10000)+1;
     rnd.seed=seed;
-    for (int x=0; x<50; x++)
-    for (int y=0; y<50; y++) {
-        randomValues2d[y*50+x]=rnd.rndInt(0,100);
+    for (int x=0; x<50; x++) {
+        for (int y=0; y<50; y++) {
+            randomValues2d[y*50+x]=rnd.rndInt(0,100);
+        }
     }
     seedInput.text.setString(std::to_string(seed));
     updateMap();

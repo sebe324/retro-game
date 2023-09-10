@@ -7,7 +7,6 @@ class Character;
 
 class Rock : public Projectile{
     public:
-
         Rock(sf::Vector2f p, sf::Vector2f dest, float dmg, bool attackMons);
 
     protected:

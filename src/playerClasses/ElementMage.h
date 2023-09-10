@@ -8,7 +8,6 @@ class Monster;
 class ElementMage : public Player{
 
     public:
-
         ElementMage(std::string n, sf::Vector2f p={0.f,0.f});
 
         void attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
