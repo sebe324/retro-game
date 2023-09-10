@@ -27,6 +27,18 @@ There are numerous classes to choose from and each has unique abilities.
 W.I.P
 
 ## Building from source
+
+### Using command line
+
+1. Install SFML from their original website: [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)
+2. In CMakeLists.txt line 7 set CMAKE_PREFIX_PATH to the location of the SFML folder you downloaded.
+3. In CmakeLists.txt line 50 set the include directory to the include folder in the SFML folder.
+4. Use the following commands in the command line:
+    ```cmake .```
+   ```cmake --build .```
+5. Move SFML dynamic link libraries from the SFML_LOCATION/bin to the Debug folder in the project directory.
+6. Just click the app icon. It should work now.
+### Using an IDE
 1. Install SFML from their original website: [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)
 2. Configure it with your IDE. Here are some tutorials: [https://www.sfml-dev.org/tutorials/2.5/](https://www.sfml-dev.org/tutorials/2.5/)
 3. Create a new project and add the source files into the project.
