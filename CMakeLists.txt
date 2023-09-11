@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(retroGame)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_PREFIX_PATH "/opt/homebrew/lib/cmake/SFML")
 

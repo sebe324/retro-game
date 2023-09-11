@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include <memory>
+
 #include "../Utilities/Utils.h"
 #include "../enums/BodyType.h"
 #include "Unit.h"
@@ -15,6 +16,13 @@
 
 #include "../enums/ParticlesGame.h"
 #include "../enums/DamageType.h"
+
+/*
+ * Character.h
+ *
+ * Creates Main Character class
+ */
+
 
 class Character : public Unit {
     public:
@@ -68,10 +76,10 @@ class Character : public Unit {
 
         int getId() const;
 
-        //Damage multiplier based on damage types.
-        //Some characters will have a higher resistance for fire damage, some will be immune to it
-        //For example infernal enemies will receive less damage from fire
-        //Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE, WATER, PHYSIC, TRUE
+        // Damage multiplier based on damage types.
+        // Some characters will have a higher resistance for fire damage, some will be immune to it
+        // For example infernal enemies will receive less damage from fire
+        // Order is the same as in enums/DamageType.h - LIGHT, DARKNESS, EARTH, AIR, FIRE, WATER, PHYSIC, TRUE
         float damageMultiplier[8]={1,1,1,1,1,1,1,1};
 
     protected:

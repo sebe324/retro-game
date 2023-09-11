@@ -3,6 +3,10 @@
 
 #include "Monster.h"
 
+/**
+ * Zombie Class
+ */
+
 class Zombie : public Monster{
     public:
         Zombie(sf::Vector2f p);

@@ -1,9 +1,9 @@
 #include "Unit.h"
 
 Unit::Unit(std::string n, sf::Vector2f p, sf::Vector2f s, float spd) {
-    speed=spd;
-    hitbox= sf::Rect<float>(p.x,p.y,s.x,s.y);
-    bodyParts=sf::VertexArray(sf::Quads,0);
+    speed = spd;
+    hitbox = sf::Rect<float>(p.x,p.y,s.x,s.y);
+    bodyParts = sf::VertexArray(sf::Quads,0);
 }
 Unit::Unit() {};
 

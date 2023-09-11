@@ -4,6 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+/*
+ * Button Class
+ *
+ * Creates Button that is used in the menu screens
+ * 
+ */
+
 class Button : public sf::Drawable {
     public:
         sf::RectangleShape body;

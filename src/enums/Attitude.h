@@ -1,6 +1,10 @@
 #ifndef ATTITUDE_H
 #define ATTITUDE_H
 
+/*
+ * Enum definitions defining enemy behavior
+ */
+
 enum Attitude {
     Aggressive,
     Neutral,

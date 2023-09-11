@@ -1,7 +1,6 @@
 #ifndef WORLDCREATOR_H
 #define WORLDCREATOR_H
 
-
 #include "Button.h"
 #include "../noise/perlinNoise.h"
 #include "Textbox.h"
@@ -9,9 +8,15 @@
 #include <iomanip>
 #include "../Utilities/Utils.h"
 
-class WorldCreator : public sf::Drawable {
-    public:
+/**
+ * World Creator
+ * 
+ * Defines class for menu that generates world
+ */
 
+class WorldCreator : public sf::Drawable {
+    
+    public:
         int octaves=6;
         float bias=2.f;
         uint32_t seed;

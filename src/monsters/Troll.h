@@ -3,6 +3,10 @@
 
 #include "Monster.h"
 
+/**
+ * Troll Class
+ */
+
 class Troll : public Monster{
     public:
         Troll(sf::Vector2f p);

@@ -51,7 +51,7 @@ void ElementMage::ability1(std::vector<std::unique_ptr<Monster>>& monsters,
     projectiles.push_back(std::make_unique<FireBall>(fireBall3));
     projectiles.push_back(std::make_unique<FireBall>(fireBall4));
     removeMana(ability1Cost);
-    ability1Cooldown=ability1Time;
+    ability1Cooldown = ability1Time;
 }
 
 
@@ -63,6 +63,7 @@ void ElementMage::ability2(std::vector<std::unique_ptr<Monster>>& monsters,
     if (ability2Cooldown > sf::Time::Zero || getMana() < ability2Cost) {
         return;
     }
+    // Do stuff for ice blast
     removeMana(ability2Cost);
     ability2Cooldown=ability2Time;
 }
@@ -79,5 +80,5 @@ void ElementMage::ability3(std::vector<std::unique_ptr<Monster>>& monsters,
     addShield(10);
     particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter(),"ROCK SOLID",1,sf::Color(20,20,20),40);
     removeMana(ability3Cost);
-    ability3Cooldown=ability3Time;
+    ability3Cooldown = ability3Time;
 }

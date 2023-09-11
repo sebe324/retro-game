@@ -16,5 +16,5 @@ Troll::Troll(sf::Vector2f p) : Monster("Troll",1,1,p,{60.f,90.f}) {
     bodyType=LIVING;
 }
 void Troll::wakeUp(){
-
+    return;
 }

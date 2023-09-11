@@ -1,7 +1,14 @@
 #include "Player.h"
 #include "../monsters/Monster.h"
 
-Player::Player(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s) : Character(n,d,as,spd,l,p, s) {
+Player::Player(std::string n, 
+                float d, 
+                float as, 
+                float spd, 
+                int l, 
+                sf::Vector2f p, 
+                sf::Vector2f s) 
+                : Character(n,d,as,spd,l,p,s) {
     experience=0;
     setExpRequired();
     bodyType=LIVING;
@@ -14,7 +21,6 @@ Player::Player(std::string n, sf::Vector2f p, sf::Vector2f s) : Character(n,5,1,
 Player::Player() : Character() {}
 
 void Player::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>>& monsters) {
-
     if (getHealth() > 0.0f) // This stops the player from regenerating after death
         regenerate(elapsed);
 
@@ -28,8 +34,8 @@ void Player::addExp(int n) {
     experience+=n;
 }
 bool Player::checkLevelUp() {
-    if (experience>=expRequired) {
-        experience-=expRequired;
+    if (experience >= expRequired) {
+        experience -= expRequired;
         levelUp();
         setExpRequired();
         return true;
@@ -65,6 +71,17 @@ void Player::movementWSAD(bool b) {
     }
 }
 
-void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {}
-void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {}
-void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {}
+void Player::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem, 
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) {}
+
+void Player::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem, 
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) {}
+
+void Player::ability3(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem, 
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) {}

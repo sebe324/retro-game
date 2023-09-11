@@ -23,10 +23,16 @@
 #include "../Utilities/Utils.h"
 #include "../enums/ParticlesGame.h"
 #include "../enums/Biomes.h"
-class Game : public sf::Drawable{
+
+/*
+ * Game.h
+ * 
+ */
+
+
+class Game : public sf::Drawable {
 
     public:
-
         std::vector<std::unique_ptr<Monster>> monsters;
         std::vector<sf::Text> texts;
         std::unique_ptr<Player> player;
@@ -47,7 +53,6 @@ class Game : public sf::Drawable{
         void updateSettings(Settings& new_settings);
 
     private:
-
         int playerXmap;
         int playerYmap;
 
@@ -62,6 +67,7 @@ class Game : public sf::Drawable{
         sf::VertexArray actualMap;
         sf::VertexArray playerOnMap;
         sf::RectangleShape mapBorder;
+        
         Rnd rnd;
         std::vector<float> noiseValues2d;
         virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

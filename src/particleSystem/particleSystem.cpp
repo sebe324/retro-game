@@ -1,8 +1,8 @@
 #include "particleSystem.h"
 
 ParticleSystem::ParticleSystem(sf::Time mt, sf::Font* f) {
-    maxTime=mt;
-    font=f;
+    maxTime = mt;
+    font = f;
 }
 
 ParticleSystem::ParticleSystem() {}
@@ -15,21 +15,27 @@ Emitter::Emitter(int a,
                 sf::Time rd, 
                 sf::Time tl, 
                 sf::VertexArray v, 
-                bool rep) {
-    amount=a;
-    n=b;
-    startPos=pos;
-    velX=x;
-    velY=y;
-    resetDelay=rd;
-    timeLeft=tl;
-    vertices=v;
-    repeat=rep;
+                bool rep) 
+{
+    amount = a;
+    n = b;
+    startPos = pos;
+    velX = x;
+    velY = y;
+    resetDelay = rd;
+    timeLeft = tl;
+    vertices = v;
+    repeat = rep;
 }
 
 
 
-void ParticleSystem::addTextEmitter(sf::Vector2f vPos, std::string s, int amount, sf::Color color, int charsize) {
+void ParticleSystem::addTextEmitter(sf::Vector2f vPos, 
+                                    std::string s, 
+                                    int amount, 
+                                    sf::Color color, 
+                                    int charsize) 
+{
     TextEmitter te;
     te.timeLeft=maxTime;
     for (int i=0; i<amount; i++) {
@@ -37,15 +43,21 @@ void ParticleSystem::addTextEmitter(sf::Vector2f vPos, std::string s, int amount
         t.setFont(*font);
         t.setPosition(vPos);
         t.setString(s);
-        t.setColor(color);
+        t.setFillColor(color);
         t.setCharacterSize(charsize);
         te.texts.push_back(t);
         te.speed.push_back({randomize(-20,20),randomize(-50.f,-30.f)});
     }
     textEmitters.push_back(te);
 }
-void ParticleSystem::addEmitter(sf::Vector2f vPos, int amount, sf::Vector2i r,sf::Vector2i g,sf::Vector2i b, bool rep, sf::Time rd) {
-
+void ParticleSystem::addEmitter(sf::Vector2f vPos, 
+                                int amount, 
+                                sf::Vector2i r, 
+                                sf::Vector2i g,
+                                sf::Vector2i b, 
+                                bool rep, 
+                                sf::Time rd) 
+{
     Emitter emitter(amount,4,vPos,{-100.f,100.f},{-100.f,100.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*4),rep);
     for (int i=0; i<amount; i++) {
         emitter.vertices[i*4].position=vPos;
@@ -69,17 +81,27 @@ void ParticleSystem::addEmitter(sf::Vector2f vPos, int amount, sf::Vector2i r,sf
     emitters.push_back(emitter);
 }
 
-void ParticleSystem::addEmitter(sf::VertexArray vArray, int amount, bool rep,sf::Time rd) {
+void ParticleSystem::addEmitter(sf::VertexArray vArray, 
+                                int amount, 
+                                bool rep,
+                                sf::Time rd) 
+{
     Emitter emitter(amount,4,vArray[0].position,{-50.f,50.f},{-50.f,50.f},rd,maxTime,vArray,rep);
-    for (int i=0; i<amount; i++) {
+    for (int i = 0; i < amount; i++) {
         emitter.speed.push_back({randomize(emitter.velX.x,emitter.velX.y),randomize(emitter.velY.x,emitter.velY.y)});
     }
     emitters.push_back(emitter);
 }
 
-void ParticleSystem::addHealingEmitter(sf::Vector2f vPos, int amount, sf::Color color, bool rep, sf::Time rd) {
+void ParticleSystem::addHealingEmitter(sf::Vector2f vPos, 
+                                        int amount, 
+                                        sf::Color color, 
+                                        bool rep, 
+                                        sf::Time rd) 
+{
     Emitter emitter(amount,8,vPos,{20.f,50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*8),rep);
-    for (int i=0; i<amount; i++) {
+
+    for (int i = 0; i < amount; i++) {
         emitter.vertices[i*8].position=vPos;
         emitter.vertices[i*8+1].position=vPos+sf::Vector2f(8.f,0.f);
         emitter.vertices[i*8+2].position=vPos+sf::Vector2f(8.f,20.f);
@@ -114,7 +136,12 @@ void ParticleSystem::addHealingEmitter(sf::Vector2f vPos, int amount, sf::Color 
     emitters.push_back(emitter);
 }
 
-void ParticleSystem::addMagicEmitter(sf::Vector2f vPos, int amount, sf::Color color, bool rep, sf::Time rd) {
+void ParticleSystem::addMagicEmitter(sf::Vector2f vPos, 
+                                        int amount, 
+                                        sf::Color color, 
+                                        bool rep, 
+                                        sf::Time rd) 
+{
     Emitter emitter(amount,4,vPos,{-20.f,-50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*4),rep);
 
     for (int i=0; i<amount; i++) {
@@ -141,13 +168,13 @@ void ParticleSystem::addMagicEmitter(sf::Vector2f vPos, int amount, sf::Color co
 void ParticleSystem::update(sf::Time elapsed) {
     for (int i=0; i<emitters.size(); i++) {
         emitters[i].timeLeft-=elapsed;
-        if (emitters[i].timeLeft<=sf::Time::Zero && !emitters[i].repeat) {
+        if (emitters[i].timeLeft <= sf::Time::Zero && !emitters[i].repeat) {
             emitters.erase(emitters.begin()+i);
         }
-        else if (emitters[i].timeLeft<=sf::Time::Zero-emitters[i].resetDelay && emitters[i].repeat) {
+        else if (emitters[i].timeLeft <= sf::Time::Zero - emitters[i].resetDelay && emitters[i].repeat) {
             emitters[i].timeLeft=maxTime;
         }
-        else if (emitters[i].timeLeft<=sf::Time::Zero&& emitters[i].repeat) {
+        else if (emitters[i].timeLeft <= sf::Time::Zero && emitters[i].repeat) {
             emitters[i].speed.clear();
             for (int j=0; j<emitters[i].amount; j++) {
                 for (int k=0; k<emitters[i].n; k++) {
@@ -157,9 +184,9 @@ void ParticleSystem::update(sf::Time elapsed) {
             }
         }
         else {
-            float fraction=(emitters[i].timeLeft/maxTime);
-            for (int j=0; j<emitters[i].amount; j++) {
-                for (int k=0; k<emitters[i].n; k++) {
+            float fraction = (emitters[i].timeLeft / maxTime);
+            for (int j = 0; j < emitters[i].amount; j++) {
+                for (int k = 0; k < emitters[i].n; k++) {
                     emitters[i].vertices[j*emitters[i].n+k].color.a=fraction*255;
                     emitters[i].vertices[j*emitters[i].n+k].position+={emitters[i].speed[j].x*elapsed.asSeconds(),emitters[i].speed[j].y*elapsed.asSeconds()};
                 }
@@ -175,9 +202,11 @@ void ParticleSystem::update(sf::Time elapsed) {
         }
         float fraction=(textEmitters[i].timeLeft/maxTime);
         for (int j=0; j<textEmitters[i].texts.size(); j++) {
-            sf::Color temp=textEmitters[i].texts[j].getColor();
+            // sf::Color temp=textEmitters[i].texts[j].getColor();
+            sf::Color temp=textEmitters[i].texts[j].getFillColor();
             temp.a=fraction*255;
-            textEmitters[i].texts[j].setColor(temp);
+            // textEmitters[i].texts[j].setColor(temp);
+            textEmitters[i].texts[j].setFillColor(temp);
             textEmitters[i].texts[j].setPosition(textEmitters[i].texts[j].getPosition()+textEmitters[i].speed[j]*elapsed.asSeconds());
         }
     }

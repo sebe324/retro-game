@@ -4,6 +4,11 @@
 #include <vector>
 #include <stdint.h>
 #include <random>
+
+/**
+ * PerlinNoise.h
+ */
+
 class Rnd{
     public:
         uint32_t seed=12345;

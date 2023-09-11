@@ -49,12 +49,14 @@ void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<s
     }
     else if (dist<=100.f && attitude==Aggressive) {
         attack(projectiles,character.getCenter(),elapsed);
-        //attack if player is close
+        // attack if player is close
 
-        if (!fightUntilDeath && getHealth()<0.3*getMaxHealth()) attitude=Cowardly; //run away if you can't win!
+        if (!fightUntilDeath && getHealth()<0.3*getMaxHealth()) attitude=Cowardly; // run away if you can't win!
     }
-    else if (dist<650.f && attitude==Aggressive && preyDetected) pathFindTo(elapsed, character);
-    else if (dist>=650.f && attitude==Aggressive && preyDetected) preyDetected=false;
+    else if (dist<650.f && attitude==Aggressive && preyDetected) 
+        pathFindTo(elapsed, character);
+    else if (dist>=650.f && attitude==Aggressive && preyDetected) 
+        preyDetected=false;
     else if (dist<300 && attitude==Cowardly) { //if character is too close, run away
         runFrom(elapsed,character);
         dangerDetected=true;
@@ -65,7 +67,8 @@ void Monster::makeDecision(sf::Time elapsed, Character& character, std::vector<s
     else if (dangerDetected) {
         runFrom(elapsed,character); //run away
     }
-    else randomMove(elapsed); //if nothing else, just move randomly
+    else 
+        randomMove(elapsed); //if nothing else, just move randomly
 
 }
 void Monster::wakeUp() {

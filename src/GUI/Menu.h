@@ -6,9 +6,15 @@
 #include <SFML/Graphics.hpp>
 #include "../noise/perlinNoise.h"
 
-class Menu : public sf::Drawable {
-    public:
+/**
+ * Menu.h
+ * 
+ * Defines class for main menu
+ */
 
+class Menu : public sf::Drawable {
+    
+    public:
         sf::Text logo;
         Button bNewGame;
         Button b1v1;
@@ -21,7 +27,6 @@ class Menu : public sf::Drawable {
         void update(sf::Vector2f pos);
 
     private:
-
         sf::Font font;
         sf::Texture texture;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

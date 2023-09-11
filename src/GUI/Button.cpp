@@ -31,31 +31,23 @@ Button::Button (std::string text,
 }
 
 bool Button::contains(sf::Vector2f pos) {
-    // if (body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x &&
-    //    body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y) 
-    //    return true;
-    // return false;
-
-    return body.getPosition().x<pos.x && body.getPosition().x+body.getSize().x>pos.x && body.getPosition().y<pos.y && body.getPosition().y+body.getSize().y>pos.y;
+    return (body.getPosition().x < pos.x && 
+            body.getPosition().x + body.getSize().x > pos.x && 
+            body.getPosition().y < pos.y && 
+            body.getPosition().y + body.getSize().y > pos.y);
 }
 
 bool Button::click(sf::Vector2f pos) {
-    // if (contains(pos)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
-    //     return true;
-    // return false;
-
     return contains(pos) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 void Button::update(sf::Vector2f pos) {
     if (click(pos)) {
         body.setFillColor(activeBodyColor);
         content.setFillColor(activeContentColor);
-    }
-    else if (contains(pos)) {
+    } else if (contains(pos)) {
         body.setFillColor(hoverBodyColor);
         content.setFillColor(hoverContentColor);
-    }
-    else {
+    } else {
         body.setFillColor(originalBodyColor);
         content.setFillColor(originalContentColor);
     }

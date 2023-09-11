@@ -9,9 +9,15 @@
 #include "GUI/Info.h"
 #include "GUI/SubMenu.h"
 #include <ctime>
+
+/**
+ * 
+ * Main Program Loop
+*/
+
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(1600,1000),"Retro-Game");
+    sf::RenderWindow window(sf::VideoMode(1600, 1000), "Retro-Game");
     Menu menu("../font.ttf","../texture.png");
     SubMenu gameOverMenu("../font.ttf", "../texture.png", "game_over");  // Menu to be presented upon the player's death
     SubMenu escKeyMenu("../font.ttf", "../texture.png", "escape_key");   // Menu to be presented upon pressing escape
@@ -92,12 +98,7 @@ int main() {
 
                         // Sets the flag to present the ESC key menu if the player is not dead.
                         if (event.key.code == sf::Keyboard::Escape && !game.player->isDead()) {
-
-                            if (!game.paused)
-                                escapeKeyPressed = true;
-                            else
-                                escapeKeyPressed = false;
-
+                            escapeKeyPressed = !game.paused ? true : false;
                             game.paused = !game.paused;
                         }
                     }
@@ -119,7 +120,7 @@ int main() {
                     info.update(mousePos);
                     info.checkClick(mousePos);
                     if (info.goBack.click(mousePos)) {
-                        mode=1;
+                        mode = 1;
                     }
                     break;
             }

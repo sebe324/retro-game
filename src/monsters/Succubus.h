@@ -3,6 +3,10 @@
 
 #include "Monster.h"
 
+/**
+ * Succubus Class
+ */
+
 class Succubus : public Monster{
     public:
         Succubus(sf::Vector2f p);

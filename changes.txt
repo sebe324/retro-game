@@ -17,3 +17,7 @@ Added some spaces to if statements & for loops for improved readability
 -   ){ -> ) {
 -   for( -> for (
 -   else{ -> else {
+
+Changed logic of some ifelse statements to simplify some of the nested if statements
+
+Changed setColor & getColor to setFillColor & getFillColor (particleSystem)
