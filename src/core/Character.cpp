@@ -1,7 +1,5 @@
 #include "Character.h"
 
-#include <algorithm>
-
 int Character::characterCount=0;
 
 Character::Character(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s) : Unit(n,p,s,spd)
@@ -66,7 +64,7 @@ void Character::addHealth(float n) {
 
 void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem) {
     float dmgAmount=n*damageMultiplier[damageType];
-    if (shield>0) {
+    if (shield > 0) {
         removeShield(dmgAmount);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(20,20,20),30);
     }

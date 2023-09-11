@@ -8,46 +8,46 @@ Unit::Unit(std::string n, sf::Vector2f p, sf::Vector2f s, float spd) {
 Unit::Unit() {};
 
 sf::Vector2f Unit::getCenter() const{
-    return {hitbox.left+hitbox.width*0.5f, hitbox.top+hitbox.height*0.5f};
+    return {hitbox.left + hitbox.width * 0.5f, hitbox.top + hitbox.height * 0.5f};
 }
 
 void Unit::update(sf::Time elapsed) {
     move();
 }
 void Unit::moveUp(sf::Time elapsed, float multiplier) {
-    velocity.y-=speed*elapsed.asSeconds()*multiplier;
+    velocity.y -= speed * elapsed.asSeconds() * multiplier;
 }
 void Unit::moveDown(sf::Time elapsed, float multiplier) {
-    velocity.y+=speed*elapsed.asSeconds()*multiplier;
+    velocity.y += speed * elapsed.asSeconds() * multiplier;
 }
 void Unit::moveLeft(sf::Time elapsed, float multiplier) {
-    float tmp=velocity.x;
-    velocity.x-=speed*elapsed.asSeconds()*multiplier;
-    if (tmp>=0 && velocity.x<0 && !left) {
-        for (int i=0; i<bodyPartsNumber*4; i++) {
-            bodyParts[i].position.x=Utils::mirrorXf(bodyParts[i].position.x,hitbox.left,hitbox.left+hitbox.width);
+    float tmp = velocity.x;
+    velocity.x -= speed * elapsed.asSeconds() * multiplier;
+    if (tmp >= 0 && velocity.x < 0 && !left) {
+        for (int i = 0; i < bodyPartsNumber * 4; i++) {
+            bodyParts[i].position.x = Utils::mirrorXf(bodyParts[i].position.x,hitbox.left,hitbox.left+hitbox.width);
         }
-        left=true;
+        left = true;
     }
 }
 void Unit::moveRight(sf::Time elapsed, float multiplier) {
-    float tmp=velocity.x;
-    velocity.x+=speed*elapsed.asSeconds()*multiplier;
-    if (tmp<=0 && velocity.x>0 && left) {
-        for (int i=0; i<bodyPartsNumber*4; i++) {
-            bodyParts[i].position.x=Utils::mirrorXf(bodyParts[i].position.x,hitbox.left,hitbox.left+hitbox.width);
+    float tmp = velocity.x;
+    velocity.x += speed * elapsed.asSeconds() * multiplier;
+    if (tmp <= 0 && velocity.x > 0 && left) {
+        for (int i = 0; i < bodyPartsNumber * 4; i++) {
+            bodyParts[i].position.x = Utils::mirrorXf(bodyParts[i].position.x,hitbox.left,hitbox.left+hitbox.width);
         }
-        left=false;
+        left = false;
     }
 }
 void Unit::move() {
-    velocity.y*=0.9;
-    velocity.x*=0.9;
-    for (int i=0; i<bodyPartsNumber*4; i++) {
-        bodyParts[i].position+=velocity;
+    velocity.y *= 0.9;
+    velocity.x *= 0.9;
+    for (int i = 0; i < bodyPartsNumber * 4; i++) {
+        bodyParts[i].position += velocity;
     }
-    hitbox.top+=velocity.y;
-    hitbox.left+=velocity.x;
+    hitbox.top += velocity.y;
+    hitbox.left += velocity.x;
 }
 
 float Unit::getDistance(Unit& unit) const{

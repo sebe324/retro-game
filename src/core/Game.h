@@ -23,6 +23,7 @@
 #include "../Utilities/Utils.h"
 #include "../enums/ParticlesGame.h"
 #include "../enums/Biomes.h"
+#include "../enums/PlayerClasses.h"
 
 /*
  * Game.h
@@ -42,8 +43,8 @@ class Game : public sf::Drawable {
         sf::View *viewUI;
         sf::Vector2i mousepos;
         sf::Vector2f mouseglobal;
-        bool paused=false;
-        bool isMapActive=true;
+        bool paused = false;
+        bool isMapActive = true;
         void update(sf::Time elapsed, sf::Vector2f globalPos);
         void changeMap(uint32_t seed, int octaves, float bias);
         Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);

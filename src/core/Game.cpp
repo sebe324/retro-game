@@ -155,7 +155,7 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     updateParticles(elapsed);
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
-    sf::VertexArray tmp(sf::Quads,36); //biomes near the player
+    sf::VertexArray tmp(sf::Quads,36); // biomes near the player
     for(int x = 0; x < 3; x++) {
         for(int y = 0; y < 3; y++) {
             auto& biome = gameMap[Utils::clamp(playerYmap-1+y,0,49)*50+Utils::clamp(playerXmap-1+x,0,49)];
@@ -405,7 +405,7 @@ void Game::statsSetup() {
     stats[18].color = sf::Color(60,90,150);
     stats[19].color = sf::Color(60,90,200);
 
-    //xp bar
+    // xp bar
 
     stats[20].position = {0.f,850.f};
     stats[21].position = {1000.f,850.f};
@@ -417,7 +417,7 @@ void Game::statsSetup() {
     stats[22].color = sf::Color(40,40,40);
     stats[23].color = sf::Color(40,40,40);
 
-    //xp bar fill
+    // xp bar fill
 
     stats[24].position = {0.f,850.f};
     stats[25].position = {1000.f,850.f};
@@ -435,16 +435,16 @@ void Game::statsSetup() {
 
 void Game::changePlayerClass(int playerClass) {
     switch(playerClass) {
-        case 0:
+        case DARK_KNIGHT:
             player = std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
             break;
-        case 1:
+        case ARCHER:
             player = std::make_unique<Archer>("Player",sf::Vector2f(10000.f,10000.f));
             break;
-        case 2:
+        case PALADIN:
             player = std::make_unique<Paladin>("Player",sf::Vector2f(10000.f,10000.f));
             break;
-        case 3:
+        case ELEMAGE:
             player = std::make_unique<ElementMage>("Player",sf::Vector2f(10000.f,10000.f));
             break;
         default:
