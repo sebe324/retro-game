@@ -2,11 +2,10 @@
 
 int Character::characterCount=0;
 
-Character::Character(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s)
-: Unit(n,p,s,spd)
+Character::Character(std::string n, float d, float as, float spd, int l, sf::Vector2f p, sf::Vector2f s) : Unit(n,p,s,spd)
 {
-    damage=d;
-    attackSpeed=as;
+    damage = d;
+    attackSpeed = as;
     setLevel(l);
     attackDelay=sf::Time::Zero;
     id = ++characterCount;
@@ -65,7 +64,7 @@ void Character::addHealth(float n) {
 
 void Character::removeHealth(float n, DamageType damageType, std::vector<ParticleSystem> &particleSystem) {
     float dmgAmount=n*damageMultiplier[damageType];
-    if (shield>0) {
+    if (shield > 0) {
         removeShield(dmgAmount);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(20,20,20),30);
     }
@@ -74,6 +73,7 @@ void Character::removeHealth(float n, DamageType damageType, std::vector<Particl
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(DamageTypeColors[damageType]),36);
     }
 }
+
 void Character::setMaxHealth(float n) {
     maxHealth = (n <= 0) ? 1 : n;
 }
@@ -87,11 +87,9 @@ void Character::setHealthRegen(float n) {
 }
 
 void Character::setMana(float n) {
-    if (n>maxMana) mana=maxMana;
-    else if (n<=0) mana=0;
-    else mana=n;
-
-    // mana = std::max(0, std::min(n, maxMana));
+    if (n < 0)              mana = 0;
+    else if (n > maxMana)   mana = maxMana;
+    else                    mana = n;
 }
 
 void Character::addMana(float n) {
@@ -115,11 +113,9 @@ void Character::setManaRegen(float n) {
 }
 
 void Character::setShield(float n) {
-    if (n<0) shield=0;
-    else if (n>=maxShield) shield=maxShield;
-    else shield=n;
-
-    // shield = std::max(0, std::min(n, maxShield));
+    if (n < 0)              shield = 0;
+    else if (n > maxShield) shield = maxShield;
+    else                    shield = n;
 }
 
 void Character::addShield(float n) {
@@ -133,6 +129,7 @@ void Character::removeShield(float n) {
 void Character::setMaxShield(float n) {
     maxShield = (n < 0) ? 0 : n;
 }
+
 int Character::getLevel() const{
     return level;
 }

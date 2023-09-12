@@ -4,6 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
+
+/**
+ * Textbox.h
+ * 
+ * Class that defines Textbox used in menus
+ */
+
 class Textbox : public sf::Drawable {
 
     public:

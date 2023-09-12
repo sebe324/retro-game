@@ -2,7 +2,7 @@
 #include "../monsters/Monster.h"
 #include "../Projectile/Trap.h"
 
-Archer::Archer(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}) {
+Archer::Archer(std::string n, sf::Vector2f p) : Player(n,p,{50.f,90.f}) {
     createBodyPart({30.f,30.f},{10.f,0.f},sf::Color(250,177,160));
     createBodyPart({30.f,50.f},{10.f,30.f},sf::Color(120,120,40));
     createBodyPart({5.f,15.f},{25.f,5.f},sf::Color(200,100,100));
@@ -22,7 +22,10 @@ Archer::Archer(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}) {
     ability3Cost=15.f;
 }
 
-void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed) {
+void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                    sf::Vector2f mousePos, 
+                    sf::Time elapsed) 
+{
     if (attackDelay-elapsed >= sf::Time::Zero) {
         return;
     }
@@ -33,8 +36,11 @@ void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::V
 }
 
 
-void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    
+void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) 
+{
     if (ability1Cooldown > sf::Time::Zero || getMana() < ability1Cost) {
         return;
     }
@@ -51,8 +57,11 @@ void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vect
 }
 
 
-void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    
+void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem, 
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) 
+{
     if (ability2Cooldown > sf::Time::Zero || getMana() < ability2Cost) {
         return;
     }
@@ -64,8 +73,11 @@ void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vect
 }
 
 
-void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
-    
+void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) 
+{    
     if (ability3Cooldown > sf::Time::Zero || getMana() < ability3Cost) {
         return;
     }

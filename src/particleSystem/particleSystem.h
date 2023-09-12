@@ -6,6 +6,12 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+/**
+ * ParticleSystem.h
+ * 
+ * Defines Emitter, TextEmitter, & Particle System
+ */
+
 struct Emitter {
     bool repeat;
     int amount;
@@ -20,7 +26,15 @@ struct Emitter {
     std::vector<sf::Vector2f> speed;
     std::vector<sf::Vector2f> startPosOffset;
 
-    Emitter(int a, int b, sf::Vector2f pos, sf::Vector2f x, sf::Vector2f y, sf::Time rd, sf::Time tl, sf::VertexArray v, bool rep);
+    Emitter(int a, 
+            int b, 
+            sf::Vector2f pos, 
+            sf::Vector2f x, 
+            sf::Vector2f y, 
+            sf::Time rd, 
+            sf::Time tl, 
+            sf::VertexArray v, 
+            bool rep);
 };
 
 struct TextEmitter {
@@ -39,15 +53,37 @@ class ParticleSystem : public sf::Drawable {
         ParticleSystem();
         void update(sf::Time elapsed);
 
-        void addEmitter(sf::Vector2f vPos, int amount, sf::Vector2i r={100,255},sf::Vector2i g={0,50},sf::Vector2i b={0,50}, bool rep=false,sf::Time rd=sf::Time::Zero);
+        void addEmitter(sf::Vector2f vPos, 
+                        int amount, 
+                        sf::Vector2i r = {100,255},
+                        sf::Vector2i g = {0,50},
+                        sf::Vector2i b = {0,50}, 
+                        bool rep=false,
+                        sf::Time rd = sf::Time::Zero);
 
-        void addEmitter(sf::VertexArray vArray, int amount, bool rep=false, sf::Time rd=sf::Time::Zero);
+        void addEmitter(sf::VertexArray vArray, 
+                        int amount, 
+                        bool rep = false, 
+                        sf::Time rd = sf::Time::Zero);
 
-        void addHealingEmitter(sf::Vector2f vPos,int amount, sf::Color color, bool rep=false, sf::Time rd=sf::Time::Zero);
+        void addHealingEmitter(sf::Vector2f vPos,
+                                int amount, 
+                                sf::Color color, 
+                                bool rep = false, 
+                                sf::Time rd = sf::Time::Zero);
 
-        void addMagicEmitter(sf::Vector2f vPos, int amount, sf::Color color, bool rep=false, sf::Time rd=sf::Time::Zero);
+        void addMagicEmitter(sf::Vector2f vPos, 
+                                int amount, 
+                                sf::Color color, 
+                                bool rep = false, 
+                                sf::Time rd = sf::Time::Zero);
 
-        void addTextEmitter(sf::Vector2f vPos, std::string s, int amount, sf::Color color, int charsize=12);
+        void addTextEmitter(sf::Vector2f vPos, 
+                                std::string s, 
+                                int amount, 
+                                sf::Color color, 
+                                int charsize = 12);
+
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         float randomize(int min, int n);

@@ -1,5 +1,9 @@
 #ifndef PLAYERCLASSES_H
-#define PLAYERCLASSES_h
+#define PLAYERCLASSES_H
+
+/*
+ * Enums defining the different classes you can play as
+ */
 
 enum PlayerClasses{
     DARK_KNIGHT,

@@ -3,6 +3,10 @@
 
 #include "Monster.h"
 
+/**
+ * Toxic Lizard Class
+ */
+
 class ToxicLizard : public Monster{
     public:
         ToxicLizard(sf::Vector2f p);

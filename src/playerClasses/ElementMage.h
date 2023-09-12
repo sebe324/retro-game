@@ -12,8 +12,17 @@ class ElementMage : public Player{
 
         void attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed);
 
-        void ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos); //circle of fire
-        void ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos); //ice blast
-        void ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos); //shield
+        void ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos); // circle of fire
+        void ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos); // ice blast
+        void ability3(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos); // shield
 };
 #endif // ELEMENTMAGE_H

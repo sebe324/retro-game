@@ -12,4 +12,10 @@
 #include "Giant.h"
 #include "Troll.h"
 
+/**
+ * monsters.h
+ * 
+ * Include this file to include all of the sub classes of Monster
+ */
+
 #endif // MONSTERS_H

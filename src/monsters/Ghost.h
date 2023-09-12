@@ -4,6 +4,10 @@
 #include "Monster.h"
 #include <memory>
 
+/**
+ * Ghost Class
+ */
+
 class Ghost : public Monster{
     public:
         Ghost(sf::Vector2f p);

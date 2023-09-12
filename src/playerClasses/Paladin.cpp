@@ -20,7 +20,10 @@ Paladin::Paladin(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}) {
     ability3Cost=10.f;
 }
 
-void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
+void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) {
     
     if (ability1Cooldown > sf::Time::Zero || getMana() < ability1Cost) {
         return;
@@ -45,7 +48,10 @@ void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, std::vec
 }
 
 
-void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
+void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos) {
     
     if (ability2Cooldown > sf::Time::Zero || getMana() < ability2Cost) {
         return;
@@ -64,7 +70,10 @@ void Paladin::ability2(std::vector<std::unique_ptr<Monster>>& monsters, std::vec
 }
 
 
-void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, std::vector<ParticleSystem> &particleSystem,  std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos) {
+void Paladin::ability3(std::vector<std::unique_ptr<Monster>>& monsters, 
+                        std::vector<ParticleSystem> &particleSystem,  
+                        std::vector<std::unique_ptr<Projectile>> 
+                        &projectiles, sf::Vector2f mousePos) {
     
     if (ability3Cooldown > sf::Time::Zero || getMana() < ability3Cost) {
         return;

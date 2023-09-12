@@ -15,7 +15,7 @@ Projectile::Projectile(std::string n, float dmg, sf::Time lt, DamageType dmgtype
 }
 
 void Projectile::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>> &monsters, std::unique_ptr<Player> &player, std::vector<ParticleSystem> &particleSystem) {
-    lifetime-=elapsed;
+    lifetime -= elapsed;
 
     if (lifetime < sf::Time::Zero || !dealDamage) {
         return;

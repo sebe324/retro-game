@@ -3,6 +3,12 @@
 
 #include "Button.h"
 
+/**
+ * Settings.h
+ * 
+ * Defines class for settings menu
+ */
+
 class Settings : public sf::Drawable {
 
     public:

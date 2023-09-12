@@ -3,29 +3,27 @@
 std::string Utils::toString(float f, int precision) {
     std::ostringstream out;
     out.precision(precision);
-    out<<std::fixed<<f;
+    out << std::fixed << f;
     return out.str();
 }
 
 std::string Utils::toString(int i) {
     std::ostringstream out;
-    out<<i;
+    out << i;
     return out.str();
 }
 int Utils::clamp(int n, int min, int max) {
-    if (n<min) return min;
-    else if (n>max) return max;
-    else return n;
+    return std::max(min, std::min(n, max));
 }
 
 float Utils::mirrorXf(float x, float borderL, float borderR) {
-    float distance=x-borderL;
-    x=borderR-distance;
+    float distance = x - borderL;
+    x = borderR - distance;
     return x;
 }
 
 float Utils::distance(float x1, float y1, float x2, float y2) {
-    return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 }
 
 float Utils::randomize(int min, int max) {

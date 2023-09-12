@@ -6,6 +6,12 @@
 #include "../enums/Attitude.h"
 #include "../Projectile/Projectile.h"
 
+/**
+ * Monster Class
+ * 
+ * 
+ */
+
 class Monster : public Character{
     public:
         float detectionRange;

@@ -6,9 +6,16 @@
 #include "../Utilities/Utils.h"
 #include "../core/Character.h"
 
+/**
+ * Player.h
+ * 
+ * Defines the player class, which the other playable character classes inherit from
+ * This class inherits from the Character class
+ */
+
 class Monster;
 
-class Player : public Character{
+class Player : public Character {
     public:
         sf::Keyboard::Key keyUp=sf::Keyboard::W;
         sf::Keyboard::Key keyDown=sf::Keyboard::S;
@@ -24,9 +31,21 @@ class Player : public Character{
         bool checkLevelUp();
         void movementWSAD(bool b);
         virtual void update(sf::Time elapsed,std::vector<std::unique_ptr<Monster> >& monsters);
-        virtual void ability1(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
-        virtual void ability2(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
-        virtual void ability3(std::vector<std::unique_ptr<Monster> >& monsters, std::vector<ParticleSystem> &particleSystem, std::vector<std::unique_ptr<Projectile> > &projectiles, sf::Vector2f mousePos);
+
+        virtual void ability1(std::vector<std::unique_ptr<Monster> >& monsters, 
+                                std::vector<ParticleSystem> &particleSystem, 
+                                std::vector<std::unique_ptr<Projectile> > &projectiles, 
+                                sf::Vector2f mousePos);
+
+        virtual void ability2(std::vector<std::unique_ptr<Monster> >& monsters, 
+                                std::vector<ParticleSystem> &particleSystem, 
+                                std::vector<std::unique_ptr<Projectile> > &projectiles, 
+                                sf::Vector2f mousePos);
+                                
+        virtual void ability3(std::vector<std::unique_ptr<Monster> >& monsters, 
+                                std::vector<ParticleSystem> &particleSystem, 
+                                std::vector<std::unique_ptr<Projectile> > &projectiles, 
+                                sf::Vector2f mousePos);
 
          sf::Time ability1Cooldown=sf::Time::Zero;
          sf::Time ability2Cooldown=sf::Time::Zero;

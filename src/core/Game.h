@@ -23,10 +23,17 @@
 #include "../Utilities/Utils.h"
 #include "../enums/ParticlesGame.h"
 #include "../enums/Biomes.h"
-class Game : public sf::Drawable{
+#include "../enums/PlayerClasses.h"
+
+/*
+ * Game.h
+ * 
+ */
+
+
+class Game : public sf::Drawable {
 
     public:
-
         std::vector<std::unique_ptr<Monster>> monsters;
         std::vector<sf::Text> texts;
         std::unique_ptr<Player> player;
@@ -36,8 +43,8 @@ class Game : public sf::Drawable{
         sf::View *viewUI;
         sf::Vector2i mousepos;
         sf::Vector2f mouseglobal;
-        bool paused=false;
-        bool isMapActive=true;
+        bool paused = false;
+        bool isMapActive = true;
         void update(sf::Time elapsed, sf::Vector2f globalPos);
         void changeMap(uint32_t seed, int octaves, float bias);
         Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
@@ -47,7 +54,6 @@ class Game : public sf::Drawable{
         void updateSettings(Settings& new_settings);
 
     private:
-
         int playerXmap;
         int playerYmap;
 
@@ -62,6 +68,7 @@ class Game : public sf::Drawable{
         sf::VertexArray actualMap;
         sf::VertexArray playerOnMap;
         sf::RectangleShape mapBorder;
+        
         Rnd rnd;
         std::vector<float> noiseValues2d;
         virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

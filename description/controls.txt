@@ -1,0 +1,7 @@
+WASD / Arrows: Move
+
+Left Mouse Click: Attack
+
+1:  Use ability 1
+2:  Use ability 2
+3:  Use ability 3

@@ -4,6 +4,10 @@
 #include "Monster.h"
 #include "../Projectile/Rock.h"
 
+/**
+ * Giant Class
+ */
+
 class Giant : public Monster{
     public:
         Giant(sf::Vector2f p);
