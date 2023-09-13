@@ -167,7 +167,7 @@ int main() {
                             game.paused = false;
 
                             // Recreating the game object was the only way I found to reset the game.
-                            Game game("../texture.png", "../font.ttf", &window, &viewUI);
+                            game.reset();
                         }
                     }
                 }
@@ -217,7 +217,7 @@ int main() {
                         x.emitters.clear();
                         x.textEmitters.clear();
                     }
-                    Game game("../texture.png", "../font.ttf", &window, &viewUI);
+                    game.reset();
                 }
             }
         }

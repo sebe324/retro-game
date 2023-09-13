@@ -7,6 +7,10 @@ float randomize(int min, int n) {
 Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v) {
     if (!font.loadFromFile(fontPath)) {}
     if (!texture.loadFromFile(texturePath)) {}
+    monsters.clear();
+    texts.clear();
+    projectiles.clear();
+    particleSystem.clear();
     window = w;
     viewUI = v;
     player = std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
@@ -93,7 +97,6 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     if (paused) {
         return;
     }
-
     if (sf::Keyboard::isKeyPressed(player->keyUp))
         player->moveUp(elapsed); 
     if (sf::Keyboard::isKeyPressed(player->keyDown))
@@ -314,7 +317,6 @@ void Game::updateParticles(sf::Time& elapsed) {
     stats[14].position.x = (player->getHealth() / player->getMaxHealth() * 400);
     if (player->getHealth() < player->getMaxHealth()) 
         particleSystem[ParticlesGame::PARTICLES_HP].emitters[0].startPos = {stats[13].position.x, 950.f};
-
     stats[16].position.x = (1000 - player->getMana() / player->getMaxMana() * 400);
     stats[19].position.x = (1000 - player->getMana() / player->getMaxMana() * 400);
     if (player->getMana() < player->getMaxMana()) 
@@ -462,3 +464,18 @@ void Game::updateSettings(Settings& new_settings) {
     player->movementWSAD(new_settings.WSAD);
 }
 
+void Game::reset(){
+ monsters.clear();
+    texts.clear();
+    projectiles.clear();
+    particleSystem.clear();
+  ParticleSystem particlesWorld(sf::seconds(1.75), &font);
+    ParticleSystem particlesHp(sf::seconds(1), &font);
+    ParticleSystem particlesMana(sf::seconds(1), &font);
+    ParticleSystem particlesUI(sf::seconds(1.75), &font);
+    particleSystem.push_back(particlesWorld);
+    particleSystem.push_back(particlesHp);
+    particleSystem.push_back(particlesMana);
+    particleSystem.push_back(particlesUI);
+    statsSetup();      
+}
