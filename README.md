@@ -31,13 +31,12 @@ W.I.P
 ### Using command line
 
 1. Install SFML from their original website: [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)
-2. In CMakeLists.txt line 7 set CMAKE_PREFIX_PATH to the location of the SFML folder you downloaded.
-3. In CmakeLists.txt line 50 set the include directory to the include folder in the SFML folder.
-4. Use the following commands in the command line:
+2. In CMakeLists.txt set the SFML_LOCATION to your sfml download location
+3. Use the following commands in the command line:
     ```cmake .```
    ```cmake --build .```
-5. Move SFML dynamic link libraries from the SFML_LOCATION/bin to the Debug folder in the project directory.
-6. Just click the app icon. It should work now.
+4. Move SFML dynamic link libraries from the SFML_LOCATION/bin to the folder with the executable in the project directory.
+5. Just click the app icon. It should work now.
 ### Using an IDE
 1. Install SFML from their original website: [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)
 2. Configure it with your IDE. Here are some tutorials: [https://www.sfml-dev.org/tutorials/2.5/](https://www.sfml-dev.org/tutorials/2.5/)
