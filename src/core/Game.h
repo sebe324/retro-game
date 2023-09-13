@@ -52,7 +52,7 @@ class Game : public sf::Drawable {
 
         // Updates the current game to new settings
         void updateSettings(Settings& new_settings);
-
+        void reset();
     private:
         int playerXmap;
         int playerYmap;

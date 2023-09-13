@@ -43,6 +43,7 @@ void Projectile::update(sf::Time elapsed, std::vector<std::unique_ptr<Monster>> 
     }
     else {
         if (hitbox.intersects(player->hitbox) && !playerHit) {
+            std::cout<<"\nTEST";
             onImpact(elapsed, *player, particleSystem);
             playerHit=true;
             if (disappearOnImpact) 
