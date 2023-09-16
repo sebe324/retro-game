@@ -14,6 +14,8 @@ find_package(SFML 2.6 COMPONENTS system graphics window REQUIRED)
 
 # Specific headers that I need for each dependency
 
+add_library(worldHeader INTERFACE)
+target_include_directories(worldHeader INTERFACE "${CMAKE_SOURCE_DIR}/src/World/World.h")
 # core/Game.h needed for GUI
 add_library(coreGameHeader INTERFACE)
 target_include_directories(coreGameHeader INTERFACE "${CMAKE_SOURCE_DIR}/src/core/Game.h")
@@ -48,6 +50,7 @@ add_subdirectory(src/Projectile)
 add_subdirectory(src/monsters)
 add_subdirectory(src/playerClasses)
 add_subdirectory(src/core)
+add_subdirectory(src/World)
 
 add_executable(retroGame src/main.cpp)
 
@@ -65,7 +68,8 @@ target_link_libraries(retroGame PRIVATE
     classes
     monster
     gui
-    core)
+    core
+    world)
 
 file(COPY "${CMAKE_SOURCE_DIR}/src/description"
     DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
