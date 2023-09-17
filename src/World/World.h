@@ -7,6 +7,7 @@
 #include "../core/Unit.h"
 #include "Tile.h"
 #include "../enums/Biomes.h"
+#include <iostream>
 
 class World : public sf::Drawable{
 

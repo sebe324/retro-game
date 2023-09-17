@@ -71,14 +71,17 @@ void World::generateTiles(const sf::Vector2f &playerPos){
     int idkX=(int)playerPos.x >> 12;
     int idkY=(int)playerPos.y >> 12;
 
+    std::cout<<"begin nearby biomes loop\n";
     //iterate through all 9 nearby biomes and generate tiles
     for(unsigned y = 0; y < 3; y++)
     for(unsigned x = 0; x < 3; x++){
+    rnd.seed=seed;
     int tmpX=Utils::clamp(idkX-1+x,0,sizeX-1);
     int tmpY=Utils::clamp(idkX-1+y,0,sizeY-1);
     auto& nearbyBiome = nearbyBiomes[y*3+x];
-    for(unsigned tileY = 0; tileY < sizeY*biomeTileSize; tileY++){
-        for(unsigned tileX = 0; tileX < sizeX*biomeTileSize; tileX++){
+    std::cout<<"begin tile generation\n";
+    for(unsigned tileY = 0; tileY < biomeTileSize; tileY++){
+        for(unsigned tileX = 0; tileX < biomeTileSize; tileX++){
 
             unsigned tileIndex = tileY*biomeTileSize+tileX;
             
@@ -91,47 +94,50 @@ void World::generateTiles(const sf::Vector2f &playerPos){
             //Get biome coords in game
 
             sf::Vector2f biomeCoords(tmpX<<12, tmpY<<12);
-
             //set the tile's position
             sf::Vector2f tileCoords(tileX*tileSize,tileY*tileSize);
-            
-            nearbyBiome[tileIndex+0].position=biomeCoords+tileCoords+sf::Vector2f(0.f,0.f);
-            nearbyBiome[tileIndex+1].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,0.f);
-            nearbyBiome[tileIndex+2].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,tileSize);
-            nearbyBiome[tileIndex+3].position=biomeCoords+tileCoords+sf::Vector2f(0.f,tileSize);
+
+
+            nearbyBiome[tileIndex*4+0].position=biomeCoords+tileCoords+sf::Vector2f(0.f,0.f);
+            nearbyBiome[tileIndex*4+1].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,0.f);
+            nearbyBiome[tileIndex*4+2].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,tileSize);
+            nearbyBiome[tileIndex*4+3].position=biomeCoords+tileCoords+sf::Vector2f(0.f,tileSize);
             
 
             //set the tile's texture
-            
             sf::Vector2f textureCoords(16*textureID,16*biomeID);
 
-            nearbyBiome[tileIndex+0].texCoords=textureCoords+sf::Vector2f(0.f,0.f);
-            nearbyBiome[tileIndex+1].texCoords=textureCoords+sf::Vector2f(16.f,0.f);
-            nearbyBiome[tileIndex+2].texCoords=textureCoords+sf::Vector2f(16.f,16.f);
-            nearbyBiome[tileIndex+3].texCoords=textureCoords+sf::Vector2f(0.f,16.f);
+            nearbyBiome[tileIndex*4+0].texCoords=textureCoords+sf::Vector2f(0.f,0.f);
+            nearbyBiome[tileIndex*4+1].texCoords=textureCoords+sf::Vector2f(16.f,0.f);
+            nearbyBiome[tileIndex*4+2].texCoords=textureCoords+sf::Vector2f(16.f,16.f);
+            nearbyBiome[tileIndex*4+3].texCoords=textureCoords+sf::Vector2f(0.f,16.f);
             
 
             //nearbyBiome[tileY*biomeTileSize+tileX]
         }
     }
     }
+    rnd.seed=seed;
 }
 
 void World::generateRivers(){
     //I'm not sure how to exactly implement it. I'll do it later.
 }
 void World::update(sf::Time &elapsed, const sf::Vector2f &playerPos){
+
+    std::cout<<"start world update\n";
     int tmpX=(int)playerPos.x >> 12;
     int tmpY=(int)playerPos.y >> 12;
 
-
+    std::cout<<"bit shift done\n";
     //if player has moved into a new biome
     if(playerBiomePos.x !=tmpX || playerBiomePos.y !=tmpY){
         //generate tiles for surrounding biomes
-        generateTiles(playerPos);
         playerBiomePos.x=tmpX;
         playerBiomePos.y=tmpY;
+        generateTiles(playerPos);
     }
+    std::cout<<"Tiles generated\n";
     //Change which biomes to show based on the player's position
 }
 
@@ -160,5 +166,5 @@ void World::setTexture(const std::string &path){
 }
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     states.texture=&tileTexture;
-    for(auto& b : nearbyBiomes ) target.draw(b);
+    for(auto& b : nearbyBiomes ) target.draw(b,states);
 }

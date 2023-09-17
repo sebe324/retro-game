@@ -121,26 +121,12 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     std::cout<<"uga buga3"<<std::endl;
     player->update(elapsed,monsters);
     updateParticles(elapsed);
+    gameWorld.update(elapsed,player->getCenter());
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
     std::cout<<"begin draw"<<std::endl;
     sf::VertexArray tmp(sf::Quads,36); // biomes near the player
-    for(int y = 0; y < 3; y++) {
-        for(int x = 0; x < 3; x++) {
-            int tmpY=Utils::clamp(playerYmap-1+y,0,49);
-            int tmpX=Utils::clamp(playerXmap-1+x,0,49);
-            sf::Color color = World::biomeColors[gameWorld.getBiome(tmpX,tmpY)];
-            tmp[(y*3+x)*4+0].color = color;
-            tmp[(y*3+x)*4+1].color = color;
-            tmp[(y*3+x)*4+2].color = color;
-            tmp[(y*3+x)*4+3].color = color;
-
-            tmp[(y*3+x)*4].position = sf::Vector2f(tmpX << 12, tmpY << 12);
-            tmp[(y*3+x)*4+1].position = sf::Vector2f(tmpX << 12, tmpY << 12)+sf::Vector2f(4096,0);
-            tmp[(y*3+x)*4+2].position = sf::Vector2f(tmpX << 12, tmpY << 12)+sf::Vector2f(4096,4096);
-            tmp[(y*3+x)*4+3].position = sf::Vector2f(tmpX << 12, tmpY << 12)+sf::Vector2f(0,4096);
-        }
-    }
+    target.draw(gameWorld);
     target.draw(tmp);
     for(int i = 0; i < monsters.size(); i++) {
         target.draw(*monsters[i], states);
