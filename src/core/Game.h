@@ -12,6 +12,7 @@
 #include "../Projectile/Projectile.h"
 #include "../particleSystem/particleSystem.h"
 #include "../noise/perlinNoise.h"
+#include "../world/World.h"
 
 #include <memory>
 #include <iostream>
@@ -46,7 +47,7 @@ class Game : public sf::Drawable {
         bool paused = false;
         bool isMapActive = true;
         void update(sf::Time elapsed, sf::Vector2f globalPos);
-        void changeMap(uint32_t seed, int octaves, float bias);
+        void changeMap(World &w);
         Game(std::string texturePath, std::string fontPath,const sf::RenderWindow* w, sf::View* v);
         void changePlayerClass(int playerClass);
 
@@ -70,6 +71,9 @@ class Game : public sf::Drawable {
         sf::RectangleShape mapBorder;
         
         Rnd rnd;
+
+        World gameWorld;
+        
         std::vector<float> noiseValues2d;
         virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -79,7 +83,7 @@ class Game : public sf::Drawable {
 
         void generateMonster();
         void statsSetup();
-        void manageInput(sf::Time& elapsed);
+        void manageInput(sf::Time& elapsed, const sf::Vector2f& globalPos);
         void updateMap();
         void updateParticles(sf::Time& elapsed);
         int getBiome(sf::Vector2f pos);

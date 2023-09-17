@@ -44,10 +44,10 @@ private:
 public:
     World(unsigned sizeX, unsigned sizeY, std::vector<float> biomeValues);
     World(unsigned sizeX, unsigned sizeY, unsigned seed, unsigned octaves, float bias);
-    
+    World();
     void setTexture(const std::string& path);
 
-    void generateNewWorld(unsigned seed);
+    void generateNewWorld();
 
     void update(sf::Time &elapsed, const sf::Vector2f &playerPos);
     unsigned getSizeX() const;
@@ -55,8 +55,18 @@ public:
 
     unsigned getSeed() const;
 
+    Biomes getBiome(unsigned x, unsigned y) const;
+
     void setSizeX(unsigned x);
 
     void setSizeY(unsigned y); 
+
+    void setSeed(unsigned s);
+
+    void setBias(float b);
+
+    void setOctaves(unsigned o);
+
+    static std::vector<sf::Color> biomeColors;
 };
 #endif
