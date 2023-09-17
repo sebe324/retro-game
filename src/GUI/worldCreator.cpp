@@ -10,6 +10,7 @@ WorldCreator::WorldCreator() {}
 WorldCreator::WorldCreator(sf::Font& font) {
 
     gameWorld = World(50,50,0,octaves,bias);
+    gameWorld.setTexture("../tiles.png");
     gameMap=sf::VertexArray(sf::Quads, 50*50*4);
     randomValues2d=std::vector<float>(2500);
     bIncreaseOctaves=Button("+",60,sf::Color::Black,{675.f,100.f},{75.f,75.f},sf::Color(39,174,96),font);

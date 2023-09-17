@@ -18,8 +18,8 @@ private:
     unsigned sizeY;
     unsigned seed;
     unsigned tilesAmount;
-    unsigned tileSize=50; // length of one tile in pixels
-    unsigned biomeTileSize=50; // length of one biome in tiles
+    float tileSize=64.f; // length of one tile in pixels
+    unsigned biomeTileSize=64; // length of one biome in tiles
 
     unsigned octaves;
     float bias;
@@ -31,14 +31,19 @@ private:
     std::vector<unsigned short> tilesInfo;
     std::vector<float> objsInfo;
     std::vector<Biomes> biomes;
+    std::vector<sf::VertexArray> nearbyBiomes;
+    sf::Vector2i playerBiomePos;
 
     void generateBiomes();
+
+    void generateTiles(const sf::Vector2f &playerPos);
 
     void generateRivers();
 
     void generateProps();
 
     void biomeBlend();
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:

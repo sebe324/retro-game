@@ -7,6 +7,7 @@ sf::Color(116,146,76),
 sf::Color(204,174,98),
 sf::Color(100,20,20)
 };
+
 World::World(){}
 
 World::World(unsigned sizeX, unsigned sizeY, std::vector<float> biomeValues){
@@ -14,11 +15,12 @@ World::World(unsigned sizeX, unsigned sizeY, std::vector<float> biomeValues){
 }
 
 World::World(unsigned sizeX, unsigned sizeY, unsigned seed, unsigned octaves, float bias)
+: nearbyBiomes(9, sf::VertexArray(sf::Quads, biomeTileSize*biomeTileSize*4))
 {
+    playerBiomePos=sf::Vector2i(-1,-1);
     this->sizeX=sizeX;
     this->sizeY=sizeY;
     tilesAmount = sizeX * sizeY * biomeTileSize*biomeTileSize;
-    tilesToDraw=sf::VertexArray(sf::Quads,tilesAmount*4);
     rnd.seed=seed;
     this->octaves=octaves;
     this->bias=bias;
@@ -34,6 +36,8 @@ void World::generateNewWorld(){
     //Biome blend
 
     //Generate rivers
+
+    rnd.seed=seed;
 }
 
 void World::generateBiomes(){
@@ -56,7 +60,78 @@ void World::generateBiomes(){
         }
     }
 }
+
+void World::generateTiles(const sf::Vector2f &playerPos){
+    
+    //In the memory only 9 biomes will be loaded.
+    //Rest will be stored in an algorithm.
+
+    //I have no idea what I'm doing, but I hope this thing will work
+
+    int idkX=(int)playerPos.x >> 12;
+    int idkY=(int)playerPos.y >> 12;
+
+    //iterate through all 9 nearby biomes and generate tiles
+    for(unsigned y = 0; y < 3; y++)
+    for(unsigned x = 0; x < 3; x++){
+    int tmpX=Utils::clamp(idkX-1+x,0,sizeX-1);
+    int tmpY=Utils::clamp(idkX-1+y,0,sizeY-1);
+    auto& nearbyBiome = nearbyBiomes[y*3+x];
+    for(unsigned tileY = 0; tileY < sizeY*biomeTileSize; tileY++){
+        for(unsigned tileX = 0; tileX < sizeX*biomeTileSize; tileX++){
+
+            unsigned tileIndex = tileY*biomeTileSize+tileX;
+            
+            //get current biome
+
+            Biomes biomeID = getBiome(tmpX,tmpY);
+            //randomize texture
+            int textureID = rnd.rndInt(0,7);
+
+            //Get biome coords in game
+
+            sf::Vector2f biomeCoords(tmpX<<12, tmpY<<12);
+
+            //set the tile's position
+            sf::Vector2f tileCoords(tileX*tileSize,tileY*tileSize);
+            
+            nearbyBiome[tileIndex+0].position=biomeCoords+tileCoords+sf::Vector2f(0.f,0.f);
+            nearbyBiome[tileIndex+1].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,0.f);
+            nearbyBiome[tileIndex+2].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,tileSize);
+            nearbyBiome[tileIndex+3].position=biomeCoords+tileCoords+sf::Vector2f(0.f,tileSize);
+            
+
+            //set the tile's texture
+            
+            sf::Vector2f textureCoords(16*textureID,16*biomeID);
+
+            nearbyBiome[tileIndex+0].texCoords=textureCoords+sf::Vector2f(0.f,0.f);
+            nearbyBiome[tileIndex+1].texCoords=textureCoords+sf::Vector2f(16.f,0.f);
+            nearbyBiome[tileIndex+2].texCoords=textureCoords+sf::Vector2f(16.f,16.f);
+            nearbyBiome[tileIndex+3].texCoords=textureCoords+sf::Vector2f(0.f,16.f);
+            
+
+            //nearbyBiome[tileY*biomeTileSize+tileX]
+        }
+    }
+    }
+}
+
+void World::generateRivers(){
+    //I'm not sure how to exactly implement it. I'll do it later.
+}
 void World::update(sf::Time &elapsed, const sf::Vector2f &playerPos){
+    int tmpX=(int)playerPos.x >> 12;
+    int tmpY=(int)playerPos.y >> 12;
+
+
+    //if player has moved into a new biome
+    if(playerBiomePos.x !=tmpX || playerBiomePos.y !=tmpY){
+        //generate tiles for surrounding biomes
+        generateTiles(playerPos);
+        playerBiomePos.x=tmpX;
+        playerBiomePos.y=tmpY;
+    }
     //Change which biomes to show based on the player's position
 }
 
@@ -78,7 +153,12 @@ void World::setOctaves(unsigned o){
     generateNewWorld();
 }
 
+void World::setTexture(const std::string &path){
+    if(!tileTexture.loadFromFile(path)){
+        std::cout<<"TEXTURE FAILED TO LOAD!";
+    }
+}
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    target.draw(tilesToDraw);
-    //target.draw(biomesNearPlayer);
+    states.texture=&tileTexture;
+    for(auto& b : nearbyBiomes ) target.draw(b);
 }
