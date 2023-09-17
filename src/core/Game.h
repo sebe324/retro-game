@@ -79,6 +79,7 @@ class Game : public sf::Drawable {
 
         void generateMonster();
         void statsSetup();
+        void manageInput(sf::Time& elapsed);
         void updateMap();
         void updateParticles(sf::Time& elapsed);
         int getBiome(sf::Vector2f pos);

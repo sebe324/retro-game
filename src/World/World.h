@@ -5,20 +5,33 @@
 #include <vector>
 #include "../noise/perlinNoise.h"
 #include "../core/Unit.h"
+#include "Tile.h"
+#include "../enums/Biomes.h"
 
 class World : public sf::Drawable{
 
 private:
+    Rnd rnd;
+
+
     unsigned sizeX;
     unsigned sizeY;
     unsigned seed;
-    sf::Texture tileTextures;
-    //Tiles will be drawn in one draw function call to avoid lag.
-    sf::VertexArray tiles_to_draw; 
-    sf::VertexArray sprites_to_draw;
-    std::vector<unsigned short> tiles_info;
-    std::vector<float> objs_info;
+    unsigned tilesAmount;
+    unsigned tileSize=50; // length of one tile in pixels
+    unsigned biomeTileSize=50; // length of one biome in tiles
+
+    unsigned octaves;
+    float bias;
     
+    sf::Texture tileTexture;
+    //Tiles will be drawn in one draw function call to avoid lag.
+    sf::VertexArray tilesToDraw; 
+    sf::VertexArray spritesToDraw;
+    std::vector<unsigned short> tilesInfo;
+    std::vector<float> objsInfo;
+    std::vector<Biomes> biomes;
+
     void generateBiomes();
 
     void generateRivers();
@@ -30,10 +43,13 @@ private:
 
 public:
     World(unsigned sizeX, unsigned sizeY, std::vector<float> biomeValues);
-    World(unsigned sizeX, unsigned sizeY, unsigned seed);
+    World(unsigned sizeX, unsigned sizeY, unsigned seed, unsigned octaves, float bias);
+    
+    void setTexture(const std::string& path);
 
     void generateNewWorld(unsigned seed);
 
+    void update(sf::Time &elapsed, const sf::Vector2f &playerPos);
     unsigned getSizeX() const;
     unsigned getSizeY() const;
 

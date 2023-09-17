@@ -78,6 +78,8 @@ void Game::changeMap(uint32_t seed, int octaves, float bias) {
     updateMap();
 }
 
+//Update the small map in the top left corner
+
 void Game::updateMap() {
     playerXmap = (int)player->hitbox.left >> 12;
     playerYmap = (int)player->hitbox.top >> 12;
@@ -97,27 +99,7 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     if (paused) {
         return;
     }
-    if (sf::Keyboard::isKeyPressed(player->keyUp))
-        player->moveUp(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyDown))
-        player->moveDown(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyLeft))
-        player->moveLeft(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyRight))
-        player->moveRight(elapsed); 
-    updateMap();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-        player->ability1(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-        player->ability2(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-        player->ability3(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
-        isMapActive = true;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
-        isMapActive = false;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
-        player->attack(projectiles, globalPos, elapsed);
+    manageInput(elapsed);
     
     for(int i = projectiles.size(); i > 0; i--) {
         if (projectiles[i-1]->lifetime < sf::Time::Zero) 
@@ -332,6 +314,31 @@ void Game::updateParticles(sf::Time& elapsed) {
         stats[26].position.x = 0;
         stats[25].position.x = 0;
     }
+}
+
+void Game::manageInput(sf::Time& elapsed){
+       if (sf::Keyboard::isKeyPressed(player->keyUp))
+        player->moveUp(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyDown))
+        player->moveDown(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyLeft))
+        player->moveLeft(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyRight))
+        player->moveRight(elapsed); 
+    updateMap();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        player->ability1(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        player->ability2(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        player->ability3(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
+        isMapActive = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
+        isMapActive = false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
+        player->attack(projectiles, globalPos, elapsed);
+    
 }
 void Game::statsSetup() {
     stats = sf::VertexArray(sf::Quads, 28);
