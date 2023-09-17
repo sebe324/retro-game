@@ -51,7 +51,6 @@ void Game::changeMap(World &w) {
             actualMap[(y*50+x)*4+3].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,9.f);
         }
     }
-    std::cout<<"print statements >>>>>>> debugger";
     updateMap();
 }
 
@@ -71,7 +70,6 @@ void Game::updateMap() {
     playerOnMap[2].position = temp*4.f+sf::Vector2f(9.f,9.f);
     playerOnMap[3].position = temp*4.f+sf::Vector2f(5.f,9.f);
 
-    std::cout<<"updated map"<<std::endl;
 }
 
 void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
@@ -79,7 +77,6 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
         return;
     }
     manageInput(elapsed,globalPos);
-    std::cout<<"uga buga"<<std::endl;
     for(int i = projectiles.size(); i > 0; i--) {
         if (projectiles[i-1]->lifetime < sf::Time::Zero) 
             projectiles.erase(projectiles.begin()+i-1);
@@ -103,14 +100,11 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
             }
         }
     }
-    std::cout<<"uga buga2"<<std::endl;
     playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
     playerExpProgress.setPosition(500-(playerExpProgress.getGlobalBounds().width/2),840.f);
-    std::cout<<"uga buga2.25"<<std::endl;
     if (monsters.size() < 20) {
         generateMonster();
     }
-    std::cout<<"uga buga2.5"<<std::endl;
     if (player->checkLevelUp()) {
         particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({500,200},20,{150,255},{150,255},{150,255});
         particleSystem[ParticlesGame::PARTICLES_UI].addEmitter({300,200},20,{150,255},{150,255},{150,255});
@@ -118,13 +112,11 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
         particleSystem[ParticlesGame::PARTICLES_UI].addTextEmitter({400,900},"LEVEL UP!",1,sf::Color::Yellow,60);
         playerLvl.setString(Utils::toString(player->getLevel()));
     }
-    std::cout<<"uga buga3"<<std::endl;
     player->update(elapsed,monsters);
     updateParticles(elapsed);
     gameWorld.update(elapsed,player->getCenter());
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
-    std::cout<<"begin draw"<<std::endl;
     sf::VertexArray tmp(sf::Quads,36); // biomes near the player
     target.draw(gameWorld);
     target.draw(tmp);
@@ -247,10 +239,8 @@ void Game::generateMonster() {
 }
 
 int Game::getBiome(sf::Vector2f pos) {
-    std::cout<<"huj0"<<std::endl;
     int xMap = Utils::clamp((int)pos.x >> 12, 0, 49);
     int yMap = Utils::clamp((int)pos.y >> 12, 0, 49);
-    std::cout<<"huj"<<std::endl;
     return gameWorld.getBiome(xMap,yMap);
 }
 

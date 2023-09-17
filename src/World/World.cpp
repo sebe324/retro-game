@@ -70,16 +70,13 @@ void World::generateTiles(const sf::Vector2f &playerPos){
 
     int idkX=(int)playerPos.x >> 12;
     int idkY=(int)playerPos.y >> 12;
-
-    std::cout<<"begin nearby biomes loop\n";
     //iterate through all 9 nearby biomes and generate tiles
     for(unsigned y = 0; y < 3; y++)
     for(unsigned x = 0; x < 3; x++){
     rnd.seed=seed;
     int tmpX=Utils::clamp(idkX-1+x,0,sizeX-1);
-    int tmpY=Utils::clamp(idkX-1+y,0,sizeY-1);
+    int tmpY=Utils::clamp(idkY-1+y,0,sizeY-1);
     auto& nearbyBiome = nearbyBiomes[y*3+x];
-    std::cout<<"begin tile generation\n";
     for(unsigned tileY = 0; tileY < biomeTileSize; tileY++){
         for(unsigned tileX = 0; tileX < biomeTileSize; tileX++){
 
@@ -125,19 +122,18 @@ void World::generateRivers(){
 }
 void World::update(sf::Time &elapsed, const sf::Vector2f &playerPos){
 
-    std::cout<<"start world update\n";
     int tmpX=(int)playerPos.x >> 12;
     int tmpY=(int)playerPos.y >> 12;
 
-    std::cout<<"bit shift done\n";
     //if player has moved into a new biome
     if(playerBiomePos.x !=tmpX || playerBiomePos.y !=tmpY){
         //generate tiles for surrounding biomes
         playerBiomePos.x=tmpX;
         playerBiomePos.y=tmpY;
+        //std::cout<<"tmpX "<<tmpX<<std::endl;
+        //std::cout<<"tmpY "<<tmpY<<std::endl;
         generateTiles(playerPos);
     }
-    std::cout<<"Tiles generated\n";
     //Change which biomes to show based on the player's position
 }
 
