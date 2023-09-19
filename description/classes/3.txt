@@ -1,0 +1,6 @@
+Elemental Mage
+
+Abilities:
+  1: Circle of Fire
+  2: Ice Blast
+  3: Shield

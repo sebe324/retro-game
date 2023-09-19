@@ -83,19 +83,19 @@ void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters,
         if (monsters[i]->hitbox.intersects(attackRange)) {
             monsters[i]->removeHealth(damage*0.5f+10, DARKNESS,particleSystem);
             addHealth(damage*0.25f+5);
-            healed+=(damage*0.25f+5);
+            healed += (damage*0.25f+5);
         }
     }
     if (healed>0) {
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(0.f,100.f),"+"+Utils::toString(healed,1)+"hp",1,sf::Color::Green,60);
     }
     removeMana(ability1Cost);
-    ability1Cooldown=ability1Time;
+    ability1Cooldown = ability1Time;
 }
 
 
 
-void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>> &monsters, 
                             std::vector<ParticleSystem> &particleSystem, 
                             std::vector<std::unique_ptr<Projectile>> &projectiles, 
                             sf::Vector2f mousePos) {

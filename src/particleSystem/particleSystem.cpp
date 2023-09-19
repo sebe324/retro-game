@@ -144,7 +144,7 @@ void ParticleSystem::addMagicEmitter(sf::Vector2f vPos,
 {
     Emitter emitter(amount,4,vPos,{-20.f,-50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*4),rep);
 
-    for (int i=0; i<amount; i++) {
+    for (int i = 0; i < amount; i++) {
         emitter.vertices[i*4].position=vPos+sf::Vector2f(randomize(-4,8),randomize(-4,8));
         emitter.vertices[i*4+1].position=vPos+sf::Vector2f(15.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
         emitter.vertices[i*4+2].position=vPos+sf::Vector2f(15.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
@@ -166,18 +166,18 @@ void ParticleSystem::addMagicEmitter(sf::Vector2f vPos,
 
 
 void ParticleSystem::update(sf::Time elapsed) {
-    for (int i=0; i<emitters.size(); i++) {
-        emitters[i].timeLeft-=elapsed;
+    for (int i = 0; i < emitters.size(); i++) {
+        emitters[i].timeLeft -= elapsed;
         if (emitters[i].timeLeft <= sf::Time::Zero && !emitters[i].repeat) {
             emitters.erase(emitters.begin()+i);
         }
         else if (emitters[i].timeLeft <= sf::Time::Zero - emitters[i].resetDelay && emitters[i].repeat) {
-            emitters[i].timeLeft=maxTime;
+            emitters[i].timeLeft = maxTime;
         }
         else if (emitters[i].timeLeft <= sf::Time::Zero && emitters[i].repeat) {
             emitters[i].speed.clear();
-            for (int j=0; j<emitters[i].amount; j++) {
-                for (int k=0; k<emitters[i].n; k++) {
+            for (int j = 0; j < emitters[i].amount; j++) {
+                for (int k = 0; k < emitters[i].n; k++) {
                     emitters[i].vertices[j*emitters[i].n+k].position=emitters[i].startPos+emitters[i].startPosOffset[j*emitters[i].n+k];
                 }
                 emitters[i].speed.push_back({randomize(emitters[i].velX.x,emitters[i].velX.y),randomize(emitters[i].velY.x,emitters[i].velY.y)});
@@ -194,18 +194,16 @@ void ParticleSystem::update(sf::Time elapsed) {
         }
     }
 
-    for (int i=0; i<textEmitters.size(); i++) {
-        textEmitters[i].timeLeft-=elapsed;
+    for (int i = 0; i < textEmitters.size(); i++) {
+        textEmitters[i].timeLeft -= elapsed;
         if (textEmitters[i].timeLeft<=sf::Time::Zero) {
             textEmitters.erase(textEmitters.begin()+i);
             continue;
         }
-        float fraction=(textEmitters[i].timeLeft/maxTime);
-        for (int j=0; j<textEmitters[i].texts.size(); j++) {
-            // sf::Color temp=textEmitters[i].texts[j].getColor();
-            sf::Color temp=textEmitters[i].texts[j].getFillColor();
-            temp.a=fraction*255;
-            // textEmitters[i].texts[j].setColor(temp);
+        float fraction = (textEmitters[i].timeLeft / maxTime);
+        for (int j = 0; j < textEmitters[i].texts.size(); j++) {
+            sf::Color temp = textEmitters[i].texts[j].getFillColor();
+            temp.a = fraction * 255;
             textEmitters[i].texts[j].setFillColor(temp);
             textEmitters[i].texts[j].setPosition(textEmitters[i].texts[j].getPosition()+textEmitters[i].speed[j]*elapsed.asSeconds());
         }
@@ -213,16 +211,16 @@ void ParticleSystem::update(sf::Time elapsed) {
 }
 
 void ParticleSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    for (int i=0; i<emitters.size(); i++) {
+    for (int i = 0; i < emitters.size(); i++) {
         target.draw(emitters[i].vertices,states);
     }
-    for (int i=0; i<textEmitters.size(); i++) {
-        for (int j=0; j<textEmitters[i].texts.size(); j++) {
+    for (int i = 0; i < textEmitters.size(); i++) {
+        for (int j = 0; j < textEmitters[i].texts.size(); j++) {
             target.draw(textEmitters[i].texts[j],states);
         }
     }
 }
 
 float ParticleSystem::randomize(int min, int max) {
-    return (std::rand()%(max-min))+min;
+    return (std::rand() % (max - min)) + min;
 }

@@ -1,0 +1,6 @@
+Archer
+
+Abilities: 
+  1: Triple Shot
+  2: Trap
+  3: Dash

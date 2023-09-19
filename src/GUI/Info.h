@@ -2,10 +2,12 @@
 #define INFO_H
 
 #include <SFML/Graphics.hpp>
-#include "Button.h"
 #include <string>
 #include <iostream>
 #include <fstream>
+
+#include "Button.h"
+#include "../enums/InfoMenus.h"
 
 /**
  * Info.h
@@ -17,11 +19,13 @@
 class Info : public sf::Drawable {
 
     public:
-        Button goBack;
-        Button next;
-        Button previous;
+        Button classes;
+        Button enemies;
         Button controls;
-
+        Button goBack;
+        Button previous;
+        Button next;
+        
         sf::Sprite background;
         sf::Sprite image;
         sf::Text description;
@@ -30,12 +34,15 @@ class Info : public sf::Drawable {
 
         Info (sf::Font& font, std::string backgroundPath);
         int counter = 1;
+        int menu = CONTROLS;
 
         void update(sf::Vector2f pos);
         void checkClick(sf::Vector2f pos);
     private:
         void updateTexture();
         void displayControls();
+        void displayEnemies();
+        void displayClasses();
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 #endif // INFO_H
