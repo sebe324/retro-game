@@ -1,10 +1,14 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
-project(retroGame)
+project(retroGame VERSION 0.2)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(CMAKE_PREFIX_PATH "/opt/homebrew/lib/cmake/SFML")
+set(CMAKE_CXX_STANDARD 14)
+
+set(SFML_LOCATION "C:\\libraries\\SFML-2.6.0-VC")
+
+set(CMAKE_PREFIX_PATH SFML_LOCATION)
 
 find_package(SFML 2.6 COMPONENTS system graphics window REQUIRED)
 
@@ -47,7 +51,7 @@ add_subdirectory(src/core)
 
 add_executable(retroGame src/main.cpp)
 
-target_include_directories(retroGame PRIVATE "/opt/homebrew/Cellar/sfml/2.6.0/include")
+target_include_directories(retroGame PRIVATE "${SFML_LOCATION}/include")
 
 target_link_libraries(retroGame PRIVATE
     sfml-graphics 
@@ -63,3 +67,11 @@ target_link_libraries(retroGame PRIVATE
     gui
     core)
 
+file(COPY "${CMAKE_SOURCE_DIR}/src/description"
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+file(COPY "${CMAKE_SOURCE_DIR}/font.ttf"
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+file(COPY "${CMAKE_SOURCE_DIR}/texture.png"
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+file(COPY "${CMAKE_SOURCE_DIR}/dice.png"
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
