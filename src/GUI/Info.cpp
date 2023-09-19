@@ -46,7 +46,6 @@ void Info::update (sf::Vector2f pos) {
 }
 
 void Info::checkClick (sf::Vector2f pos) {
-
     if (controls.click(pos)) {
         menu = CONTROLS;
     } else if (enemies.click(pos)) {
@@ -59,18 +58,6 @@ void Info::checkClick (sf::Vector2f pos) {
         counter--;
     }
     updateTexture();
-
-    // if (controls.click(pos)) {
-    //     displayControls();
-    // }
-    // else if (next.click(pos)) {
-    //     counter++; 
-    //     updateTexture();
-    // }
-    // else if (previous.click(pos)) { 
-    //     counter--; 
-    //     updateTexture();
-    // }
 }
 
 void Info::draw (sf::RenderTarget& target, sf::RenderStates states) const {
@@ -87,8 +74,7 @@ void Info::draw (sf::RenderTarget& target, sf::RenderStates states) const {
 
 void Info::updateTexture() {
 
-    std::string text = "../description/";
-    std::string img = "../description/";
+    std::string text = "../src/description/";
 
     switch (menu) {
         case CONTROLS:
@@ -113,82 +99,15 @@ void Info::updateTexture() {
         default: break;
     }
 
+    // if (!imageTexture.loadFromFile("../src/description/1.png")) {}
+    // image.setTexture(imageTexture);
     std::string tmp;
     std::string elo;
-    // std::ifstream desc("../description/"+std::to_string(counter)+".txt");
     std::ifstream desc(text);
     while (getline(desc,tmp)) {
-        elo += tmp;
-        elo += "\n";
-    }
-    description.setString(elo);
-    desc.close();
-
-
-    // if (counter > 10) 
-    //     counter = 10;
-    // else if (counter < 1) 
-    //     counter = 1;
-    // else {
-    //     if (!imageTexture.loadFromFile("../description/"+std::to_string(counter)+".png")) {}
-    //     image.setTexture(imageTexture);
-    //     std::string tmp;
-    //     std::string elo;
-    //     std::ifstream desc("../description/"+std::to_string(counter)+".txt");
-    //     while (getline(desc,tmp)) {
-    //         elo += tmp;
-    //         elo += "\n";
-    //     }
-    //     description.setString(elo);
-    //     desc.close();
-    // }
-}
-
-void Info::displayControls() {
-    std::string tmp;
-    std::string elo;
-    std::ifstream controlScreen("../description/controls.txt");
-    while (getline(controlScreen, tmp)) {
         elo += tmp + "\n";
     }
     description.setString(elo);
-    controlScreen.close();
-}
-
-void Info::displayEnemies() {
-    if (enemyPage > 10) {
-        enemyPage = 10;
-    } else if (enemyPage < 1) {
-        enemyPage = 1;
-    }
-    if (!imageTexture.loadFromFile("../description/enemies/"+std::to_string(enemyPage)+".png")) {}
-    image.setTexture(imageTexture);
-    std::string tmp;
-    std::string elo;
-    std::ifstream desc("../description/enemies/"+std::to_string(enemyPage)+".txt");
-    while (getline(desc,tmp)) {
-        elo += tmp;
-        elo += "\n";
-    }
-    description.setString(elo);
     desc.close();
 }
 
-void Info::displayClasses() {
-    if (classPage > 4) {
-        classPage = 4;
-    } else if (classPage < 1) {
-        classPage = 1;
-    }
-    if (!imageTexture.loadFromFile("../description/"+std::to_string(classPage)+".png")) {}
-    image.setTexture(imageTexture);
-    std::string tmp;
-    std::string elo;
-    std::ifstream desc("../description/"+std::to_string(classPage)+".txt");
-    while (getline(desc,tmp)) {
-        elo += tmp;
-        elo += "\n";
-    }
-    description.setString(elo);
-    desc.close();
-}
