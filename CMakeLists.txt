@@ -2,7 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 
 project(retroGame VERSION 0.2)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# First for the generic no-config case (e.g. with mingw)
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
+# Second, for multi-config builds (e.g. msvc)
+foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/bin )
+    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib )
+    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib )
+endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -14,6 +24,8 @@ find_package(SFML 2.6 COMPONENTS system graphics window REQUIRED)
 
 # Specific headers that I need for each dependency
 
+add_library(worldHeader INTERFACE)
+target_include_directories(worldHeader INTERFACE "${CMAKE_SOURCE_DIR}/src/World/World.h")
 # core/Game.h needed for GUI
 add_library(coreGameHeader INTERFACE)
 target_include_directories(coreGameHeader INTERFACE "${CMAKE_SOURCE_DIR}/src/core/Game.h")
@@ -48,6 +60,7 @@ add_subdirectory(src/Projectile)
 add_subdirectory(src/monsters)
 add_subdirectory(src/playerClasses)
 add_subdirectory(src/core)
+add_subdirectory(src/World)
 
 add_executable(retroGame src/main.cpp)
 
@@ -65,13 +78,6 @@ target_link_libraries(retroGame PRIVATE
     classes
     monster
     gui
+    core
+    world)
     core)
-
-file(COPY "${CMAKE_SOURCE_DIR}/src/description"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/font.ttf"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/texture.png"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/dice.png"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)

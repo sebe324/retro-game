@@ -7,6 +7,7 @@
 
 #include <iomanip>
 #include "../Utilities/Utils.h"
+#include "../World/World.h"
 
 /**
  * World Creator
@@ -38,6 +39,9 @@ class WorldCreator : public sf::Drawable {
         Button bGoBack;
 
         Textbox seedInput;
+
+        World gameWorld;
+        
         WorldCreator();
         WorldCreator(sf::Font& font);
 
@@ -73,7 +77,6 @@ class WorldCreator : public sf::Drawable {
         sf::VertexArray gameMap;
 
         sf::RectangleShape background;
-
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 #endif // WORLDCREATOR_H

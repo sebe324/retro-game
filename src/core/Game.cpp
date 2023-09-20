@@ -27,7 +27,6 @@ Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow*
     statsSetup();
     playerXmap = (int)player->hitbox.left >> 12;
     playerYmap = (int)player->hitbox.top >> 12;
-
     mapBorder = sf::RectangleShape({200.f,200.f});
     mapBorder.setFillColor(sf::Color(0,0,0,0));
     mapBorder.setOutlineThickness(5.f);
@@ -35,90 +34,49 @@ Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow*
     mapBorder.setOutlineColor(sf::Color::Black);
 }
 
-void Game::changeMap(uint32_t seed, int octaves, float bias) {
-    std::vector<float> randomValues2d(2500);
-    rnd.seed = seed;
-    for(int x = 0; x < 50; x++) {
-        for(int y = 0; y < 50; y++) {
-            randomValues2d[y*50+x] = rnd.rndInt(0,100);
-        }
-    }
-
-    noiseValues2d = rnd.perlin2d(randomValues2d,50,50,octaves,bias);
-    gameMap = sf::VertexArray(sf::Points, 50*50);
-    for(int x = 0; x < 50; x++) {
-        for(int y = 0; y < 50; y++) {
-            sf::Color color;
-            auto value = noiseValues2d[y*50+x];
-            if (value <= 30)        color = sf::Color(64,64,122);
-            else if (value < 60)    color = sf::Color(46,113,53);
-            else if (value < 80)    color = sf::Color(116,146,76);
-            else if (value < 100)   color = sf::Color(204,174,98);
-            else if (value >= 100)  color = sf::Color(100,20,20);
-            gameMap[y*50+x].color = color;
-            gameMap[y*50+x].position = {(float)x,(float)y}; // Float cast added to compile in Visual Studio
-        }
-    }
-
+void Game::changeMap(World &w) {
+    gameWorld=World(w);
     actualMap = sf::VertexArray(sf::Quads, 10000);
-    for(int x = 0; x < 50; x++) {
-        for(int y = 0; y < 50; y++) {
-            auto& biome = gameMap[Utils::clamp(y,0,49)*50+Utils::clamp(x,0,49)];
-            actualMap[(y*50+x)*4].color     = biome.color;
-            actualMap[(y*50+x)*4+1].color   = biome.color;
-            actualMap[(y*50+x)*4+2].color   = biome.color;
-            actualMap[(y*50+x)*4+3].color   = biome.color;
+    for(int y = 0; y < 50; y++) {
+        for(int x = 0; x < 50; x++) {
+            sf::Color color = World::biomeColors[gameWorld.getBiome(x,y)];
+            actualMap[(y*50+x)*4+0].color = color;
+            actualMap[(y*50+x)*4+1].color = color;
+            actualMap[(y*50+x)*4+2].color = color;
+            actualMap[(y*50+x)*4+3].color = color;
 
-            actualMap[(y*50+x)*4].position  = biome.position*4.f+sf::Vector2f(5.f,5.f);
-            actualMap[(y*50+x)*4+1].position= biome.position*4.f+sf::Vector2f(9.f,5.f);
-            actualMap[(y*50+x)*4+2].position= biome.position*4.f+sf::Vector2f(9.f,9.f);
-            actualMap[(y*50+x)*4+3].position= biome.position*4.f+sf::Vector2f(5.f,9.f);
+            actualMap[(y*50+x)*4+0].position  = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,5.f);
+            actualMap[(y*50+x)*4+1].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,5.f);
+            actualMap[(y*50+x)*4+2].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,9.f);
+            actualMap[(y*50+x)*4+3].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,9.f);
         }
     }
     updateMap();
 }
 
+//Update the small map in the top left corner
+
 void Game::updateMap() {
     playerXmap = (int)player->hitbox.left >> 12;
     playerYmap = (int)player->hitbox.top >> 12;
-    auto& biome = gameMap[Utils::clamp(playerYmap,0,49)*50+Utils::clamp(playerXmap,0,49)];
+    sf::Vector2f temp(Utils::clamp(playerXmap,0,49),Utils::clamp(playerYmap,0,49));
     playerOnMap[0].color = sf::Color::Magenta;
     playerOnMap[1].color = sf::Color::Magenta;
     playerOnMap[2].color = sf::Color::Magenta;
     playerOnMap[3].color = sf::Color::Magenta;
 
-    playerOnMap[0].position = biome.position*4.f+sf::Vector2f(5.f,5.f);
-    playerOnMap[1].position = biome.position*4.f+sf::Vector2f(9.f,5.f);
-    playerOnMap[2].position = biome.position*4.f+sf::Vector2f(9.f,9.f);
-    playerOnMap[3].position = biome.position*4.f+sf::Vector2f(5.f,9.f);
+    playerOnMap[0].position = temp*4.f+sf::Vector2f(5.f,5.f);
+    playerOnMap[1].position = temp*4.f+sf::Vector2f(9.f,5.f);
+    playerOnMap[2].position = temp*4.f+sf::Vector2f(9.f,9.f);
+    playerOnMap[3].position = temp*4.f+sf::Vector2f(5.f,9.f);
+
 }
 
 void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     if (paused) {
         return;
     }
-    if (sf::Keyboard::isKeyPressed(player->keyUp))
-        player->moveUp(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyDown))
-        player->moveDown(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyLeft))
-        player->moveLeft(elapsed); 
-    if (sf::Keyboard::isKeyPressed(player->keyRight))
-        player->moveRight(elapsed); 
-    updateMap();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-        player->ability1(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-        player->ability2(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-        player->ability3(monsters, particleSystem, projectiles, globalPos);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
-        isMapActive = true;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
-        isMapActive = false;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
-        player->attack(projectiles, globalPos, elapsed);
-    
+    manageInput(elapsed,globalPos);
     for(int i = projectiles.size(); i > 0; i--) {
         if (projectiles[i-1]->lifetime < sf::Time::Zero) 
             projectiles.erase(projectiles.begin()+i-1);
@@ -156,23 +114,11 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     }
     player->update(elapsed,monsters);
     updateParticles(elapsed);
+    gameWorld.update(elapsed,player->getCenter());
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
     sf::VertexArray tmp(sf::Quads,36); // biomes near the player
-    for(int x = 0; x < 3; x++) {
-        for(int y = 0; y < 3; y++) {
-            auto& biome = gameMap[Utils::clamp(playerYmap-1+y,0,49)*50+Utils::clamp(playerXmap-1+x,0,49)];
-            tmp[(y*3+x)*4].color = biome.color;
-            tmp[(y*3+x)*4+1].color = biome.color;
-            tmp[(y*3+x)*4+2].color = biome.color;
-            tmp[(y*3+x)*4+3].color = biome.color;
-
-            tmp[(y*3+x)*4].position = sf::Vector2f((int)biome.position.x << 12,(int)biome.position.y << 12);
-            tmp[(y*3+x)*4+1].position = sf::Vector2f((int)biome.position.x << 12,(int)biome.position.y << 12)+sf::Vector2f(4096,0);
-            tmp[(y*3+x)*4+2].position = sf::Vector2f((int)biome.position.x << 12,(int)biome.position.y << 12)+sf::Vector2f(4096,4096);
-            tmp[(y*3+x)*4+3].position = sf::Vector2f((int)biome.position.x << 12,(int)biome.position.y << 12)+sf::Vector2f(0,4096);
-        }
-    }
+    target.draw(gameWorld);
     target.draw(tmp);
     for(int i = 0; i < monsters.size(); i++) {
         target.draw(*monsters[i], states);
@@ -295,14 +241,7 @@ void Game::generateMonster() {
 int Game::getBiome(sf::Vector2f pos) {
     int xMap = Utils::clamp((int)pos.x >> 12, 0, 49);
     int yMap = Utils::clamp((int)pos.y >> 12, 0, 49);
-
-    auto value = noiseValues2d[yMap * 50 + xMap];
-    if (value <= 30)    return 0; // deadlands
-    if (value < 60)     return 1; // plains
-    if (value < 80)     return 2; // toxic swamp
-    if (value < 100)    return 3; // desert
-    if (value >= 100)   return 4; // fire realm
-    return -1;
+    return gameWorld.getBiome(xMap,yMap);
 }
 
 void Game::updateParticles(sf::Time& elapsed) {
@@ -332,6 +271,31 @@ void Game::updateParticles(sf::Time& elapsed) {
         stats[26].position.x = 0;
         stats[25].position.x = 0;
     }
+}
+
+void Game::manageInput(sf::Time& elapsed, const sf::Vector2f& globalPos){
+       if (sf::Keyboard::isKeyPressed(player->keyUp))
+        player->moveUp(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyDown))
+        player->moveDown(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyLeft))
+        player->moveLeft(elapsed); 
+    if (sf::Keyboard::isKeyPressed(player->keyRight))
+        player->moveRight(elapsed); 
+    updateMap();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        player->ability1(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        player->ability2(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        player->ability3(monsters, particleSystem, projectiles, globalPos);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) 
+        isMapActive = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
+        isMapActive = false;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
+        player->attack(projectiles, globalPos, elapsed);
+    
 }
 void Game::statsSetup() {
     stats = sf::VertexArray(sf::Quads, 28);

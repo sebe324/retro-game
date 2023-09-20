@@ -9,9 +9,10 @@ WorldCreator::WorldCreator() {}
 
 WorldCreator::WorldCreator(sf::Font& font) {
 
+    gameWorld = World(50,50,0,octaves,bias);
+    gameWorld.setTexture("../tiles.png");
     gameMap=sf::VertexArray(sf::Quads, 50*50*4);
     randomValues2d=std::vector<float>(2500);
-
     bIncreaseOctaves=Button("+",60,sf::Color::Black,{675.f,100.f},{75.f,75.f},sf::Color(39,174,96),font);
     bDecreaseOctaves=Button("-",60,sf::Color::Black,{900.f,100.f},{75.f,75.f},sf::Color(192,57,43),font);
 
@@ -75,7 +76,10 @@ WorldCreator::WorldCreator(sf::Font& font) {
 
     background=sf::RectangleShape({1000.f,1000.f});
     background.setFillColor(sf::Color(130,102,68));
+    std::cout<<"hmm0.5\n";
     randomizeSeed();
+    std::cout<<"hmm1\n";
+    std::cout<<"hmm2\n";
     updateMap();
 
     if (!diceTexture.loadFromFile("../dice.png")) {
@@ -120,6 +124,7 @@ void WorldCreator::changeBias(float amount) {
     else if (bias>5.f) bias=5.f;
     biasText.setString(Utils::toString(bias,1));
     biasText.setPosition(825.f-biasText.getGlobalBounds().width/2,220.f);
+    gameWorld.setBias(bias);
     updateMap();
 }
 
@@ -129,6 +134,7 @@ void WorldCreator::changeOctaves(int amount) {
     else if (octaves>6) octaves=6;
     octavesText.setString(std::to_string(octaves));
     octavesText.setPosition(825.f-octavesText.getGlobalBounds().width/2,70.f);
+    gameWorld.setOctaves(octaves);
     updateMap();
 }
 
@@ -141,6 +147,9 @@ void WorldCreator::randomizeSeed() {
         }
     }
     seedInput.text.setString(std::to_string(seed));
+    std::cout<<"xd0";
+    gameWorld.setSeed(seed);
+    std::cout<<"xd";
     updateMap();
 }
 
@@ -166,17 +175,9 @@ void WorldCreator::changeClass() {
 
 void WorldCreator::updateMap() {
 
-    noiseValues2d=rnd.perlin2d(randomValues2d,50,50,octaves,bias);
-
-    for (int x=0; x<50; x++) {
-        for (int y=0; y<50; y++) {
-            sf::Color color;
-            auto value=noiseValues2d[y*50+x];
-            if (value<=30) color=sf::Color(64,64,122);
-            else if (value>30&&value<60) color=sf::Color(46, 113, 53);
-            else if (value>=60&&value<80) color=sf::Color(116,146,76);
-            else if (value>=80&&value<100) color=sf::Color(204,174,98);
-            else if (value>=100) color=sf::Color(100,20,20);
+    for (int y=0; y<50; y++) {
+        for (int x=0; x<50; x++) {
+            sf::Color color = World::biomeColors[gameWorld.getBiome(x,y)];
             gameMap[(y*50+x)*4].color=color;
             gameMap[(y*50+x)*4].position={100.f+x*10.f,100.f+y*10.f};
             gameMap[(y*50+x)*4+1].color=color;
@@ -227,11 +228,7 @@ void WorldCreator::changeSeed(size_t s)
 {
     seed=s;
     rnd.seed=s;
-    for (int x=0; x<50; x++) {
-        for (int y=0; y<50; y++) {
-            randomValues2d[y*50+x]=rnd.rndInt(0,100);
-        }
-    }
+    gameWorld.setSeed(seed);
     seedInput.text.setString(std::to_string(seed));
     updateMap();
 }

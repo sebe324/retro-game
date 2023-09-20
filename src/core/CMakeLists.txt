@@ -23,6 +23,7 @@ target_link_libraries(core PUBLIC
     gui
     projectiles
     monster
-    classes)
+    classes
+    world)
 
 set_target_properties(core PROPERTIES LINKER_LANGUAGE CXX)
