@@ -43,8 +43,9 @@ private:
 
     void generateProps();
 
-    void biomeBlend();
+    void biomeBlend(const sf::Vector2f &playerPos);
 
+    void setTileTexture(unsigned tileIndex, unsigned biomeIndex, unsigned textureID, unsigned biomeID, const sf::Vector2f &biomeCoords, const sf::Vector2f &tileCoords);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
