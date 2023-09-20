@@ -1,0 +1,6 @@
+Dark Knight
+
+Abilities:
+  1: Vampiric Circle
+  2: Fear the Power
+  3: Bat Form

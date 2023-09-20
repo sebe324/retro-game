@@ -1,6 +1,10 @@
+Controls
+
 WASD / Arrows: Move
 
-Left Mouse Click: Attack
+Right Mouse Click: Attack
+
+N/M: Hide/Display Mini Map
 
 1:  Use ability 1
 2:  Use ability 2

@@ -1,0 +1,6 @@
+Paladin
+
+Abilities:
+  1: Shield Bash
+  2: Holy Heal
+  3: Bane of the Dark
