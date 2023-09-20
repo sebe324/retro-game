@@ -79,5 +79,5 @@ target_link_libraries(retroGame PRIVATE
     monster
     gui
     core
-    world)
+    world
     core)

@@ -16,7 +16,6 @@
  */
 
 int main() {
-    std::cout<<"hi"<<std::endl;
     sf::RenderWindow window(sf::VideoMode(1600, 1000), "Retro-Game");
     sf::Image icon;
     if (icon.loadFromFile("../texture.png")) {
@@ -35,7 +34,6 @@ int main() {
     if (!font.loadFromFile("../font.ttf")) {}
     Info info(font,"../texture.png");
     WorldCreator wCreator(font);
-    std::cout<<"co jest kurwa"<<std::endl;
     Settings settings(font);
     window.setFramerateLimit(60);
     sf::Vector2u windowSize=window.getSize();
@@ -46,7 +44,6 @@ int main() {
     window.setView(viewUI);
 
     bool escapeKeyPressed = false; // This will allow the event loop to update the escape menu screen
-    std::cout<<"hi"<<std::endl;
     while (window.isOpen()) {
         window.clear();
         sf::Vector2i windowPosition=sf::Mouse::getPosition(window);

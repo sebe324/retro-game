@@ -41,7 +41,6 @@ void Textbox::addCharacter(char c) {
     else if (text.getString().getSize()<maxSize) {
         if (c==13) {
             text.setString(text.getString()+'\n');
-            std::cout<<"enter!";
         }
         else text.setString(text.getString()+c);
     }

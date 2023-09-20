@@ -76,10 +76,7 @@ WorldCreator::WorldCreator(sf::Font& font) {
 
     background=sf::RectangleShape({1000.f,1000.f});
     background.setFillColor(sf::Color(130,102,68));
-    std::cout<<"hmm0.5\n";
     randomizeSeed();
-    std::cout<<"hmm1\n";
-    std::cout<<"hmm2\n";
     updateMap();
 
     if (!diceTexture.loadFromFile("../dice.png")) {
@@ -147,9 +144,7 @@ void WorldCreator::randomizeSeed() {
         }
     }
     seedInput.text.setString(std::to_string(seed));
-    std::cout<<"xd0";
     gameWorld.setSeed(seed);
-    std::cout<<"xd";
     updateMap();
 }
 
