@@ -43,11 +43,9 @@ void World::generateNewWorld(){
 void World::generateBiomes(){
     std::vector<float> noiseValues2d;
     std::vector<float> randomValues(sizeX*sizeY);
-    std::cout<<sizeX<<std::endl;
     for(unsigned i = 0; i < sizeX*sizeY; i++) randomValues[i]=(float)rnd.rndInt(0,100);
 
     noiseValues2d = rnd.perlin2d(randomValues,sizeX,sizeY,octaves,bias);
-    std::cout<<"petla start";
     for(unsigned row = 0; row<sizeX; row++){
         for(unsigned col = 0; col<sizeY; col++){
             int index = row*sizeX+col;
@@ -82,7 +80,6 @@ void World::generateTiles(const sf::Vector2f &playerPos){
     Biomes biomeToBlendID;
     //Get biome coords in game
     sf::Vector2f biomeCoords(tmpX<<12, tmpY<<12);
-    std::cout<<"Tile gen\n";
     for(unsigned tileY = 5; tileY < biomeTileSize-5; tileY++){
         for(unsigned tileX = 5; tileX < biomeTileSize-5; tileX++){
             unsigned tileIndex = tileY*biomeTileSize+tileX; 
@@ -150,13 +147,11 @@ void World::biomeBlend(const sf::Vector2f &playerPos){
 
     int idkX=(int)playerPos.x >> 12;
     int idkY=(int)playerPos.y >> 12;
-    std::cout<<"BIOME BLEND\n";
     for(int y=0; y<3; y++){
         for(int x=0; x<3; x++){
             int tmpX=Utils::clamp(idkX-1+x,0,sizeX-1);
             int tmpY=Utils::clamp(idkY-1+y,0,sizeY-1);
             rnd.seed=seed;
-             std::cout<<"idk maybe\n";
             if(tmpY>1)
             for(unsigned tileY=0; tileY<5; tileY++){
                 for(unsigned tileX=0; tileX<biomeTileSize; tileX++){
@@ -164,7 +159,6 @@ void World::biomeBlend(const sf::Vector2f &playerPos){
                      Biomes biomeID = getBiome(tmpX,tmpY);
                      Biomes biomeToBlendID = getBiome(tmpX, tmpY-1);
                      unsigned tmparr[2]={biomeID,biomeToBlendID};
-                     std::cout<<"test?\n";
                      Biomes lmao = (Biomes)rnd.rndInt(0,2);
                      int textureID = rnd.rndInt(0,7);
                       sf::Vector2f biomeCoords(tmpX<<12, tmpY<<12);
@@ -188,8 +182,6 @@ void World::update(sf::Time &elapsed, const sf::Vector2f &playerPos){
         //generate tiles for surrounding biomes
         playerBiomePos.x=tmpX;
         playerBiomePos.y=tmpY;
-        //std::cout<<"tmpX "<<tmpX<<std::endl;
-        //std::cout<<"tmpY "<<tmpY<<std::endl;
         generateTiles(playerPos);
         //biomeBlend(playerPos);
     }
