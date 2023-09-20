@@ -7,7 +7,8 @@ Monster Type: Living
 
 Attitude: Aggressive
 
-If a spider gets severely injured, it will try to run away.
+If a spider gets severely injured, it will try 
+to run away.
 
 Locations:
 -Toxic Swamp

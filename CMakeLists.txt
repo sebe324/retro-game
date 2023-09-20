@@ -16,7 +16,7 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SFML_LOCATION "C:\\libraries\\SFML-2.6.0-VC")
+set(SFML_LOCATION "[YOUR SFML FOLDER LOCATION]")
 
 set(CMAKE_PREFIX_PATH SFML_LOCATION)
 
@@ -80,3 +80,4 @@ target_link_libraries(retroGame PRIVATE
     gui
     core
     world)
+    core)

@@ -9,7 +9,6 @@ Monster Type: Undead
 
 Attitude: Neutral
 
-
 Locations:
 
 -Deadlands

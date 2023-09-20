@@ -79,23 +79,23 @@ void DarkKnight::ability1(std::vector<std::unique_ptr<Monster>>& monsters,
     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(),15,{150,200},{0,50},{50,100});
     sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
     float healed=0;
-    for (int i=0; i<monsters.size(); i++) {
+    for (int i = 0; i<monsters.size(); i++) {
         if (monsters[i]->hitbox.intersects(attackRange)) {
             monsters[i]->removeHealth(damage*0.5f+10, DARKNESS,particleSystem);
             addHealth(damage*0.25f+5);
-            healed+=(damage*0.25f+5);
+            healed += (damage*0.25f+5);
         }
     }
-    if (healed>0) {
+    if (healed > 0) {
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(0.f,100.f),"+"+Utils::toString(healed,1)+"hp",1,sf::Color::Green,60);
     }
     removeMana(ability1Cost);
-    ability1Cooldown=ability1Time;
+    ability1Cooldown = ability1Time;
 }
 
 
 
-void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters, 
+void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>> &monsters, 
                             std::vector<ParticleSystem> &particleSystem, 
                             std::vector<std::unique_ptr<Projectile>> &projectiles, 
                             sf::Vector2f mousePos) {
@@ -105,7 +105,7 @@ void DarkKnight::ability2(std::vector<std::unique_ptr<Monster>>& monsters,
     sf::FloatRect attackRange(hitbox.left-100.f,hitbox.top-100.f,200.f, 200.f);
     particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(getCenter(), 15,{30,50},{30,50},{30,50});
     particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(getCenter()+sf::Vector2f(-100.f,-100.f),"FEAR THE DARK",1,sf::Color::Black,72);
-    for (int i=0; i<monsters.size(); i++) {
+    for (int i = 0; i < monsters.size(); i++) {
         if (!monsters[i]->hitbox.intersects(attackRange) && monsters[i]->getLevel() >= level-5)
             continue;
         if (monsters[i]->bodyType==UNDEAD || monsters[i]->bodyType==INFERNAL) {

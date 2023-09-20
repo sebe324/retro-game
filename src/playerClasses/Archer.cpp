@@ -53,7 +53,7 @@ void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters,
     projectiles.push_back(std::make_unique<Arrow>(arrow3));
 
     removeMana(ability1Cost);
-    ability1Cooldown=ability1Time;
+    ability1Cooldown = ability1Time;
 }
 
 
@@ -69,7 +69,7 @@ void Archer::ability2(std::vector<std::unique_ptr<Monster>>& monsters,
     Trap trap(mousePos,getCenter(),damage,true);
     projectiles.push_back(std::make_unique<Trap>(trap));
     removeMana(ability2Cost);
-    ability2Cooldown=ability2Time;
+    ability2Cooldown = ability2Time;
 }
 
 
@@ -81,9 +81,9 @@ void Archer::ability3(std::vector<std::unique_ptr<Monster>>& monsters,
     if (ability3Cooldown > sf::Time::Zero || getMana() < ability3Cost) {
         return;
     }
-    float radians=atan2(mousePos.y-getCenter().y,mousePos.x-getCenter().x);
-    velocity+={cos(radians)*30,sin(radians)*30};
+    float radians = atan2(mousePos.y-getCenter().y,mousePos.x-getCenter().x);
+    velocity += {cos(radians)*30,sin(radians)*30};
     particleSystem[PARTICLES_WORLD].addEmitter(getCenter(),5,{250,255},{250,255},{250,255});
     removeMana(ability3Cost);
-    ability3Cooldown=ability3Time;
+    ability3Cooldown = ability3Time;
 }
