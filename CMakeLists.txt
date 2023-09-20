@@ -80,12 +80,3 @@ target_link_libraries(retroGame PRIVATE
     gui
     core
     world)
-
-file(COPY "${CMAKE_SOURCE_DIR}/src/description"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/font.ttf"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/texture.png"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-file(COPY "${CMAKE_SOURCE_DIR}/dice.png"
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
