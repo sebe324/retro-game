@@ -2,10 +2,11 @@
 
 This is a 2d game made in C++ and SFML with a kind of retro aesthetic.
 
-## Version alpha 0.1.5 short preview
-[Screencast from 18.05.2023 16:11:44.webm](https://github.com/sebe324/retro-game/assets/58781463/dbf247eb-723e-4829-8a6e-fc5e821885e2)
+## Version alpha 0.3.0 short preview
 
+[Preview](https://github.com/sebe324/retro-game/assets/58781463/ac467330-3b09-4efb-a194-bb927e5ed7bd)
 ## Description
+
 
 The player controls a hero, that fights monsters in a procedurally generated world.
 
