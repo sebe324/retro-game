@@ -20,13 +20,27 @@ void Character::update(sf::Time elapsed) {
     move();
 }
 
-void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, sf::Vector2f mousePos, sf::Time elapsed) {
-    if (attackDelay-elapsed<sf::Time::Zero) {
-        SwordSwing swordSwing(getCenter(),mousePos,damage,true);
-        projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
-
-        attackDelay=sf::seconds(0.3)/attackSpeed;
+void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, 
+                        sf::Vector2f mousePos, 
+                        sf::Time elapsed) 
+{
+    // Change direction character is looking in x direction
+    float xDir = getCenter().x - mousePos.x;
+    if (xDir > 0 && !left) {
+        look();
+        left = true;
+    } else if (xDir < 0 && left){
+        look();
+        left = false;
     }
+
+    if (attackDelay - elapsed >= sf::Time::Zero) {
+        return;
+    }
+
+    SwordSwing swordSwing(getCenter(),mousePos,damage,true);
+    projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+    attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
 void Character::regenerate(sf::Time elapsed) {
