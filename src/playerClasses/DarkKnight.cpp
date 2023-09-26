@@ -19,6 +19,8 @@ DarkKnight::DarkKnight(std::string n, sf::Vector2f p) : Player(n,p,{50.f,90.f}) 
     ability1Cost = 20.f;
     ability2Cost = 40.f;
     ability3Cost = 30.f;
+
+    playerClass = DARK_KNIGHT;
 }
 
 // Function that turns Dark Knight into its original self

@@ -9,6 +9,7 @@ enum PlayerClasses{
     DARK_KNIGHT,
     ARCHER,
     PALADIN,
-    ELEMAGE
+    ELEMAGE,
+    NONE
 };
 #endif // PLAYERCLASSES_H

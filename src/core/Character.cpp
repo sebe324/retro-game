@@ -26,20 +26,28 @@ void Character::attack(std::vector<std::unique_ptr<Projectile>> &projectiles,
 {
     // Change direction character is looking in x direction
     float xDir = getCenter().x - mousePos.x;
-    if (xDir > 0 && !left) {
+    if ((xDir > 0 && !left) || (xDir < 0 && left)) {
         look();
-        left = true;
-    } else if (xDir < 0 && left){
-        look();
-        left = false;
-    }
+    } 
 
     if (attackDelay - elapsed >= sf::Time::Zero) {
         return;
     }
 
-    SwordSwing swordSwing(getCenter(),mousePos,damage,true);
-    projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+    // Determine attack based on class
+    if (getClass() == ARCHER) {
+        float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+        Arrow arrow(getCenter(),mousePos,attackDamage,true);
+        projectiles.push_back(std::make_unique<Arrow>(arrow));
+    } else if (getClass() == ELEMAGE) {
+        float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
+        FireBall fireBall(getCenter(),mousePos,attackDamage,true);
+        projectiles.push_back(std::make_unique<FireBall>(fireBall));
+    } else {
+        SwordSwing swordSwing(getCenter(),mousePos,damage,true);
+        projectiles.push_back(std::make_unique<SwordSwing>(swordSwing));
+    }
+
     attackDelay=sf::seconds(0.3)/attackSpeed;
 }
 
@@ -81,8 +89,7 @@ void Character::removeHealth(float n, DamageType damageType, std::vector<Particl
     if (shield > 0) {
         removeShield(dmgAmount);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(20,20,20),30);
-    }
-    else {
+    } else {
         setHealth(health-dmgAmount);
         particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(sf::Vector2f(hitbox.left,hitbox.top),Utils::toString(dmgAmount,1),1,sf::Color(DamageTypeColors[damageType]),36);
     }
@@ -173,4 +180,7 @@ float Character::getMaxShield() const{
 }
 int Character::getId() const {
     return id;
+}
+int Character::getClass() const {
+    return playerClass;
 }

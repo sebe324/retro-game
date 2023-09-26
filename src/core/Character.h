@@ -13,9 +13,11 @@
 #include "../Projectile/Projectile.h"
 #include "../Projectile/Arrow.h"
 #include "../Projectile/SwordSwing.h"
+#include "../Projectile/FireBall.h"
 
 #include "../enums/ParticlesGame.h"
 #include "../enums/DamageType.h"
+#include "../enums/PlayerClasses.h"
 
 /*
  * Character.h
@@ -76,6 +78,8 @@ class Character : public Unit {
 
         int getId() const;
 
+        int getClass() const;
+
         // Damage multiplier based on damage types.
         // Some characters will have a higher resistance for fire damage, some will be immune to it
         // For example infernal enemies will receive less damage from fire
@@ -84,6 +88,7 @@ class Character : public Unit {
 
     protected:
         int level=0;
+        int playerClass = NONE;
     private:
 
         float health=0;

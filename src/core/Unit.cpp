@@ -21,19 +21,15 @@ void Unit::moveDown(sf::Time elapsed, float multiplier) {
     velocity.y += speed * elapsed.asSeconds() * multiplier;
 }
 void Unit::moveLeft(sf::Time elapsed, float multiplier) {
-    float tmp = velocity.x;
     velocity.x -= speed * elapsed.asSeconds() * multiplier;
-    if (tmp >= 0 && velocity.x < 0 && !left) {
+    if (velocity.x < 0 && !left) {
         look();
-        left = true;
     }
 }
 void Unit::moveRight(sf::Time elapsed, float multiplier) {
-    float tmp = velocity.x;
     velocity.x += speed * elapsed.asSeconds() * multiplier;
-    if (tmp <= 0 && velocity.x > 0 && left) {
+    if (velocity.x > 0 && left) {
         look();
-        left = false;
     }
 }
 void Unit::move() {
@@ -50,6 +46,7 @@ void Unit::look() {
     for (int i = 0; i < bodyPartsNumber * 4; i++) {
         bodyParts[i].position.x = Utils::mirrorXf(bodyParts[i].position.x,hitbox.left,hitbox.left+hitbox.width);
     }
+    left = !left;
 }
 
 float Unit::getDistance(Unit& unit) const{
