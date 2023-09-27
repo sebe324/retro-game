@@ -35,6 +35,8 @@ class Unit : public sf::Drawable {
         void moveRight(sf::Time elapsed, float multiplier=1);
         void move();
 
+        void look();    // Changes where character is looking in the X direction
+
         float getDistance(Unit& unit) const;
         float getDistanceX(Unit& unit) const;
         float getDistanceY(Unit& unit) const;

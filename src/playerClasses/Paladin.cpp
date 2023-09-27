@@ -18,6 +18,8 @@ Paladin::Paladin(std::string n, sf::Vector2f p) :  Player(n,p,{50.f,90.f}) {
     ability1Cost=15.f;
     ability2Cost=20.f;
     ability3Cost=10.f;
+
+    playerClass = PALADIN;
 }
 
 void Paladin::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 

@@ -20,21 +20,9 @@ Archer::Archer(std::string n, sf::Vector2f p) : Player(n,p,{50.f,90.f}) {
     ability1Cost=20.f;
     ability2Cost=50.f;
     ability3Cost=15.f;
-}
 
-void Archer::attack(std::vector<std::unique_ptr<Projectile>> &projectiles, 
-                    sf::Vector2f mousePos, 
-                    sf::Time elapsed) 
-{
-    if (attackDelay-elapsed >= sf::Time::Zero) {
-        return;
-    }
-    float attackDamage=(std::rand() % (int)(damage*0.2+1))+damage-damage*0.1;
-    Arrow arrow(getCenter(),mousePos,damage,true);
-    projectiles.push_back(std::make_unique<Arrow>(arrow));
-    attackDelay=sf::seconds(0.3)/attackSpeed;
+    playerClass = ARCHER;
 }
-
 
 void Archer::ability1(std::vector<std::unique_ptr<Monster>>& monsters, 
                         std::vector<ParticleSystem> &particleSystem,  

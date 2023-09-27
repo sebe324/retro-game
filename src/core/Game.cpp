@@ -87,17 +87,17 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
         float dist = monsters[i-1]->getDistance(*player);
         if (dist > 2000) {
             monsters.erase(monsters.begin()+i-1);
-        } else {
-            if (monsters[i-1]->getHealth() <= 0) {
-                player->addExp(3*monsters[i-1]->getLevel());
-                particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
-                particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
-                monsters.erase(monsters.begin()+i-1);
-            }
-            else {
-                monsters[i-1]->update(elapsed);
-                monsters[i-1]->makeDecision(elapsed,*player,projectiles);
-            }
+            continue;
+        }
+        if (monsters[i-1]->getHealth() <= 0) {
+            player->addExp(3*monsters[i-1]->getLevel());
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addEmitter(monsters[i-1]->bodyParts,monsters[i-1]->bodyPartsNumber);
+            particleSystem[ParticlesGame::PARTICLES_WORLD].addTextEmitter(monsters[i-1]->getCenter(),"+"+Utils::toString(monsters[i-1]->getLevel()*3)+"xp",1,sf::Color::Yellow,40);
+            monsters.erase(monsters.begin()+i-1);
+        }
+        else {
+            monsters[i-1]->update(elapsed);
+            monsters[i-1]->makeDecision(elapsed,*player,projectiles);
         }
     }
     playerExpProgress.setString(Utils::toString(player->getExp())+"/"+Utils::toString(player->getExpRequired()));
@@ -274,7 +274,7 @@ void Game::updateParticles(sf::Time& elapsed) {
 }
 
 void Game::manageInput(sf::Time& elapsed, const sf::Vector2f& globalPos){
-       if (sf::Keyboard::isKeyPressed(player->keyUp))
+    if (sf::Keyboard::isKeyPressed(player->keyUp))
         player->moveUp(elapsed); 
     if (sf::Keyboard::isKeyPressed(player->keyDown))
         player->moveDown(elapsed); 
@@ -294,9 +294,9 @@ void Game::manageInput(sf::Time& elapsed, const sf::Vector2f& globalPos){
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
         isMapActive = false;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
-        player->attack(projectiles, globalPos, elapsed);
-    
+        player->attack(projectiles, globalPos, elapsed);    
 }
+
 void Game::statsSetup() {
     stats = sf::VertexArray(sf::Quads, 28);
     playerLvl.setFont(font);
@@ -429,11 +429,11 @@ void Game::updateSettings(Settings& new_settings) {
 }
 
 void Game::reset(){
- monsters.clear();
+    monsters.clear();
     texts.clear();
     projectiles.clear();
     particleSystem.clear();
-  ParticleSystem particlesWorld(sf::seconds(1.75), &font);
+    ParticleSystem particlesWorld(sf::seconds(1.75), &font);
     ParticleSystem particlesHp(sf::seconds(1), &font);
     ParticleSystem particlesMana(sf::seconds(1), &font);
     ParticleSystem particlesUI(sf::seconds(1.75), &font);
