@@ -18,8 +18,8 @@
 class WorldCreator : public sf::Drawable {
     
     public:
-        int octaves=6;
-        float bias=2.f;
+        int octaves=4;
+        float bias=4.f;
         uint32_t seed;
 
         int playerClass=0;

@@ -9,7 +9,7 @@ WorldCreator::WorldCreator() {}
 
 WorldCreator::WorldCreator(sf::Font& font) {
 
-    gameWorld = World(50,50,0,octaves,bias);
+    gameWorld = World(50,50,0,octaves,5.2f-bias);
     gameWorld.setTexture("../tiles.png");
     gameMap=sf::VertexArray(sf::Quads, 50*50*4);
     randomValues2d=std::vector<float>(2500);
@@ -46,7 +46,7 @@ WorldCreator::WorldCreator(sf::Font& font) {
     biasText.setPosition(825.f-biasText.getGlobalBounds().width/2,220.f);
 
     biasLabel.setFont(font);
-    biasLabel.setString("Bias");
+    biasLabel.setString("Variety");
     biasLabel.setCharacterSize(60);
     biasLabel.setPosition(675.f, 170.f);
     bRandomizeSeed=Button("",50,sf::Color::Black,{675.f,500.f},{125.f,100.f},sf::Color(142,68,173),font);
@@ -121,7 +121,7 @@ void WorldCreator::changeBias(float amount) {
     else if (bias>5.f) bias=5.f;
     biasText.setString(Utils::toString(bias,1));
     biasText.setPosition(825.f-biasText.getGlobalBounds().width/2,220.f);
-    gameWorld.setBias(bias);
+    gameWorld.setBias(5.2f-bias);
     updateMap();
 }
 
