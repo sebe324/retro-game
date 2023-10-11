@@ -29,36 +29,36 @@ std::vector<float> Rnd::perlin1d(std::vector<float> values, int nOctaves, float 
 
 
 std::vector<float> Rnd::perlin2d (std::vector<float> values, int width, int height, int nOctaves, float bias) {
-    std::vector<float> output(width*height,0);
-    for (int x=0; x<width; x++) {
+  std::vector<float> output(width*height,0);
+    for (int x=0; x<width; x++)
         for (int y=0; y<height; y++) {
 
             float fNoise = 0.f; //accumulated noise
             float fScale = 1.f;
             float fScaleAcc = 0.f;
             for (int i=0; i<nOctaves; i++) {
-                int nPitch= height >> i; //bitshifting
-                int nSampleX1 = (x/nPitch) * nPitch;
-                int nSampleY1 = (y/nPitch) * nPitch;
 
-                int nSampleX2 = (nSampleX1+nPitch) % width;
-                int nSampleY2 = (nSampleY1+nPitch) % width;
+                int nPitch= height >> i; //bitshifting
+
+                int nSampleX1 = (x / nPitch) * nPitch;
+                int nSampleY1 = (y / nPitch) * nPitch;
+
+                int nSampleX2 = (nSampleX1 + nPitch) % width;
+                int nSampleY2 = (nSampleY1 + nPitch) % width;
 
                 float fBlendX = (float)(x-nSampleX1) / (float)nPitch;
-                float fBlendY = (float)(x-nSampleY1) / (float)nPitch;
+                float fBlendY = (float)(y-nSampleY1) / (float)nPitch;
 
                 float fSample1 = (1.f-fBlendX) * values[nSampleY1*width+nSampleX1] + fBlendX * values[nSampleY1*width+nSampleX2];
                 float fSample2 = (1.f-fBlendX) * values[nSampleY2*width+nSampleX1] + fBlendX * values[nSampleY2*width+nSampleX2];
-                fNoise += (fBlendY*(fSample2-fSample1)+fSample1)*fScale;
                 fScaleAcc +=fScale;
+                fNoise += (fBlendY*(fSample2-fSample1)+fSample1)*fScale;
                 fScale=fScale/bias;
             }
             output[y*width+x]=fNoise/fScaleAcc;
         }
-    }
     return output;
 }
-
 uint32_t Rnd::Lehmer32() {
     seed+=0xe120fc15;
     uint64_t tmp;

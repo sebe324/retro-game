@@ -43,18 +43,18 @@ void World::generateNewWorld(){
 void World::generateBiomes(){
     std::vector<float> noiseValues2d;
     std::vector<float> randomValues(sizeX*sizeY);
-    for(unsigned i = 0; i < sizeX*sizeY; i++) randomValues[i]=(float)rnd.rndInt(0,100);
+    for(unsigned i = 0; i < sizeX*sizeY; i++) randomValues[i]=(float)rnd.rndInt(0,70);
 
     noiseValues2d = rnd.perlin2d(randomValues,sizeX,sizeY,octaves,bias);
     for(unsigned row = 0; row<sizeX; row++){
         for(unsigned col = 0; col<sizeY; col++){
             int index = row*sizeX+col;
             auto value=noiseValues2d[index];
-            if (value<=30) biomes[index]=Biomes::DEADLANDS;
-            else if (value>30&&value<60) biomes[index]=Biomes::PLAINS;
-            else if (value>=60&&value<80) biomes[index]=Biomes::TOXIC_SWAMP;
-            else if (value>=80&&value<100) biomes[index]=Biomes::DESERT;
-            else if (value>=100) biomes[index]=Biomes::FIRE_REALM;
+            if (value<=18) biomes[index]=Biomes::DEADLANDS;
+            else if (value>18&&value<36) biomes[index]=Biomes::PLAINS;
+            else if (value>=36&&value<48) biomes[index]=Biomes::TOXIC_SWAMP;
+            else if (value>=48&&value<60) biomes[index]=Biomes::DESERT;
+            else if (value>=60) biomes[index]=Biomes::FIRE_REALM;
         }
     }
 }
