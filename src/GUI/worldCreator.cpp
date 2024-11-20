@@ -11,7 +11,7 @@ WorldCreator::WorldCreator(sf::Font& font) {
 
     gameWorld = World(50,50,0,octaves,5.2f-bias);
     gameWorld.setTexture("../tiles.png");
-    gameMap=sf::VertexArray(sf::Quads, 50*50*4);
+    gameMap=sf::VertexArray(sf::Triangles, 50*50*6);
     randomValues2d=std::vector<float>(2500);
     bIncreaseOctaves=Button("+",60,sf::Color::Black,{675.f,100.f},{75.f,75.f},sf::Color(39,174,96),font);
     bDecreaseOctaves=Button("-",60,sf::Color::Black,{900.f,100.f},{75.f,75.f},sf::Color(192,57,43),font);
@@ -173,14 +173,15 @@ void WorldCreator::updateMap() {
     for (int y=0; y<50; y++) {
         for (int x=0; x<50; x++) {
             sf::Color color = World::biomeColors[gameWorld.getBiome(x,y)];
-            gameMap[(y*50+x)*4].color=color;
-            gameMap[(y*50+x)*4].position={100.f+x*10.f,100.f+y*10.f};
-            gameMap[(y*50+x)*4+1].color=color;
-            gameMap[(y*50+x)*4+1].position={100.f+x*10.f+10.f,100.f+y*10.f};
-            gameMap[(y*50+x)*4+2].color=color;
-            gameMap[(y*50+x)*4+2].position={100.f+x*10.f+10.f,100.f+y*10.f+10.f};
-            gameMap[(y*50+x)*4+3].color=color;
-            gameMap[(y*50+x)*4+3].position={100.f+x*10.f,100.f+y*10.f+10.f};
+            gameMap[(y*50+x)*6].position={100.f+x*10.f,100.f+y*10.f};
+            gameMap[(y*50+x)*6+1].position={100.f+x*10.f+10.f,100.f+y*10.f};
+            gameMap[(y*50+x)*6+2].position={100.f+x*10.f+10.f,100.f+y*10.f+10.f};
+
+            gameMap[(y * 50 + x) * 6+3].position = { 100.f + x * 10.f,100.f + y * 10.f };
+            gameMap[(y*50+x)*6+4].position={100.f+x*10.f,100.f+y*10.f+10.f};
+            gameMap[(y * 50 + x) * 6 + 5].position = { 100.f + x * 10.f + 10.f,100.f + y * 10.f + 10.f };
+
+            for(unsigned j=0; j<6; j++) gameMap[(y * 50 + x) * 6 + j].color = color;
         }
     }
 }

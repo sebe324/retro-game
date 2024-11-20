@@ -15,7 +15,7 @@ Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow*
     viewUI = v;
     player = std::make_unique<DarkKnight>("Player",sf::Vector2f(10000.f,10000.f));
     player->setLevel(10);
-    playerOnMap = sf::VertexArray(sf::Quads, 4);
+    playerOnMap = sf::VertexArray(sf::Triangles, 6);
     ParticleSystem particlesWorld(sf::seconds(1.75), &font);
     ParticleSystem particlesHp(sf::seconds(1), &font);
     ParticleSystem particlesMana(sf::seconds(1), &font);
@@ -36,19 +36,19 @@ Game::Game(std::string texturePath, std::string fontPath,const sf::RenderWindow*
 
 void Game::changeMap(World &w) {
     gameWorld=World(w);
-    actualMap = sf::VertexArray(sf::Quads, 10000);
+    actualMap = sf::VertexArray(sf::Triangles, 50*50*6);
     for(int y = 0; y < 50; y++) {
         for(int x = 0; x < 50; x++) {
             sf::Color color = World::biomeColors[gameWorld.getBiome(x,y)];
-            actualMap[(y*50+x)*4+0].color = color;
-            actualMap[(y*50+x)*4+1].color = color;
-            actualMap[(y*50+x)*4+2].color = color;
-            actualMap[(y*50+x)*4+3].color = color;
+            for(unsigned i = 0; i<6; i++) actualMap[(y * 50 + x) * 6 + i].color = color;
 
-            actualMap[(y*50+x)*4+0].position  = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,5.f);
-            actualMap[(y*50+x)*4+1].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,5.f);
-            actualMap[(y*50+x)*4+2].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,9.f);
-            actualMap[(y*50+x)*4+3].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,9.f);
+            actualMap[(y*50+x)*6+0].position  = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,5.f);
+            actualMap[(y*50+x)*6+1].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,5.f);
+            actualMap[(y*50+x)*6+2].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(9.f,9.f);
+
+            actualMap[(y*50+x)*6+3].position = sf::Vector2f(x,y)*4.f+sf::Vector2f(5.f,5.f);
+            actualMap[(y * 50 + x) * 6 + 4].position = sf::Vector2f(x, y) * 4.f + sf::Vector2f(5.f, 9.f);
+            actualMap[(y * 50 + x) * 6 + 5].position = sf::Vector2f(x, y) * 4.f + sf::Vector2f(9.f, 9.f);
         }
     }
     updateMap();
@@ -60,16 +60,14 @@ void Game::updateMap() {
     playerXmap = (int)player->hitbox.left >> 12;
     playerYmap = (int)player->hitbox.top >> 12;
     sf::Vector2f temp(Utils::clamp(playerXmap,0,49),Utils::clamp(playerYmap,0,49));
-    playerOnMap[0].color = sf::Color::Magenta;
-    playerOnMap[1].color = sf::Color::Magenta;
-    playerOnMap[2].color = sf::Color::Magenta;
-    playerOnMap[3].color = sf::Color::Magenta;
-
+    for (unsigned i = 0; i < 6; i++) playerOnMap[i].color = sf::Color::Magenta;
     playerOnMap[0].position = temp*4.f+sf::Vector2f(5.f,5.f);
     playerOnMap[1].position = temp*4.f+sf::Vector2f(9.f,5.f);
     playerOnMap[2].position = temp*4.f+sf::Vector2f(9.f,9.f);
-    playerOnMap[3].position = temp*4.f+sf::Vector2f(5.f,9.f);
 
+    playerOnMap[3].position = temp*4.f+sf::Vector2f(5.f,5.f);
+    playerOnMap[4].position = temp * 4.f + sf::Vector2f(5.f, 9.f);
+    playerOnMap[5].position = temp * 4.f + sf::Vector2f(9.f, 9.f);
 }
 
 void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
