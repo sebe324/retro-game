@@ -115,9 +115,7 @@ void Game::update(sf::Time elapsed, sf::Vector2f globalPos) {
     gameWorld.update(elapsed,player->getCenter());
 }
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const{
-    sf::VertexArray tmp(sf::Quads,36); // biomes near the player
     target.draw(gameWorld);
-    target.draw(tmp);
     for(int i = 0; i < monsters.size(); i++) {
         target.draw(*monsters[i], states);
     }
@@ -296,6 +294,7 @@ void Game::manageInput(sf::Time& elapsed, const sf::Vector2f& globalPos){
 }
 
 void Game::statsSetup() {
+    //TODO move to sf::Triangles
     stats = sf::VertexArray(sf::Quads, 28);
     playerLvl.setFont(font);
     playerLvl.setString(Utils::toString(player->getLevel()));
