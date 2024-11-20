@@ -15,7 +15,7 @@ World::World(unsigned sizeX, unsigned sizeY, std::vector<float> biomeValues){
 }
 
 World::World(unsigned sizeX, unsigned sizeY, unsigned seed, unsigned octaves, float bias)
-: nearbyBiomes(9, sf::VertexArray(sf::Quads, biomeTileSize*biomeTileSize*4))
+: nearbyBiomes(9, sf::VertexArray(sf::Triangles, biomeTileSize*biomeTileSize*6))
 {
     playerBiomePos=sf::Vector2i(-1,-1);
     this->sizeX=sizeX;
@@ -218,17 +218,23 @@ void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
 void World::setTileTexture(unsigned tileIndex, unsigned biomeIndex, unsigned textureID, unsigned biomeID, const sf::Vector2f &biomeCoords, const sf::Vector2f &tileCoords){
         auto& nearbyBiome = nearbyBiomes[biomeIndex];
-        nearbyBiome[tileIndex*4+0].position=biomeCoords+tileCoords+sf::Vector2f(0.f,0.f);
-        nearbyBiome[tileIndex*4+1].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,0.f);
-        nearbyBiome[tileIndex*4+2].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,tileSize);
-        nearbyBiome[tileIndex*4+3].position=biomeCoords+tileCoords+sf::Vector2f(0.f,tileSize);
+        nearbyBiome[tileIndex*6+0].position=biomeCoords+tileCoords+sf::Vector2f(0.f,0.f);
+        nearbyBiome[tileIndex*6+1].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,0.f);
+        nearbyBiome[tileIndex*6+2].position=biomeCoords+tileCoords+sf::Vector2f(tileSize,tileSize);
+
+        nearbyBiome[tileIndex * 6 + 3].position = biomeCoords + tileCoords + sf::Vector2f(0.f, 0.f);
+        nearbyBiome[tileIndex*6+4].position=biomeCoords+tileCoords+sf::Vector2f(0.f,tileSize);
+        nearbyBiome[tileIndex * 6 + 5].position = biomeCoords + tileCoords + sf::Vector2f(tileSize, tileSize);
             
 
             //set the tile's texture
         sf::Vector2f textureCoords(16*textureID,16*biomeID);
 
-        nearbyBiome[tileIndex*4+0].texCoords=textureCoords+sf::Vector2f(0.f,0.f);
-        nearbyBiome[tileIndex*4+1].texCoords=textureCoords+sf::Vector2f(16.f,0.f);
-        nearbyBiome[tileIndex*4+2].texCoords=textureCoords+sf::Vector2f(16.f,16.f);
-        nearbyBiome[tileIndex*4+3].texCoords=textureCoords+sf::Vector2f(0.f,16.f);
+        nearbyBiome[tileIndex*6+0].texCoords=textureCoords+sf::Vector2f(0.f,0.f);
+        nearbyBiome[tileIndex*6+1].texCoords=textureCoords+sf::Vector2f(16.f,0.f);
+        nearbyBiome[tileIndex*6+2].texCoords=textureCoords+sf::Vector2f(16.f,16.f);
+
+        nearbyBiome[tileIndex * 6 + 3].texCoords = textureCoords + sf::Vector2f(0.f, 0.f);
+        nearbyBiome[tileIndex*6+4].texCoords=textureCoords+sf::Vector2f(0.f,16.f);
+        nearbyBiome[tileIndex * 6 + 5].texCoords = textureCoords + sf::Vector2f(16.f, 16.f);
 }
