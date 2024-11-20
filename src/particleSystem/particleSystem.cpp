@@ -58,17 +58,22 @@ void ParticleSystem::addEmitter(sf::Vector2f vPos,
                                 bool rep, 
                                 sf::Time rd) 
 {
-    Emitter emitter(amount,4,vPos,{-100.f,100.f},{-100.f,100.f},rd,maxTime,sf::VertexArray(sf::Triangles,amount*6),rep);
+    Emitter emitter(amount,6,vPos,{-100.f,100.f},{-100.f,100.f},rd,maxTime,sf::VertexArray(sf::Triangles,amount*6),rep);
     for (int i=0; i<amount; i++) {
         emitter.vertices[i*6].position=vPos;
         emitter.vertices[i*6+1].position=vPos+sf::Vector2f(20.f,0.f);
         emitter.vertices[i*6+2].position=vPos+sf::Vector2f(20.f,20.f);
-        emitter.vertices[i*6+3].position=vPos+sf::Vector2f(0.f,20.f);
+
+        emitter.vertices[i*6+3].position = vPos;
+        emitter.vertices[i*6+4].position=vPos+sf::Vector2f(0.f,20.f);
+        emitter.vertices[i*6+5].position = vPos + sf::Vector2f(20.f, 20.f);
         sf::Color tmp(randomize(r.x,r.y),randomize(g.x,g.y),randomize(b.x,b.y));
         emitter.vertices[i*6].color=tmp;
         emitter.vertices[i*6+1].color=tmp;
         emitter.vertices[i*6+2].color=tmp;
         emitter.vertices[i*6+3].color=tmp;
+        emitter.vertices[i * 6 + 4].color = tmp;
+        emitter.vertices[i * 6 + 5].color = tmp;
         
         emitter.startPosOffset.push_back(sf::Vector2f(0.f,0.f));
         emitter.startPosOffset.push_back(sf::Vector2f(20.f,0.f));
