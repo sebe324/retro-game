@@ -58,18 +58,18 @@ void ParticleSystem::addEmitter(sf::Vector2f vPos,
                                 bool rep, 
                                 sf::Time rd) 
 {
-    Emitter emitter(amount,4,vPos,{-100.f,100.f},{-100.f,100.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*4),rep);
+    Emitter emitter(amount,4,vPos,{-100.f,100.f},{-100.f,100.f},rd,maxTime,sf::VertexArray(sf::Triangles,amount*6),rep);
     for (int i=0; i<amount; i++) {
-        emitter.vertices[i*4].position=vPos;
-        emitter.vertices[i*4+1].position=vPos+sf::Vector2f(20.f,0.f);
-        emitter.vertices[i*4+2].position=vPos+sf::Vector2f(20.f,20.f);
-        emitter.vertices[i*4+3].position=vPos+sf::Vector2f(0.f,20.f);
+        emitter.vertices[i*6].position=vPos;
+        emitter.vertices[i*6+1].position=vPos+sf::Vector2f(20.f,0.f);
+        emitter.vertices[i*6+2].position=vPos+sf::Vector2f(20.f,20.f);
+        emitter.vertices[i*6+3].position=vPos+sf::Vector2f(0.f,20.f);
         sf::Color tmp(randomize(r.x,r.y),randomize(g.x,g.y),randomize(b.x,b.y));
-        emitter.vertices[i*4].color=tmp;
-        emitter.vertices[i*4+1].color=tmp;
-        emitter.vertices[i*4+2].color=tmp;
-        emitter.vertices[i*4+3].color=tmp;
-
+        emitter.vertices[i*6].color=tmp;
+        emitter.vertices[i*6+1].color=tmp;
+        emitter.vertices[i*6+2].color=tmp;
+        emitter.vertices[i*6+3].color=tmp;
+        
         emitter.startPosOffset.push_back(sf::Vector2f(0.f,0.f));
         emitter.startPosOffset.push_back(sf::Vector2f(20.f,0.f));
         emitter.startPosOffset.push_back(sf::Vector2f(20.f,20.f));
@@ -86,7 +86,7 @@ void ParticleSystem::addEmitter(sf::VertexArray vArray,
                                 bool rep,
                                 sf::Time rd) 
 {
-    Emitter emitter(amount,4,vArray[0].position,{-50.f,50.f},{-50.f,50.f},rd,maxTime,vArray,rep);
+    Emitter emitter(amount,6,vArray[0].position,{-50.f,50.f},{-50.f,50.f},rd,maxTime,vArray,rep);
     for (int i = 0; i < amount; i++) {
         emitter.speed.push_back({randomize(emitter.velX.x,emitter.velX.y),randomize(emitter.velY.x,emitter.velY.y)});
     }
@@ -99,36 +99,42 @@ void ParticleSystem::addHealingEmitter(sf::Vector2f vPos,
                                         bool rep, 
                                         sf::Time rd) 
 {
-    Emitter emitter(amount,8,vPos,{20.f,50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*8),rep);
+    Emitter emitter(amount,12,vPos,{20.f,50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Triangles,amount*12),rep);
 
     for (int i = 0; i < amount; i++) {
-        emitter.vertices[i*8].position=vPos;
-        emitter.vertices[i*8+1].position=vPos+sf::Vector2f(8.f,0.f);
-        emitter.vertices[i*8+2].position=vPos+sf::Vector2f(8.f,20.f);
-        emitter.vertices[i*8+3].position=vPos+sf::Vector2f(0.f,20.f);
+        emitter.vertices[i*12].position=vPos;
+        emitter.vertices[i*12+1].position=vPos+sf::Vector2f(8.f,0.f);
+        emitter.vertices[i*12+2].position=vPos+sf::Vector2f(8.f,20.f);
 
-        emitter.vertices[i*8+4].position=vPos+sf::Vector2f(-5.f,6.f);
-        emitter.vertices[i*8+5].position=vPos+sf::Vector2f(13.f,6.f);
-        emitter.vertices[i*8+6].position=vPos+sf::Vector2f(13.f,14.f);
-        emitter.vertices[i*8+7].position=vPos+sf::Vector2f(-5.f,14.f);
+        emitter.vertices[i * 12 + 3].position = vPos;
+        emitter.vertices[i*12+4].position = vPos + sf::Vector2f(0.f, 20.f);;
+        emitter.vertices[i*12+5].position = vPos + sf::Vector2f(8.f, 20.f);
 
-        emitter.vertices[i*8].color=color;
-        emitter.vertices[i*8+1].color=color;
-        emitter.vertices[i*8+2].color=color;
-        emitter.vertices[i*8+3].color=color;
-        emitter.vertices[i*8+4].color=color;
-        emitter.vertices[i*8+5].color=color;
-        emitter.vertices[i*8+6].color=color;
-        emitter.vertices[i*8+7].color=color;
+        emitter.vertices[i*12+6].position=vPos+sf::Vector2f(-5.f,6.f);
+        emitter.vertices[i*12+7].position=vPos+sf::Vector2f(13.f,6.f);
+        emitter.vertices[i*12+8].position=vPos+sf::Vector2f(13.f,14.f);
+
+        emitter.vertices[i * 12 + 9].position = vPos + sf::Vector2f(-5.f, 6.f);
+        emitter.vertices[i*12+10].position=vPos+sf::Vector2f(-5.f,14.f);
+        emitter.vertices[i * 12 + 11].position = vPos + sf::Vector2f(13.f, 14.f);
+
+        for (unsigned j = 0; j < 12; j++) emitter.vertices[i * 12 + j].color = color;
 
         emitter.startPosOffset.push_back(sf::Vector2f(0.f,0.f));
         emitter.startPosOffset.push_back(sf::Vector2f(8.f,0.f));
         emitter.startPosOffset.push_back(sf::Vector2f(8.f,20.f));
-        emitter.startPosOffset.push_back(sf::Vector2f(0.f,20.f));
+
+        emitter.startPosOffset.push_back(sf::Vector2f(0.f, 0.f));
+        emitter.startPosOffset.push_back(sf::Vector2f(0.f, 20.f));
+        emitter.startPosOffset.push_back(sf::Vector2f(8.f, 20.f));
+
         emitter.startPosOffset.push_back(sf::Vector2f(-5.f,6.f));
         emitter.startPosOffset.push_back(sf::Vector2f(13.f,6.f));
         emitter.startPosOffset.push_back(sf::Vector2f(13.f,14.f));
+
+        emitter.startPosOffset.push_back(sf::Vector2f(-5.f, 6.f));
         emitter.startPosOffset.push_back(sf::Vector2f(-5.f,14.f));
+        emitter.startPosOffset.push_back(sf::Vector2f(13.f, 14.f));
 
         emitter.speed.push_back({randomize(emitter.velX.x,emitter.velX.y),randomize(emitter.velY.x,emitter.velY.y)});
     }
@@ -142,23 +148,30 @@ void ParticleSystem::addMagicEmitter(sf::Vector2f vPos,
                                         bool rep, 
                                         sf::Time rd) 
 {
-    Emitter emitter(amount,4,vPos,{-20.f,-50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Quads,amount*4),rep);
+    Emitter emitter(amount,6,vPos,{-20.f,-50.f},{-30.f,30.f},rd,maxTime,sf::VertexArray(sf::Triangles,amount*6),rep);
 
     for (int i = 0; i < amount; i++) {
-        emitter.vertices[i*4].position=vPos+sf::Vector2f(randomize(-4,8),randomize(-4,8));
-        emitter.vertices[i*4+1].position=vPos+sf::Vector2f(15.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
-        emitter.vertices[i*4+2].position=vPos+sf::Vector2f(15.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
-        emitter.vertices[i*4+3].position=vPos+sf::Vector2f(0.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
+        emitter.vertices[i*6].position=vPos+sf::Vector2f(randomize(-4,8),randomize(-4,8));
+        emitter.vertices[i*6+1].position=vPos+sf::Vector2f(15.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
+        emitter.vertices[i*6+2].position=vPos+sf::Vector2f(15.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8));
+
+        emitter.vertices[i*6+3].position=vPos+sf::Vector2f(randomize(-4,8),randomize(-4,8));
+        emitter.vertices[i*6+4].position = vPos + sf::Vector2f(0.f, 15.f) + sf::Vector2f(randomize(-4, 8), randomize(-4, 8));
+        emitter.vertices[i*6+5].position = vPos + sf::Vector2f(15.f, 15.f) + sf::Vector2f(randomize(-4, 8), randomize(-4, 8));
 
         emitter.startPosOffset.push_back(sf::Vector2f(0.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8)));
         emitter.startPosOffset.push_back(sf::Vector2f(15.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8)));
         emitter.startPosOffset.push_back(sf::Vector2f(15.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8)));
-        emitter.startPosOffset.push_back(sf::Vector2f(0.f,15.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8)));
+        emitter.startPosOffset.push_back(sf::Vector2f(0.f,0.f)+sf::Vector2f(randomize(-4,8),randomize(-4,8)));
+        emitter.startPosOffset.push_back(sf::Vector2f(0, 15.f) + sf::Vector2f(randomize(-4, 8), randomize(-4, 8)));
+        emitter.startPosOffset.push_back(sf::Vector2f(15.f, 15.f) + sf::Vector2f(randomize(-4, 8), randomize(-4, 8)));
 
-        emitter.vertices[i*4].color=color;
-        emitter.vertices[i*4+1].color=color;
-        emitter.vertices[i*4+2].color=color;
-        emitter.vertices[i*4+3].color=color;
+        emitter.vertices[i*6].color=color;
+        emitter.vertices[i*6+1].color=color;
+        emitter.vertices[i*6+2].color=color;
+        emitter.vertices[i*6+3].color=color;
+        emitter.vertices[i*6+4].color = color;
+        emitter.vertices[i*6+5].color = color;
         emitter.speed.push_back({randomize(emitter.velX.x,emitter.velX.y),randomize(emitter.velY.x,emitter.velY.y)});
     }
     emitters.push_back(emitter);
