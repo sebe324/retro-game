@@ -12,7 +12,7 @@
 #include "../Projectile/Projectile.h"
 #include "../particleSystem/particleSystem.h"
 #include "../noise/perlinNoise.h"
-#include "../world/World.h"
+#include "../World/World.h"
 
 #include <memory>
 #include <iostream>
