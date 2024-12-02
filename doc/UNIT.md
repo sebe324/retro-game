@@ -2,8 +2,8 @@
 
 This class is the core of all other game classes.
 
-- header file: [Here](#)
-- cpp file: [Here](#)
+- header file: [Here](https://github.com/sebe324/retro-game/blob/main/src/core/Unit.h)
+- cpp file: [Here](https://github.com/sebe324/retro-game/blob/main/src/core/Unit.cpp)
 
 This class inherits from sf::Drawable.
 
@@ -55,10 +55,6 @@ This class inherits from sf::Drawable.
   #### sf::Vector2f getCenter() const;
   
   This function returns the center of the hitbox.
-  
-  #### void update(sf::Time elapsed);
-  
-  Some useless function. It should be deleted.
   
   ####  void moveUp(sf::Time elapsed, float multiplier=1);
   ####  void moveDown(sf::Time elapsed, float multiplier=1);
