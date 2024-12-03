@@ -27,7 +27,6 @@ class Unit : public sf::Drawable {
         Unit();
 
         sf::Vector2f getCenter() const;
-        void update(sf::Time elapsed);
 
         void moveUp(sf::Time elapsed, float multiplier=1);
         void moveDown(sf::Time elapsed, float multiplier=1);

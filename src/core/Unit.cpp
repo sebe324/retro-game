@@ -11,9 +11,6 @@ sf::Vector2f Unit::getCenter() const{
     return {hitbox.left + hitbox.width * 0.5f, hitbox.top + hitbox.height * 0.5f};
 }
 
-void Unit::update(sf::Time elapsed) {
-    move();
-}
 void Unit::moveUp(sf::Time elapsed, float multiplier) {
     velocity.y -= speed * elapsed.asSeconds() * multiplier;
 }
